@@ -1,5 +1,5 @@
 # Rodent Whole Brain fMRI Data Preprocessing Toolbox
-This is a generally applicable fMRI preprocessing toolbox for the whole brain of mice and rats developed by Nan Xu and Leo Zhang. It follows the rodent brain preprocessing pipeline as described in ([Kai-Hsiang Chuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X)). In this toolbox, the initial preprocessing script in ([Kai-Hsiang Chuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X)) was re-engineered to adapt to multiple fMRI group datasets of rodent brains. This toolbox has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging and experimental settings (3 rats groups and 1 mice group). Reasonable FC maps and QPPs were obtained as a result. 
+This is a generally applicable fMRI preprocessing toolbox for the whole brain of mice and rats developed by Nan Xu and Leo Zhang. It follows the rodent brain preprocessing pipeline as described in ([Kai-Hsiang Chuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X)). In this toolbox, the initial preprocessing script in ([Kai-Hsiang Chuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X)) was re-engineered to adapt to multiple fMRI group datasets of rodent brains. This toolbox has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging and experimental settings (3 rats groups and 1 mice group). Reasonable FC maps and QPPs can be obtained. 
 
 <!---If you use this toolbox, please cite as Nan Xu, Leo Zhang, Zengmin Li, Shella D. Keilholz (Date). Title [Type]. doi:10.5281/zenodo.XXXX--->
 
@@ -62,6 +62,8 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
 
     Save the edited brain as "EPI_n4_bet_edit.nii.gz".
 2. EPI template generation (optional: when you do not have EPItmp.nii in the template folder)    
+
+	a. run ""
 
 ### Step3: run "PreprocessingScript_step2.sh"
 The following 6 procedures will be performed.
