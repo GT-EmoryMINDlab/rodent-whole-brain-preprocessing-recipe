@@ -68,10 +68,10 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
 ### Templates (./lib/tmp/)
 Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
 	
-	1. EPI brain template (EPItmp.nii): If you don't have the EPI brain template, you will need to generate one using "EPItmpGen.sh"
-	2. Anatomical brain template (EPIant.nii): If you already have the EPI template, this file is optional
-	3. Whole brain mask
-	4. WM and/or CSF mask or masked EPI file
+	EPI brain template: EPItmp.nii (If you don't have the EPI brain template, you will need to generate one using "EPItmpGen.sh")
+	Anatomical brain template: EPIant.nii (If you already have the EPI template, this file is optional)
+	Whole brain mask: brainMask.nii
+	WM and/or CSF mask or masked EPI file: wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
 Two options are provided: 
