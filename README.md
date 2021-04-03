@@ -23,7 +23,7 @@ Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse
 	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
-All these files need to be in the same orientation as your EPI image (i.e., EPI0.nii(.gz) and EPI_reverse0.nii(.gz)). If not, you need to reorient the template files to align with your EPI image. One simple orientation approach includes 3 steps:
+All these files need to be in the same orientation as your EPI images (i.e., EPI0.nii(.gz) and EPI_reverse0.nii(.gz)). If not, you need to reorient the template files to align with your EPI images. One simple reorientation approach includes 3 steps:
 
 	1. delete orientation labels: fslorient -deleteorient T2tmp.nii
 	2. reorient the image: both SPM and FSL fslswapdim can do the job.
