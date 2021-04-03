@@ -5,7 +5,7 @@ This is a generally applicable fMRI preprocessing toolbox for the whole brain of
 
 ## I. Prerequisite software
 1. FSL5.0, AFNI and ANTs--can be installed on a PC (see "SoftwareInstallation_fsl_afni_ants.txt")
-2. PCNN3d toolbox in Matlab (optional for mice brain preprocessing, see below for details). 
+2. PCNN3D toolbox in Matlab (optional for mice brain preprocessing, see below for details). 
 
 ## II. Data Files 
 The two input data files are needed, each has voxel size 10X from the scanning file (i.e., use 10X when generating .nii files by Bruker2nifti):
@@ -55,13 +55,15 @@ The following files are generated in./data/mc_qc/ to control the quality of moti
 #### 4. Brain extraction: 
 Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3d* toolbox. One can run both functions and pick the best extrated brain for manual editing in the next step.
 
-    fsl bet: does better job for rat brain extraction.
-    PCNN3d: does better job for mice brain extraction. One can run PCNN3d in Matlab after Step 1 is completed.    
+    fsl bet: does better job for some rat brain extractions.
+    PCNN3D: does better job for mice brain extraction. One can run PCNN3d in Matlab after Step 1 is completed.    
 ### Step2: Precise brain extraction & EPI template generation
 #### 1.  Manually edit the brain mask using fsleyes editing tool
     a. Consistently follow ONE direction slice-by-slice for mask editing (~15mins/rat brain, ~10mins/mouse brain)
     b. Save the edited brain as "EPI_n4_bet_edit.nii.gz".
-#### 2. EPI template generation (optional: when you do not have EPItmp.nii in the template folder)    
+#### 2. EPI template generation (optional)
+This procedure is only needed when you do not have EPItmp.nii in the template folder.
+
     a. run ""
 
 ### Step3: run "PreprocessingScript_step2.sh"
