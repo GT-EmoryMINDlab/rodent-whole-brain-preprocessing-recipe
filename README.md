@@ -53,7 +53,7 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
     e. wmcsf or global signals (rats); csf or global signals (mice)
 #### 5. Normalization & temporal filtering
-    a. Ampplify the regressed signals: ampX=10000 for mice datasample and ampX=100 for the rat datasample
+    a. Amplify the regressed signals: ampX=10000 for mice datasample and ampX=100 for the rat datasample
     b. Bandpass filter: bandwidth depends on the use of anesthesia
     	e.g., 0.01–0.1Hz for iso and 0.01–0.25Hz for dmed, see Wen-Ju Pan et al., Neuroimage, 2013
 #### 6. EPI template registration & spatial smoothing
