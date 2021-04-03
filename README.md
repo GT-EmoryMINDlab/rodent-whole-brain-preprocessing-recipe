@@ -9,15 +9,15 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
 ### Step1: run "PreprocessingScript_step1.sh"
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
-    Generate 3 plots in each data folder, EPI_mc_rot.png, EPI_mc_trans.png, and EPI_mc_disp.png. 
+    Generate 3 plots in each data folder, "EPI_mc_rot.png", "EPI_mc_trans.png", and "EPI_mc_disp.png". 
     One can use these 3 plots as a quality control of motions during the imaging session.
 #### 3. Distortion correction using fsl topup: 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
     b. Estimate the topup correction parameters (see the required topup parameter files in 3 below) 
     c. Apply topup correction
-#### 4. Brain extraction: using fsl bet command
-### Step2: edit the extracted brain using fsleyes
-see 
+#### 4. Brain extraction: using fsl bet command    
+### Step2: edit the extracted brain using fsleyes editing tool
+    (optional) For the mouse data, the PCNN3d might do better job than `fsl bet` function in Step 1. One can run PCNN3d in Matlab for the mouse brain preprocessing. Then you can pick the best extrated brain for manual editing.
 ### Step3: run "PreprocessingScript_step2.sh"
 
 ## III. Data Folder 
