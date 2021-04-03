@@ -44,7 +44,7 @@ These parameters totally depend on your image (e.g., dimension, resolution, etc)
 The following 4 procedures will be performed in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
-The following files are generated in./data/QC_info/ to control the quality  of motions:
+The following files are generated in./data/mc_qc/ to control the quality of motions:
 
     3 motion plots: rotational and translational motions (EPI_mc_rot.png, EPI_mc_trans.png), mean displacement (EPI_mc_disp.png)
     temporal SNR (\_tSNR.txt), difference between 1st and last time frame (\_sub.nii.gz)
