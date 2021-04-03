@@ -35,8 +35,8 @@ Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole b
 The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. Two files are provided here, "datain_topup_mice.txt" for the mouse data sample, and "datain_topup_rat.txt" for the rat data sample.
 #### 2. Image parameter configuration file, "\*.cnf": 
     b02b0.cnf: a generally applicable (default) configration file provided by fsl 
-    EPI_topup_mice.cnf: a configration file optimized for the mouse data "data_mouse"
-    EPI_topup_rat.cnf: a configration file optimized for the mouse data "data_rat"
+    EPI_topup_mice.cnf: a configration file optimized for the mouse datasample "data_mouse"
+    EPI_topup_rat.cnf: a configration file optimized for the rat datasample "data_rat"
 The above 3 "\*.cnf" files are provided in the ./lib/topups/ folder. These parameters totally depend on your image (e.g., dimension, resolution, etc). 
   
 
