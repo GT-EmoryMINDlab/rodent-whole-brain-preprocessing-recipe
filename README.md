@@ -1,27 +1,27 @@
 # Rodents Whole Brain fMRI Data Preprocessing Toolbox
 This pipeline has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging protocols and experimental conditions (3 rats groups and 1 mice group) to obtain reasonable FC maps and QPPs.
 
-## 0. Prerequisite software
+## I. Prerequisite software
 1. FSL5.0, AFNI and ANTs--can be installed on a PC by following "SoftwareInstallation_fsl_afni_ants.txt"
 2. PCNN3d toolbox in Matlab (optional for mice brain preprocessing, see below for details). 
 
-## 1. Main Pipeline
+## II. Main Pipeline
 ### Step1: run "PreprocessingScript_step1.sh"
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
     Generate 3 plots in each data folder, EPI_mc_rot.png, EPI_mc_trans.png, and EPI_mc_disp.png. 
     One can use these 3 plots as a quality control of motions during the imaging session.
 #### 3. Distortion correction using fsl topup: 
-  a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data \
-  b. Estimate the topup correction parameters (see the required topup parameter files in 3 below) \
-  c. Apply topup correction
+    a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
+    b. Estimate the topup correction parameters (see the required topup parameter files in 3 below) 
+    c. Apply topup correction
 #### 4. Brain extraction: using fsl bet command
 ### Step2: edit the extracted brain using fsleyes
 see 
 ### Step3: run "PreprocessingScript_step2.sh"
 
-## 2. Data Folder
-## 3. Library Folder
+## III. Data Folder
+## IV. Library Folder
 ### Template requirement
 ### Topup parameter files
 #### 1. Imaging acquisition parameter file, "datain_topup.txt": 
