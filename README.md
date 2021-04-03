@@ -12,10 +12,10 @@ The following 4 procedures are included in this step.
 #### 2. Motion correction: (motions are corrected to its mean)
     a. 3 motion plots that can be used as quality control of motions during the imaging session:
          rotational motion (EPI_mc_rot.png), translational motion (EPI_mc_trans.png), and mean displacement (EPI_mc_disp.png)
-    b. Quality control files in./data/QC_info/: temporal SNR (_tSNR.txt), difference between 1st and last time frame (_sub.nii.gz)        
+    b. Quality control files in./data/QC_info/: temporal SNR (_tSNR.txt), difference between 1st and last time frame (_sub.nii.gz)
 #### 3. Distortion correction using fsl topup: 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
-    b. Estimate the topup correction parameters (see the required topup parameter files in 3 below) 
+    b. Estimate the topup correction parameters (see the required topup parameter files in section IV) 
     c. Apply topup correction
 #### 4. Brain extraction: 
 Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3d* toolbox. 
