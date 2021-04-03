@@ -19,7 +19,7 @@ Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole b
 ### Templates (./lib/tmp/)
 Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
 	
-	EPItmp.nii: a EPI brain template (If you don't have this, you will need to generate one in Section IV, Step 2.)
+	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section IV, Step 2.)
 	ANTtmp_crop.nii: an anatomical brain template (If you already have the EPI template, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
