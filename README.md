@@ -7,7 +7,7 @@ This is a generally applicable fMRI preprocessing pipeline for the whole brain o
 1. FSL5.0, AFNI and ANTs--can be installed on a PC (see "SoftwareInstallation_fsl_afni_ants.txt")
 2. PCNN3d toolbox in Matlab (optional for mice brain preprocessing, see below for details). 
 
-## II. Data Folder 
+## II. Data Files 
 The two input data files are needed, each has voxel size 10X from the scanning file (i.e., use 10X when generating .nii files by Bruker2nifti):
 
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain
@@ -62,7 +62,7 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
 ### Step2: edit the extracted brain using fsleyes editing tool
     Manually edit the mask slice by slice in fsleyes and save the edited brain as "EPI_n4_bet_edit.nii.gz".
 ### Step3: run "PreprocessingScript_step2.sh"
-The following 5 procedures will be performed.
+The following 6 procedures will be performed.
 #### 1. Precise brain extraction
 The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
 	
