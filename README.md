@@ -7,6 +7,7 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
 
 ## II. Main Pipeline
 ### Step1: run "PreprocessingScript_step1.sh"
+The following 4 procedures are included in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
     Generate 3 plots in each data folder, "EPI_mc_rot.png", "EPI_mc_trans.png", and "EPI_mc_disp.png". 
@@ -21,6 +22,7 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
     As the Matlab toolbox PCNN3d might do a better job than `fsl bet` function in Step 1 for mice brains, one can run 
     PCNN3d in Matlab for the mouse brain preprocessing. Then you can pick the best extrated brain for manual editing.
 ### Step3: run "PreprocessingScript_step2.sh"
+The following 5 procedures are included in this step.
 
 ## III. Data Folder 
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain
