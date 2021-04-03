@@ -29,7 +29,7 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
 The following 5 procedures are included in this step.
 
 ## III. Data Folder 
-The two files are required in the folder:
+The two files are required:
 
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain
     EPI_reverse0.nii(.gz), 3-dim: 1 reverse epi scan volume of the same brain
@@ -40,13 +40,13 @@ Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole b
 ### Templates (./lib/tmp/)
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
-Two files are provided: 
+Two options are provided: 
 
-    "datain_topup_mice.txt" for the mouse data sample
-    "datain_topup_rat.txt" for the rat data sample.
+    datain_topup_mice.txt: for the mouse data sample
+    datain_topup_rat.txt: for the rat data sample
 The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. 
 #### 2. Image parameter configuration file, "\*.cnf": 
-The above 3 "\*.cnf" files are provided:
+Three "\*.cnf" options are provided:
 
     b02b0.cnf: a generally applicable (default) configration file provided by fsl 
     EPI_topup_mice.cnf: a configration file optimized for the mouse datasample (./data_mouse/)
