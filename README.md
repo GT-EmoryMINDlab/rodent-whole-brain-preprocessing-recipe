@@ -15,7 +15,7 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
     b. Estimate the topup correction parameters (see the required topup parameter files in 3 below) 
     c. Apply topup correction
-#### 4. Brain extraction: using fsl bet command    
+#### 4. Brain extraction: (fsl bet)
 ### Step2: edit the extracted brain using fsleyes editing tool
     Optional setp for the mice brain preprocessing: 
     As the Matlab toolbox PCNN3d might do a better job than `fsl bet` function in Step 1. 
