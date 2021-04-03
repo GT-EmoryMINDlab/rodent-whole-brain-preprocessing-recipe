@@ -13,7 +13,7 @@ The two input data files are needed, each has voxel size 10X from the scanning f
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain timeseries
     EPI_reverse0.nii(.gz), 3-dim: reverse epi scan of 1 volume of the same brain
     <Note: EPI_reverse0.nii(.gz) needs to be in the same dimension and resolution as the 1st vol of EPI0.nii(.gz).>
-This is a EPI template registration pipeline, so T2 of each brain is not required. Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole brain (./data_mouse/), are provided.     
+This is a EPI template registration pipeline, so the T2 scan of each brain is not required. Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole brain (./data_mouse/), are provided.     
 
 ## III. Library Files 
 ### Templates (./lib/tmp/)
