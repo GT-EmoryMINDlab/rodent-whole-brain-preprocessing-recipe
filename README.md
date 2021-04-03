@@ -12,7 +12,7 @@ The two input data files are needed, each has voxel size 10X from the scanning f
 
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain
     EPI_reverse0.nii(.gz), 3-dim: 1 reverse epi scan volume of the same brain
-    <Note: EPI_reverse0.nii(.gz) needs to be in the same dimension and resolution as the 1st volume of EPI0.nii(.gz).>
+    <Note: EPI_reverse0.nii(.gz) needs to be in the same dimension and resolution as the 1st vol of EPI0.nii(.gz).>
 Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole brain (./data_mouse/), are provided.     
 
 ## III. Library Files 
@@ -20,7 +20,7 @@ Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole b
 Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
 	
 	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section IV, Step 2.)
-	ANTtmp_crop.nii: an anatomical brain template (If you already have the EPI template, this file is optional.)
+	ANTtmp_crop.nii: an anatomical brain template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
 ### Topup parameter files (./lib/topup/)
