@@ -3,5 +3,5 @@ A generally applicable whole brain fMRI preprocessing pipeline for mice and rats
 
 ## Prerequisite software
 1. FSL5.0, AFNI and ANTs--can be installed on a PC by following "SoftwareInstallation_fsl_afni_ants.txt"
-2. PCNN3d in Matlab (optional for mice brain preprocessing). 
+2. PCNN3d toolbox in Matlab (optional for mice brain preprocessing). 
 
