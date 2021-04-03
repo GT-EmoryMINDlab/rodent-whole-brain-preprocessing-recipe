@@ -23,9 +23,9 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
 ### Step3: run "PreprocessingScript_step2.sh"
 
 ## III. Data Folder 
-### rat whole brain sample data (./data_rat/) 
-
-### mouse whole brain sample data (./data_mouse/) 
+    EPI0.nii(.gz): the forward epi scan of the whole brain
+    EPI_reverse0.nii(.gz): 1 reverse epi scan of the same brain 
+The above files are required in the data folder. A rat whole brain datasample (./data_rat/) and a mouse whole brain datasample (./data_mouse/) are included.     
 
 ## IV. Library Folder 
 ### Templates (./lib/tmp/)
