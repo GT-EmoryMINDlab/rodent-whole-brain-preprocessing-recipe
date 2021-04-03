@@ -20,9 +20,7 @@ Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole b
 Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
 	
 	EPItmp.nii: a EPI brain template (If you don't have this, you will need to generate one in Section IV, Step 2.)
-	ANTtmp_crop.nii: an anatomical brain template 
-		(If you already have the EPI template, this file is optional. If not, you needs to crop the anatomical template 
-		so that it fits your image data. The function clip_nii.m from the Matlab NIfTI toolbox does this job.)
+	ANTtmp_crop.nii: an anatomical brain template (If you already have the EPI template, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
 ### Topup parameter files (./lib/topup/)
@@ -46,10 +44,10 @@ These parameters totally depend on your image (e.g., dimension, resolution, etc)
 The following 4 procedures will be performed in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
-The following files are generated in./data/QC_info/ for quality control of motions during the imaging session:
+The following files are generated in./data/QC_info/ to control the quality  of motions:
 
-    a.3 motion plots: rotational and translational motions (EPI_mc_rot.png, EPI_mc_trans.png), mean displacement (EPI_mc_disp.png)
-    b. temporal SNR (\_tSNR.txt), difference between 1st and last time frame (\_sub.nii.gz)
+    3 motion plots: rotational and translational motions (EPI_mc_rot.png, EPI_mc_trans.png), mean displacement (EPI_mc_disp.png)
+    temporal SNR (\_tSNR.txt), difference between 1st and last time frame (\_sub.nii.gz)
 #### 3. Distortion correction using fsl topup: 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
     b. Estimate the topup correction parameters (see the required topup parameter files in section III) 
