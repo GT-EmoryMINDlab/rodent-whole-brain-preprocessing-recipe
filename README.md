@@ -1,7 +1,5 @@
 # Rodents Whole Brain fMRI Data Preprocessing Toolbox
-A universally applicable whole brain fMRI preprocessing pipeline for mice and rats
-
-This pipeline has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging protocols and experimental conditions (3 rats groups and 1 mice group) to demonstrate the robustness.
+A generally applicable whole brain fMRI preprocessing pipeline for mice and rats. This pipeline has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging protocols and experimental conditions (3 rats groups and 1 mice group) to demonstrate the robustness.
 
 ## Prerequisite software
 1. FSL5.0, AFNI and ANTs--can be installed on a PC by following "SoftwareInstallation_fsl_afni_ants.txt"
