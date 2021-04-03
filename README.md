@@ -37,7 +37,7 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
     Manually edit the mask slice by slice in fsleyes and save the edited brain as "EPI_n4_bet_edit.nii.gz".
 ### Step3: run "PreprocessingScript_step2.sh"
 The following 5 procedures will be performed.
-#### 1. Apply brain mask 
+#### 1. Precise brain extraction
 The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
 	
 #### 2. EPI registration estimation and wm/csf mask generation
@@ -56,7 +56,7 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
     a. Ampplify the regressed signals: ampX=10000 for mice datasample and ampX=100 for the rat datasample
     b. Bandpass filter: bandwidth depends on the use of anesthesia
     	e.g., 0.01–0.1Hz for iso and 0.01–0.25Hz for dmed, see Wen-Ju Pan et al., Neuroimage, 2013
-#### 6. Perform EPI template registration & spatial smoothing
+#### 6. EPI template registration & spatial smoothing
     a. EPI template registration: transform cleaned-up data to template space by the transformation matrix estimated in (2.a)
     b. Use Gaussian kernel for spatial smoothing. Set sigma value at the begiing of the file:
         FWHM=2.3548*sigma
@@ -69,7 +69,9 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
 Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
 	
 	EPItmp.nii: a EPI brain template (If you don't have this, you will need to generate one using "EPItmpGen.sh".)
-	EPIant.nii: an anatomical brain template (If you already have the EPI template, this file is optional.)
+	EPIant_crop.nii: an anatomical brain template 
+		(If you already have the EPI template, this file is optional. If not, you needs to crop the anatomical template 
+		so that it fits your image data. The function clip_nii.m from the Matlab NIfTI toolbox does this job.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
 ### Topup parameter files (./lib/topup/)
