@@ -20,7 +20,7 @@ Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole b
 Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
 	
 	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section IV, Step 2.)
-	ANTtmp_crop.nii: an anatomical brain template (If you already have EPItmp.nii, this file is optional.)
+	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
 ### Topup parameter files (./lib/topup/)
@@ -38,13 +38,12 @@ Three "\*.cnf" options are provided:
     EPI_topup_rat.cnf: a configration file optimized for the rat datasample (./data_rat/)
 These parameters totally depend on your image (e.g., dimension, resolution, etc). 
 
-
 ## IV. Main Pipeline
 ### Step1: run "PreprocessingScript_step1.sh"
 The following 4 procedures will be performed in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
-The following files are generated in./data/mc_qc/ to control the quality of motions:
+The following files are generated in ./data/mc_qc/ to control the quality of motions:
 
     3 motion plots: rotational and translational motions (EPI_mc_rot.png, EPI_mc_trans.png), mean displacement (EPI_mc_disp.png)
     temporal SNR (*_tSNR.txt), difference between 1st and last time frame (*_sub.nii.gz)
@@ -62,9 +61,8 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
     a. Consistently follow ONE direction slice-by-slice for mask editing (~15mins/rat brain, ~10mins/mouse brain)
     b. Save the edited brain as "EPI_n4_bet_edit.nii.gz".
 #### 2. EPI template generation (optional)
-This procedure is only needed when you do not have EPItmp.nii in the template folder.
-
-    a. run ""
+This procedure is only needed when you do not have "EPItmp.nii" in the template folder.
+    a. run "GenerateEPItmp.sh"
 
 ### Step3: run "PreprocessingScript_step2.sh"
 The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2. The following 5 procedures will be performed.
