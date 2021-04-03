@@ -28,7 +28,7 @@ All these files need to be in the same orientation as your EPI image (i.e., EPI0
 	1. delete orientation labels: fslorient -deleteorient T2tmp.nii
 	2. reorient the image: both SPM and FSL fslswapdim can do the job.
 	3. re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
-Do the same for all files in your template folder. [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s), [FSL reorientation](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Orientation%20Explained).
+Do the same for all files in your template folder. Ref: [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s); [FSL reorientation](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Orientation%20Explained).
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
 Two options are provided: 
