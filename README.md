@@ -26,9 +26,9 @@ The template folder includes the following 4 files.
 All these files need to be in the same orientation and similar resolution as your EPI images, i.e., EPI0.nii(.gz). 
 Check this in fsleyes! If they do not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes the following 3 steps:
 
-	1. delete orientation labels: fslorient -deleteorient T2tmp.nii
-	2. reorient & rescale voxel size of the template: SPM does a good job!
-	3. re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
+	1. Delete orientation labels: fslorient -deleteorient T2tmp.nii
+	2. Reorient & rescale voxel size of the template: SPM does a good job!
+	3. Re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
 Do the same for all files in your template folder (Ref: [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s)).
 You might also need to crop the template files to better fit the coverage of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good jobon this. Two generic templates are included, one for rat whole brain (./lib/tmp/rat/) and one for mouse whole brain (./lib/tmp/mouse/).
 
@@ -54,8 +54,12 @@ The following 4 procedures will be performed in this step.
 #### 2. Motion correction: (motions are corrected to its mean)
 The following files are generated in ./data/mc_qc/ to control the quality of motions:
 
-    3 motion plots: rotational and translational motions (EPI_mc_rot.png, EPI_mc_trans.png), mean displacement (EPI_mc_disp.png)
-    temporal SNR (*_tSNR.txt), difference between 1st and last time frame (*_sub.nii.gz)
+    3 motion plots: 
+    	-rotational motions (EPI_mc_rot.png) 
+	-translational motions (EPI_mc_trans.png)
+	-mean displacement (EPI_mc_disp.png)
+    Temporal SNR (*_tSNR.txt)
+    Difference between 1st and last time frame (*_sub.nii.gz)
 #### 3. Distortion correction using fsl topup: 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
     b. Estimate the topup correction parameters (see the required topup parameter files in section III) 
