@@ -17,8 +17,9 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
     c. Apply topup correction
 #### 4. Brain extraction: using fsl bet command    
 ### Step2: edit the extracted brain using fsleyes editing tool
-    (Optional) For the mouse data, the PCNN3d might do better job than `fsl bet` function in Step 1. 
-               One can run PCNN3d in Matlab for the mouse brain preprocessing. Then you can pick the best extrated brain for manual editing.
+    Optional setp for the mice brain preprocessing: 
+    As the Matlab toolbox PCNN3d might do a better job than `fsl bet` function in Step 1. 
+    One can run PCNN3d in Matlab for the mouse brain preprocessing. Then you can pick the best extrated brain for manual editing.
 ### Step3: run "PreprocessingScript_step2.sh"
 
 ## III. Data Folder 
