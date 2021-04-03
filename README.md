@@ -10,8 +10,9 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
 The following 4 procedures are included in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
-    a. Generate 3 mc plots: "EPI_mc_rot.png", "EPI_mc_trans.png", and "EPI_mc_disp.png". One can use these 3 plots as a quality control of motions during the imaging session.
-    b. Quality control files in./data/QC_info/:
+    a. 3 motion plots: rotational motion (EPI_mc_rot.png), translational motion (EPI_mc_trans.png), and mean displacement (EPI_mc_disp.png)
+        One can use these 3 plots as a quality control of motions during the imaging session.
+    b. Quality control files in./data/QC_info/: temporal SNR (_tSNR.txt), difference between 1st and last time frame (_sub.nii.gz)        
 #### 3. Distortion correction using fsl topup: 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
     b. Estimate the topup correction parameters (see the required topup parameter files in 3 below) 
