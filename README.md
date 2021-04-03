@@ -20,16 +20,18 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
 see 
 ### Step3: run "PreprocessingScript_step2.sh"
 
-## III. Data Folder
-## IV. Library Folder
-### Template requirement
-### Topup parameter files
-#### 1. Imaging acquisition parameter file, "datain_topup.txt": 
-  The parameters totally depend on your imaging acquisition protocal (see Ref: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain). It's IMPORTANT to setup the correct parameters, as these parameters would impact the final results a lot.
+## III. Data Folder 
+Two data samples are provided, one for rat (./data_rat/) and one for mouse (./data_mouse/).
+
+## IV. Library Folder 
+### ./lib/tmp/: Templates
+### ./lib/topup/: Topup parameter files
+#### 1. Imaging acquisition parameter file, "datain_topup_\*.txt":   
+The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. Two files are provided here, "datain_topup_mice.txt" for the mouse data sample, and "datain_topup_rat.txt" for the rat data sample.
 #### 2. Image parameter configuration file, "\*.cnf": 
     b02b0.cnf: a generally applicable (default) configration file provided by fsl 
-    EPI_topup_HLL_fix_conf: a configration file optimized for the mouse data "data_mouse"
-    EPI_topup_HLL_fix_conf2: a configration file optimized for the mouse data "data_rat"
+    EPI_topup_mice.cnf: a configration file optimized for the mouse data "data_mouse"
+    EPI_topup_rat.cnf: a configration file optimized for the mouse data "data_rat"
 The above 3 "\*.cnf" files are provided in the ./lib/topups/ folder. These parameters totally depend on your image (e.g., dimension, resolution, etc). 
   
 
