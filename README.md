@@ -17,7 +17,7 @@ Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole b
 
 ## III. Main Pipeline
 ### Step1: run "PreprocessingScript_step1.sh"
-The following 4 procedures are included in this step.
+The following 4 procedures will be performed in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
     a. Generate 3 motion plots that can be used as quality control of motions during the imaging session:
@@ -36,7 +36,7 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
 ### Step2: edit the extracted brain using fsleyes editing tool
     Manually edit the mask slice by slice in fsleyes and save the edited brain as "EPI_n4_bet_edit.nii.gz".
 ### Step3: run "PreprocessingScript_step2.sh"
-The following 5 procedures are included in this step.
+The following 5 procedures will be performed.
 #### 1. Apply brain mask 
 The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
 	
