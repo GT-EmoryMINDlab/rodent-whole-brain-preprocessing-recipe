@@ -23,11 +23,13 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
 ### Step3: run "PreprocessingScript_step2.sh"
 
 ## III. Data Folder 
-Two data samples are provided, one for rat (./data_rat/) and one for mouse (./data_mouse/).
+### rat whole brain sample data (./data_rat/) 
+
+### mouse whole brain sample data (./data_mouse/) 
 
 ## IV. Library Folder 
-### ./lib/tmp/: Templates
-### ./lib/topup/: Topup parameter files
+### Templates (./lib/tmp/)
+### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt":   
 The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. Two files are provided here, "datain_topup_mice.txt" for the mouse data sample, and "datain_topup_rat.txt" for the rat data sample.
 #### 2. Image parameter configuration file, "\*.cnf": 
