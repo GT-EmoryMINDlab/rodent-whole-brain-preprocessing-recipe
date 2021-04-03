@@ -27,12 +27,11 @@ see
 #### 1. Imaging acquisition parameter file, "datain_topup.txt": 
   The parameters totally depend on your imaging acquisition protocal (see Ref: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain). It's IMPORTANT to setup the correct parameters, as these parameters would impact the final results a lot.
 #### 2. Image parameter configuration file, "\*.cnf": 
-  It's also important to setup the correct parameters in the configuration file. The parameters totally depend on your image (e.g., dimension, resolution, etc). \
-  3 "\*.cnf" files are provided in the lib folder: 
-    a. b02b0.cnf: a generally applicable (default) configration file provided by fsl \
-    b. EPI_topup_HLL_fix_conf: a configration file optimized for the mouse data "data_mouse"\
-    c. EPI_topup_HLL_fix_conf2: a configration file optimized for the mouse data "data_rat"
-
+    b02b0.cnf: a generally applicable (default) configration file provided by fsl 
+    EPI_topup_HLL_fix_conf: a configration file optimized for the mouse data "data_mouse"
+    EPI_topup_HLL_fix_conf2: a configration file optimized for the mouse data "data_rat"
+The above 3 "\*.cnf" files are provided in the ./lib/topups folder. It's also important to set the parameters up correctly. The parameters totally depend on your image (e.g., dimension, resolution, etc). 
+  
 
 
 
