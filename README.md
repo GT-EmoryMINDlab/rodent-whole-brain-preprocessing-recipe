@@ -1,6 +1,8 @@
 # Rodents Whole Brain fMRI Data Preprocessing Toolbox
 This pipeline has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging protocols and experimental conditions (3 rats groups and 1 mice group) to obtain reasonable FC maps and QPPs. 
 
+<!---If you use this toolbox, please cite as Name (Date). Title [Type]. doi:10.5281/zenodo.XXXX--->
+
 ## I. Prerequisite software
 1. FSL5.0, AFNI and ANTs--can be installed on a PC (see "SoftwareInstallation_fsl_afni_ants.txt")
 2. PCNN3d toolbox in Matlab (optional for mice brain preprocessing, see below for details). 
@@ -52,7 +54,7 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
     e. wmcsf or global signals (rats); csf or global signals (mice)
 #### 5. Normalization & temporal filtering
     a. Ampplify the regressed signals: ampX=10000 for mice datasample and ampX=100 for the rat datasample
-    b. Bandpass filter: bandwidth depends on the use of anesthesia (
+    b. Bandpass filter: bandwidth depends on the use of anesthesia
     	e.g., 0.01–0.1Hz for iso and 0.01–0.25Hz for dmed, see Wen-Ju Pan et al., Neuroimage, 2013
 #### 6. Perform EPI template registration & spatial smoothing
     a. EPI template registration: transform cleaned-up data to template space by the transformation matrix estimated in (2.a)
