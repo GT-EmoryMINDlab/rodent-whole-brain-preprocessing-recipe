@@ -1,5 +1,5 @@
 # Rodents Whole Brain fMRI Data Preprocessing Toolbox
-This pipeline has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging protocols and experimental conditions (3 rats groups and 1 mice group) to obtain reasonable FC maps and QPPs.
+This pipeline has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging protocols and experimental conditions (3 rats groups and 1 mice group) to obtain reasonable FC maps and QPPs. 
 
 ## I. Prerequisite software
 1. FSL5.0, AFNI and ANTs--can be installed on a PC (see "SoftwareInstallation_fsl_afni_ants.txt")
@@ -19,9 +19,9 @@ The following 4 procedures are included in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
 #### 2. Motion correction: (motions are corrected to its mean)
     a. Generate 3 motion plots that can be used as quality control of motions during the imaging session:
-         rotational motion (EPI_mc_rot.png), translational motion (EPI_mc_trans.png), and mean displacement (EPI_mc_disp.png)
+	rotational motion (EPI_mc_rot.png), translational motion (EPI_mc_trans.png), and mean displacement (EPI_mc_disp.png)
     b. Generate 2 quality control files in./data/QC_info/: 
-    	temporal SNR (_tSNR.txt), difference between 1st and last time frame (_sub.nii.gz)
+	temporal SNR (_tSNR.txt), difference between 1st and last time frame (_sub.nii.gz)
 #### 3. Distortion correction using fsl topup: 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
     b. Estimate the topup correction parameters (see the required topup parameter files in section IV) 
@@ -49,10 +49,10 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
     b. 10 PCs from non brain tissues
     c. 6 motion regressors (based on motion correction results) 
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
-    e. WMCSF or Global signals (rats); CSF or Global signals (mice)
+    e. wmcsf or global signals (rats); csf or global signals (mice)
 #### 5. Normalization & temporal filtering
-    a. Ampplify the regressed signals: *ampX*=10000 for mice datasample and *ampX*=100 for the rat datasample
-    b. Bandpass filter: bandwidth depends on the use of anesthesia (0.01–0.1Hz for ISO and 0.01–0.25Hz for DMED, see Wenju Pan et., Neuroimage, 2013)
+    a. Ampplify the regressed signals: ampX=10000 for mice datasample and ampX=100 for the rat datasample
+    b. Bandpass filter: bandwidth depends on the use of anesthesia (e.g., 0.01–0.1Hz for iso and 0.01–0.25Hz for dmed, see Pan et., Neuroimage, 2013)
 #### 6. Perform EPI template registration & spatial smoothing
     a. EPI template registration: transform cleaned-up data to template space by the transformation matrix estimated in (2.a)
     b. Use Gaussian kernel for spatial smoothing. Set sigma value at the begiing of the file:
@@ -77,8 +77,3 @@ Three "\*.cnf" options are provided:
     EPI_topup_mice.cnf: a configration file optimized for the mouse datasample (./data_mouse/)
     EPI_topup_rat.cnf: a configration file optimized for the rat datasample (./data_rat/)
 These parameters totally depend on your image (e.g., dimension, resolution, etc). 
-  
-
-
-
-
