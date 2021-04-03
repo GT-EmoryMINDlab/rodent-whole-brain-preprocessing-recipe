@@ -17,18 +17,18 @@ This is a EPI template registration pipeline, so the T2 scan of each brain is no
 
 ## III. Library Files 
 ### Templates (./lib/tmp/)
-Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files. 
+The template folder includes the following 4 files. 
 	
 	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section IV, Step 2.)
 	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
-All these files need to be in the same orientation as your EPI images (i.e., EPI0.nii(.gz) and EPI_reverse0.nii(.gz)). If not, you need to reorient the template files to align with your EPI images. One simple reorientation approach includes 3 steps:
+All these files need to be in the same orientation as your EPI images (i.e., EPI0.nii(.gz) and EPI_reverse0.nii(.gz)) as well as have a similar resolution. Check this using fsleyes. If they are not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes 3 steps:
 
 	1. delete orientation labels: fslorient -deleteorient T2tmp.nii
-	2. reorient the image: both SPM and FSL fslswapdim can do the job.
+	2. reorient & rescale voxel size of the template: SPM does a good job!
 	3. re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
-Do the same for all files in your template folder. Ref: [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s); [FSL reorientation](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Orientation%20Explained).
+Do the same for all files in your template folder (Ref: [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s)).
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
 Two options are provided: 
