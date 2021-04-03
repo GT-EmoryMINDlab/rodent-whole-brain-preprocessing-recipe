@@ -58,12 +58,11 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
     fsl bet: does better job for rat brain extraction.
     PCNN3d: does better job for mice brain extraction. One can run PCNN3d in Matlab after Step 1 is completed.    
 ### Step2:Precise brain extraction and EPI template generation
-1.  Manually edit the mask slice by slice using fsleyes editing tool
-
+#### 1.  Manually edit the brain mask slice by slice using fsleyes editing tool
+    Please consistently follow one direction for mask editing (~15mins/rat brain, ~10mins/mouse brain)
     Save the edited brain as "EPI_n4_bet_edit.nii.gz".
-2. EPI template generation (optional: when you do not have EPItmp.nii in the template folder)    
-
-	a. run ""
+#### 2. EPI template generation (optional: when you do not have EPItmp.nii in the template folder)    
+    a. run ""
 
 ### Step3: run "PreprocessingScript_step2.sh"
 The following 6 procedures will be performed.
