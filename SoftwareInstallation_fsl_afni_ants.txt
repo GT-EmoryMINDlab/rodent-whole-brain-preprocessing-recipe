@@ -1,0 +1,119 @@
+1.Install WSL in a specific drive
+a. format specific drive A:\ as NTFS(Default) (>=100Gb)
+b. launch powershell as admin
+c. follow the steps at https://damsteen.nl/blog/2018/08/29/installing-wsl-manually-on-non-system-drive
+$ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+//Path          :
+//Online        : True
+//RestartNeeded : False
+$ wslconfig /l //Uninstall previous WSL distributions 
+$ wslconfig /u <Name of the distribution>
+$ Set-Location A:\
+$ Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
+$ Rename-Item .\Ubuntu.appx Ubuntu.zip
+$ Expand-Archive .\Ubuntu.zip -Verbose
+$ cd .\Ubuntu\
+$ .\ubuntu1804.exe
+//Installing, this may take a few minutes...
+d. launch ubuntu1804.exe by double clicking the install .exe file
+//Change Ubuntu Username (optional)
+$ sudo passwd root //set up pwd for the root acct
+$ exit
+$ kill -9 7 && sudousermod -l <newname> -d /home/<newname> -m <oldname>
+// here 7 is the PID of the process that runs the old user acct.
+e. Install missing packages
+$ sudo apt-get upgrade && sudo apt-get update
+$ sudo apt install build-essential //install gcc, g++, make...
+$ sudo apt-get install manpages-dev
+$ sudo apt install python
+$ sudo apt-get install zlib1g-dev
+$ sudo apt-get install yum*
+$ sudo apt-get install qt4-qmake
+$ sudo apt-get install qt-sdk
+$ sudo apt-get install dos2unix
+sudo apt-get install libcurl4-openssl-dev libxml2-dev libssl-dev libgfortran3
+sudo ln -s /usr/lib/x86_64-linux-gnu/libgsl.so.23 /usr/lib/x86_64-linux-gnu/libgsl.so.19
+
+d. Install R packages 1st following (https://cran.r-project.org/bin/linux/ubuntu/README.html#installation)
+$ sudo apt install r-base-dev r-cran-rmpi
+
+2. Install FSL in A:\ (take about 40mins for downloading and installing)
+a. install fsl following https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation/Linux 
+$ sudo python fslinstaller.py -d /mnt/a/
+b. install fsleyes
+i. install conda following https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
+//do not activating conda from ~/.bashr; deactivate at https://askubuntu.com/questions/1026383/why-does-base-appear-in-front-of-my-terminal-prompt
+ii. update fsleyes following https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FSLeyes#Install_as_part_of_FSL_.28recommended.29
+$ $FSLDIR/fslpython/bin/conda update -n fslpython -c conda-forge --update-deps fsleyes
+
+
+3. Install Cmake and ANTS in A:\ (while installing FSL)
+a. install cmake (https://vitux.com/how-to-install-cmake-on-ubuntu-18-04/)
+$ wget https://github.com/Kitware/CMake/releases/download/v3.15.2/cmake-3.15.2.tar.gz
+$ sudo tar -zxvf cmake-3.15.2.tar.gz
+$ cd cmake-3.15.2
+$ sudo ./bootstrap //will take about 15mins
+$ make //will take about 30mins
+$ sudo make install
+$ cmake --version
+b. compile ANTS (https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) // do this after cmake is fully installed!
+// excute the .sh script in "antsInstallExample-master"
+$ vim ~/.bashrc
+"Insert" the following 2 lines at the end of the document
+	export ANTSPATH=/mnt/a/ants/install/bin
+	export PATH=${ANTSPATH}:$PATH
+:x!
+
+4. Install AFNI (https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/background_install/install_instructs/steps_linux_ubuntu18.html)
+a. Install prerequisite packages
+$ sudo add-apt-repository universe
+$ sudo apt-get update
+$ sudo apt-get install -y tcsh xfonts-base python-qt4       \
+                        gsl-bin netpbm gnome-tweak-tool   \
+                        libjpeg62 xvfb xterm vim curl     \
+                        gedit evince eog                  \
+                        libglu1-mesa-dev libglw1-mesa     \
+                        libxm4 build-essential            \
+                        gnome-terminal nautilus           \
+                        gnome-icon-theme-symbolic         \
+                        firefox xfonts-100dpi
+b. Install AFNI binaries
+$ cd
+$ curl -O https://afni.nimh.nih.gov/pub/dist/bin/linux_ubuntu_16_64/@update.afni.binaries
+$ tcsh @update.afni.binaries -package linux_ubuntu_16_64  -do_extras
+c. Install R (make sure r-base packages were installed at step 1.d)
+$ bash
+$ export R_LIBS=$HOME/R
+$ mkdir  $R_LIBS
+$ echo  'setenv R_LIBS ~/R'     >> ~/.cshrc
+$ echo  'export R_LIBS=$HOME/R' >> ~/.bashrc
+$ curl -O https://afni.nimh.nih.gov/pub/dist/src/scripts_src/@add_rcran_ubuntu.tcsh
+$ sudo tcsh @add_rcran_ubuntu.tcsh
+$ rPkgsInstall -pkgs ALL // will take about 2hrs
+d. Make AFNI/SUMA profiles
+$ cp $HOME/abin/AFNI.afnirc $HOME/.afnirc
+$ suma -update_env
+e. Prepare for Bootcamp
+$ curl -O https://afni.nimh.nih.gov/pub/dist/edu/data/CD.tgz
+$ tar xvzf CD.tgz
+$ cd CD
+$ tcsh s2.cp.files . ~
+$ cd ..
+f. Evaluate setup/system (important!)
+$ afni_system_check.py -check_all
+//Read the â€œPlease Fixâ€? section at the end. If there are no suggestions, then rejoice! Otherwise, try the suggestion(s) there.
+$ afni
+$ suma
+
+5. Mount lab server 
+a. install prerequisites:
+$ sudo apt install docker.io
+$ sudo apt-get install nfs-common
+$ sudo apt install cifs-utils
+b. mount the server (https://dev.to/rpalo/mounting-network-drives-into-windows-subsystem-linux-3ef7)
+$ sudo mkdir /mnt/y
+$ sudo mount -t drvfs 'y:\' /mnt/y
+
+6. Call Matlab from WSL terminal 
+$ "/mnt/c/Program Files/MATLAB/R2018b/bin/matlab.exe" -nodesktop -r "****; exit;"
+// **** is the matlab command that needs to run
