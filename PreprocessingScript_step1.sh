@@ -35,6 +35,10 @@ do
 	##-------------Brain extraction-------- 
 	echo " $workingdir: Brain extraction"
 	N4BiasFieldCorrection -d 3 -i ./"$workingdir"/EPI_topup_mean.nii.gz -o ./"$workingdir"/EPI_n4.nii.gz -c [100x100x100,0] -b [50] -s 2
+	# fsl bet brain extraction: good for rat brains
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
+# 	# PCNN3d brain extraction: good for mice brains. One can also run the file in Matlab.
+# 	"/mnt/c/Program Files/MATLAB/R2019b/bin/matlab.exe" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='../N4/${drRest_fsl_n4}.nii.gz'; BrSize=[300,400]; run ./PCNN3D_matlab/PCNN3D_run_v1_3.m; exit"
+	
 	## Then, manually edit the mask slice by slice in fsleyes
 done
