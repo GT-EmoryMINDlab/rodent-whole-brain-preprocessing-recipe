@@ -1,5 +1,5 @@
 # Rodents Whole Brain fMRI Data Preprocessing Toolbox
-This is a generally applicable fMRI preprocessing pipeline for the whole brain of mice and rats. This pipeline has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging and experimental settings (3 rats groups and 1 mice group). Reasonable FC maps and QPPs were obtained as a result. 
+This is a generally applicable fMRI preprocessing toolbox for the whole brain of mice and rats. It follows the rodents preprocessing pipeline described in ([Kai-Hsiang Chuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X)). The initial preprocessing script provided by Zengmin Li and Kai-Hsiang Chuang was re-engineered by Nan Xu and Leo Zhang to adapt to multiple fMRI group datasets of rodents. This toolbox has been tested on 4 different fMRI whole brain group datasets of rodents with different imaging and experimental settings (3 rats groups and 1 mice group). Reasonable FC maps and QPPs were obtained as a result. 
 
 <!---If you use this toolbox, please cite as Nan Xu, Leo Zhang, Zengmin Li, Shella D. Keilholz (Date). Title [Type]. doi:10.5281/zenodo.XXXX--->
 
