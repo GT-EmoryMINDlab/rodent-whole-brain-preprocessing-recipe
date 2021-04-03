@@ -1,5 +1,5 @@
-Foldername=(299_42 301_19 318_31 322_46 323_16 330_27 338_17 339_23) 
-
+Foldername=(data1) # this can be extended to  Foldername=(data1 data2 data3 data4 ....) if you have group data
+bet_f=0.55 # You might need to play with this parameter for creating the tightest brain mask.
 for (( i=0; i<${#Foldername[@]}; i++ ))
 do
 	workingdir="${Foldername[i]}"
@@ -35,6 +35,6 @@ do
 	##-------------Brain extraction-------- 
 	echo " $workingdir: Brain extraction"
 	N4BiasFieldCorrection -d 3 -i ./"$workingdir"/EPI_topup_mean.nii.gz -o ./"$workingdir"/EPI_n4.nii.gz -c [100x100x100,0] -b [50] -s 2
-	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f 0.55 -g 0 -R
+	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
 	## Then, manually edit the mask slice by slice in fsleyes
 done
