@@ -28,7 +28,7 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
 The following 5 procedures are included in this step.
 
 ## III. Data Folder 
-The two files are required:
+The two input files are required:
 
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain
     EPI_reverse0.nii(.gz), 3-dim: 1 reverse epi scan volume of the same brain
