@@ -13,7 +13,7 @@ The two input data files are needed, each has voxel size 10X from the scanning f
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain timeseries
     EPI_reverse0.nii(.gz), 3-dim: reverse epi scan of 1 volume of the same brain
     <Note: EPI_reverse0.nii(.gz) needs to be in the same dimension and resolution as the 1st vol of EPI0.nii(.gz).>
-This is a EPI template registration pipeline, so the T2 scan of each brain is not required. Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole brain (./data_mouse/), are provided.     
+This is a EPI template registration pipeline, so the T2 scan of each brain is not required. Two datasamples, one for rat whole brain (./data_rat1/) and one for mouse whole brain (./data_mouse1/), are provided.     
 
 ## III. Library Files 
 ### Templates preparation (./lib/tmp/)
@@ -23,14 +23,15 @@ The template folder includes the following 4 files.
 	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
-All these files need to be in the same orientation and similar resolution as your EPI images (i.e., EPI0.nii(.gz) and EPI_reverse0.nii(.gz)). 
-Check this using fsleyes! If they do not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes the following 3 steps:
+All these files need to be in the same orientation and similar resolution as your EPI images, i.e., EPI0.nii(.gz). 
+Check this in fsleyes! If they do not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes the following 3 steps:
 
 	1. delete orientation labels: fslorient -deleteorient T2tmp.nii
 	2. reorient & rescale voxel size of the template: SPM does a good job!
 	3. re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
 Do the same for all files in your template folder (Ref: [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s)).
-You might also need to crop the template files to better fit the coverage of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good jobon this.
+You might also need to crop the template files to better fit the coverage of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good jobon this. Two generic templates are included, one for rat whole brain (./lib/tmp/rat/) and one for mouse whole brain (./lib/tmp/mouse/).
+
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
 Two options are provided: 
