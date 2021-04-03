@@ -23,12 +23,13 @@ The template folder includes the following 4 files.
 	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
-All these files need to be in the same orientation as your EPI images (i.e., EPI0.nii(.gz) and EPI_reverse0.nii(.gz)) as well as have a similar resolution. Check this using fsleyes. If they are not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes 3 steps:
+All these files need to be in the same orientation and similar resolution as your EPI images (i.e., EPI0.nii(.gz) and EPI_reverse0.nii(.gz)). Check this using fsleyes! If they do not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes 3 steps:
 
 	1. delete orientation labels: fslorient -deleteorient T2tmp.nii
 	2. reorient & rescale voxel size of the template: SPM does a good job!
 	3. re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
 Do the same for all files in your template folder (Ref: [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s)).
+You might also need to crop the template files to better fit the coverage of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good jobon this.
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
 Two options are provided: 
