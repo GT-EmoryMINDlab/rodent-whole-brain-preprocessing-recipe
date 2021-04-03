@@ -47,7 +47,7 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
     a. Generate a tissue mask
     b. extract the top 10 PCs from the masked brain tissues.
 #### 4. Nuisance regressions: 26 regressors ([Kai-HsiangChuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X))
-    a. 3 fir detrends: constant, linear, and quadratic trends
+    a. 3 for detrends: constant, linear, and quadratic trends
     b. 10 PCs from non brain tissues
     c. 6 motion regressors (based on motion correction results) 
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
