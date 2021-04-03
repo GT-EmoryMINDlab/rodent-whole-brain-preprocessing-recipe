@@ -18,12 +18,10 @@ The following 4 procedures are included in this step.
     b. Estimate the topup correction parameters (see the required topup parameter files in section IV) 
     c. Apply topup correction
 #### 4. Brain extraction: 
-Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3d* toolbox. 
+Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3d* toolbox. One can run both functions and pick the best extrated brain for manual editing in the next step.
 
     fsl bet: does better job for rat brain extraction.
-    PCNN3d: does better job for mice brain extraction. One can run PCNN3d in Matlab after Step 1 is completed. 
-    One can also run both functions and pick the best extrated brain for manual editing in the next step.
-    
+    PCNN3d: does better job for mice brain extraction. One can run PCNN3d in Matlab after Step 1 is completed.    
 ### Step2: edit the extracted brain using fsleyes editing tool
     Manually edit the mask slice by slice in fsleyes
 ### Step3: run "PreprocessingScript_step2.sh"
