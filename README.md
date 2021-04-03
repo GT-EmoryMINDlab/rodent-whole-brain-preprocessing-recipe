@@ -23,9 +23,10 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
 ### Step3: run "PreprocessingScript_step2.sh"
 
 ## III. Data Folder 
-    EPI0.nii(.gz): the forward epi scan of the whole brain
-    EPI_reverse0.nii(.gz): 1 reverse epi scan of the same brain 
-The above two files are required. Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole brain (./data_mouse/), are included.     
+    EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain
+    EPI_reverse0.nii(.gz), 3-dim: 1 reverse epi scan volume of the same brain, which is in the same dimension and resolution as the 1st volume of EPI0.
+The above two files are required. 
+Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole brain (./data_mouse/), are included.     
 
 ## IV. Library Folder 
 ### Templates (./lib/tmp/)
