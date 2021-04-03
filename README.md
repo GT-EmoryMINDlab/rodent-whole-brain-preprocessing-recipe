@@ -32,7 +32,7 @@ The two input files are required:
 
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain
     EPI_reverse0.nii(.gz), 3-dim: 1 reverse epi scan volume of the same brain
-    (Note: EPI_reverse0.nii(.gz) needs to be in the same dimension and resolution as the 1st volume of EPI0.nii(.gz).)
+    <Note: EPI_reverse0.nii(.gz) needs to be in the same dimension and resolution as the 1st volume of EPI0.nii(.gz).>
 Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole brain (./data_mouse/), are provided.     
 
 ## IV. Library Folder 
