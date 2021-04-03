@@ -17,9 +17,9 @@ This pipeline has been tested on 4 different fMRI whole brain group datasets of 
     c. Apply topup correction
 #### 4. Brain extraction: (fsl bet)
 ### Step2: edit the extracted brain using fsleyes editing tool
-    Optional setp for the mice brain preprocessing: 
-    As the Matlab toolbox PCNN3d might do a better job than `fsl bet` function in Step 1. 
-    One can run PCNN3d in Matlab for the mouse brain preprocessing. Then you can pick the best extrated brain for manual editing.
+    Optional step for mice brain preprocessing: 
+    As the Matlab toolbox PCNN3d might do a better job than `fsl bet` function in Step 1 for mice brains, one can run 
+    PCNN3d in Matlab for the mouse brain preprocessing. Then you can pick the best extrated brain for manual editing.
 ### Step3: run "PreprocessingScript_step2.sh"
 
 ## III. Data Folder 
@@ -35,8 +35,8 @@ Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole b
 The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. Two files are provided here, "datain_topup_mice.txt" for the mouse data sample, and "datain_topup_rat.txt" for the rat data sample.
 #### 2. Image parameter configuration file, "\*.cnf": 
     b02b0.cnf: a generally applicable (default) configration file provided by fsl 
-    EPI_topup_mice.cnf: a configration file optimized for the mouse datasample "data_mouse"
-    EPI_topup_rat.cnf: a configration file optimized for the rat datasample "data_rat"
+    EPI_topup_mice.cnf: a configration file optimized for the mouse datasample (./data_mouse/)
+    EPI_topup_rat.cnf: a configration file optimized for the rat datasample (./data_rat/)
 The above 3 "\*.cnf" files are provided in the ./lib/topups/ folder. These parameters totally depend on your image (e.g., dimension, resolution, etc). 
   
 
