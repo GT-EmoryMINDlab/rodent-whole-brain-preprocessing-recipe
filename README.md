@@ -15,7 +15,33 @@ The two input data files are needed, each has voxel size 10X from the scanning f
     <Note: EPI_reverse0.nii(.gz) needs to be in the same dimension and resolution as the 1st volume of EPI0.nii(.gz).>
 Two datasamples, one for rat whole brain (./data_rat/) and one for mouse whole brain (./data_mouse/), are provided.     
 
-## III. Main Pipeline
+## III. Library Files 
+### Templates (./lib/tmp/)
+Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
+	
+	EPItmp.nii: a EPI brain template (If you don't have this, you will need to generate one using "EPItmpGen.sh".)
+	ANTtmp_crop.nii: an anatomical brain template 
+		(If you already have the EPI template, this file is optional. If not, you needs to crop the anatomical template 
+		so that it fits your image data. The function clip_nii.m from the Matlab NIfTI toolbox does this job.)
+	brainMask.nii: a whole brain mask
+	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
+### Topup parameter files (./lib/topup/)
+#### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
+Two options are provided: 
+
+    datain_topup_mice.txt: for the mouse data sample
+    datain_topup_rat.txt: for the rat data sample
+The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. 
+#### 2. Image parameter configuration file, "\*.cnf": 
+Three "\*.cnf" options are provided:
+
+    b02b0.cnf: a generally applicable (default) configration file provided by fsl 
+    EPI_topup_mice.cnf: a configration file optimized for the mouse datasample (./data_mouse/)
+    EPI_topup_rat.cnf: a configration file optimized for the rat datasample (./data_rat/)
+These parameters totally depend on your image (e.g., dimension, resolution, etc). 
+
+
+## IV. Main Pipeline
 ### Step1: run "PreprocessingScript_step1.sh"
 The following 4 procedures will be performed in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
@@ -26,7 +52,7 @@ The following 4 procedures will be performed in this step.
 	temporal SNR (_tSNR.txt), difference between 1st and last time frame (_sub.nii.gz)
 #### 3. Distortion correction using fsl topup: 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
-    b. Estimate the topup correction parameters (see the required topup parameter files in section IV) 
+    b. Estimate the topup correction parameters (see the required topup parameter files in section III) 
     c. Apply topup correction
 #### 4. Brain extraction: 
 Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3d* toolbox. One can run both functions and pick the best extrated brain for manual editing in the next step.
@@ -63,28 +89,3 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
         0.25mm â†’ 10x = 2.5mm â†’, sigma=2.5/2.3548 = 1.0166
         0.3mm â†’ 10x=3.0mm â†’, sigma=1.274
         0.25mm â†’ 20x = 5mm â†’, sigma=2.1233226        
-
-## IV. Library Files 
-### Templates (./lib/tmp/)
-Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
-	
-	EPItmp.nii: a EPI brain template (If you don't have this, you will need to generate one using "EPItmpGen.sh".)
-	EPIant_crop.nii: an anatomical brain template 
-		(If you already have the EPI template, this file is optional. If not, you needs to crop the anatomical template 
-		so that it fits your image data. The function clip_nii.m from the Matlab NIfTI toolbox does this job.)
-	brainMask.nii: a whole brain mask
-	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
-### Topup parameter files (./lib/topup/)
-#### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
-Two options are provided: 
-
-    datain_topup_mice.txt: for the mouse data sample
-    datain_topup_rat.txt: for the rat data sample
-The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. 
-#### 2. Image parameter configuration file, "\*.cnf": 
-Three "\*.cnf" options are provided:
-
-    b02b0.cnf: a generally applicable (default) configration file provided by fsl 
-    EPI_topup_mice.cnf: a configration file optimized for the mouse datasample (./data_mouse/)
-    EPI_topup_rat.cnf: a configration file optimized for the rat datasample (./data_rat/)
-These parameters totally depend on your image (e.g., dimension, resolution, etc). 
