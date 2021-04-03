@@ -1,4 +1,4 @@
-Foldername=(data1) # this can be extended to  Foldername=(data1 data2 data3 data4 ....) if you have group data
+Foldername=(data_rat) # Foldername=(data_mouse) #If you have group data, this can be extended to  Foldername=(data1 data2 data3 data4 ....).
 bet_f=0.55 # You might need to play with this parameter for creating the tightest brain mask to save you the time of manual editing.
 for (( i=0; i<${#Foldername[@]}; i++ ))
 do
