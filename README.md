@@ -17,12 +17,18 @@ This is a EPI template registration pipeline, so the T2 scan of each brain is no
 
 ## III. Library Files 
 ### Templates (./lib/tmp/)
-Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files:
+Two templates are included, one for rat brain (./lib/tmp/rat/) and one for mouse brain (./lib/tmp/mouse/). Each folder includes the following 4 files. 
 	
 	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section IV, Step 2.)
 	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
+All these files need to be in the same orientation as your EPI image (i.e., EPI0.nii(.gz) and EPI_reverse0.nii(.gz)). If not, you need to reorient the template files to align with your EPI image. One simple orientation approach includes 3 steps:
+
+	1. delete orientation labels: fslorient -deleteorient T2tmp.nii
+	2. reorient the image: both SPM and FSL fslswapdim can do the job.
+	3. re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
+Do the same for all files in your template folder. [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s), [FSL reorientation](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Orientation%20Explained).
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
 Two options are provided: 
@@ -58,7 +64,7 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
     PCNN3D: does better job for mice brain extraction. One can run PCNN3d in Matlab after Step 1 is completed.    
 ### Step2: Precise brain extraction & EPI template generation
 #### 1.  Manually edit the brain mask using fsleyes editing tool
-    a. Consistently follow ONE direction slice-by-slice for mask editing (~15mins/rat brain, ~10mins/mouse brain)
+    a. Consistently follow ONE direction slice-by-slice for mask editing (15~20mins/rat brain, 10~15mins/mouse brain)
     b. Save the edited brain as "EPI_n4_bet_edit.nii.gz".
 #### 2. EPI template generation (optional): run "GenerateEPItmp.sh"
 This procedure is only needed when you do not have "EPItmp.nii" in the template folder.
