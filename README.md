@@ -20,7 +20,8 @@ The following 4 procedures are included in this step.
 #### 2. Motion correction: (motions are corrected to its mean)
     a. Generate 3 motion plots that can be used as quality control of motions during the imaging session:
          rotational motion (EPI_mc_rot.png), translational motion (EPI_mc_trans.png), and mean displacement (EPI_mc_disp.png)
-    b. Generate 2 quality control files in./data/QC_info/: temporal SNR (_tSNR.txt), difference between 1st and last time frame (_sub.nii.gz)
+    b. Generate 2 quality control files in./data/QC_info/: 
+    	temporal SNR (_tSNR.txt), difference between 1st and last time frame (_sub.nii.gz)
 #### 3. Distortion correction using fsl topup: 
     a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
     b. Estimate the topup correction parameters (see the required topup parameter files in section IV) 
@@ -51,7 +52,7 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2.
     e. WMCSF or Global signals (rats); CSF or Global signals (mice)
 #### 5. Normalization & temporal filtering
     a. Ampplify the regressed signals: *ampX*=10000 for mice datasample and *ampX*=100 for the rat datasample
-    b. Bandpass filter: bandwidth depends on the specific use of anesthesia (0.01–0.1Hz for ISO and 0.01–0.25Hz for DMED, see Wenju Pan et., Neuroimage, 2013)
+    b. Bandpass filter: bandwidth depends on the use of anesthesia (0.01–0.1Hz for ISO and 0.01–0.25Hz for DMED, see Wenju Pan et., Neuroimage, 2013)
 #### 6. Perform EPI template registration & spatial smoothing
     a. EPI template registration: transform cleaned-up data to template space by the transformation matrix estimated in (2.a)
     b. Use Gaussian kernel for spatial smoothing. Set sigma value at the begiing of the file:
