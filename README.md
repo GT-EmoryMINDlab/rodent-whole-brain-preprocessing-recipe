@@ -72,8 +72,8 @@ Output: \_topup
 #### 4. Raw brain mask creation
 Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3D* toolbox. One can run both functions and pick the tightest mask for manual editing in the next step. You might need to play with "bet_f" at the head of "PreprocessingScript_step1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tigher mask.
 
-    fsl bet: does good job for some rat brain. 
-    PCNN3D: does good job for mice brain. 
+    fsl bet: better for rat brain. 
+    PCNN3D: better for mouse brain. 
 Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)    
 ### Step2: Precise brain extraction & EPI template generation
 #### 1.  Manually edit the brain mask using fsleyes editing tool
