@@ -5,7 +5,7 @@ This is a generally applicable fMRI preprocessing toolbox for the whole brain of
 
 ## I. Prerequisite software
 1. FSL5.0, AFNI and ANTs--can be installed on a PC (see "SoftwareInstallation_fsl_afni_ants.txt")
-2. PCNN3D toolbox in Matlab (optional for mice brain preprocessing, see below for details). 
+2. Matlab is needed for calling PCNN3D (which is superior for mouse brain mask creation, see below for details). 
 
 ## II. Data Files 
 The two input data files are needed, each has voxel size 10X from the scanning file (i.e., use 10X when generating .nii files by Bruker2nifti):
