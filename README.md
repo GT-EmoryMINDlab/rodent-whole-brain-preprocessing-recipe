@@ -67,10 +67,10 @@ The following files are generated in ./data/mc_qc/ to control the quality of mot
     b. Estimate the topup correction parameters (see the required topup parameter files in section III) 
     c. Apply topup correction
 #### 4. Raw brain mask creation: \_bet_mask and \_pcnn3d_mask (\_csf_mask0)
-Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3D* toolbox. One can run both functions and pick the best extrated brain for manual editing in the next step.
+Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3D* toolbox. One can run both functions and pick the tightest mask for manual editing in the next step.
 
     fsl bet: does better job for some rat brain extractions.
-    PCNN3D: does better job for mice brain extraction. One can run PCNN3d in Matlab after "PreprocessingScript_step1.sh" is completed.    
+    PCNN3D: does better job for mice brain extraction.     
 ### Step2: Precise brain extraction & EPI template generation
 #### 1.  Manually edit the brain mask using fsleyes editing tool
     a. Overlay the mask file _bet_mask.nii.gz or _pcnn3d_mask.nii.gz or \_csf_mask0.nii.gz on top of the _n4.nii.gz file
