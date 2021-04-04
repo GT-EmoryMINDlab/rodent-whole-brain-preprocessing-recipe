@@ -4,7 +4,6 @@
 model="rat"
 # model="mouse"
 Foldername=(data_"$model"1) 
-# ##--------parameter setup-----------------
 # fil_l="0.01"; fil_h="0.25"; # temporal filtering bandwidth in Hz
 fil_l="0.01"; fil_h="0.3"; # temporal filtering bandwidth in Hz
 sm_sigma="2.1233226" # spatial smoothing sigma
