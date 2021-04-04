@@ -1,3 +1,6 @@
+##########################################################################
+##########################    Parameters    ##############################
+##########################################################################
 model="rat"
 # model="mouse"
 Foldername=(data_"$model"1) # Foldername=(data_mouse) #If you have group data, this can be extended to ...
@@ -6,6 +9,10 @@ bet_f=0.55 # You might need to play with this parameter for creating the tightes
 # NeedSTC=0; 
 NeedSTC=1;
 matlab_dir="/mnt/c/Program Files/MATLAB/R2018b/bin/matlab.exe"; 
+
+##########################################################################
+##########################     Program      ##############################
+##########################################################################
 for (( i=0; i<${#Foldername[@]}; i++ ))
 do
 	workingdir="${Foldername[i]}"
