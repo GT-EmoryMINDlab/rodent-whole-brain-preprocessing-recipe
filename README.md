@@ -30,7 +30,7 @@ Check this in fsleyes! If they do not, you need to reorient and rescale the temp
 	2. Reorient & rescale voxel size of the template: SPM does a good job!
 	3. Re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
 Do the same for all files in your template folder (Ref: [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s)).
-You might also need to crop the template files to better fit the coverage of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good job on this. Generic templates for rat and mouse brains are included. SIGMA_Wistar template for rats, and cropped ABI template for mouse.
+You might also need to crop the template files to better fit the coverage of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good job on this. Generic templates for rat and mouse brains are included. SIGMA_Wistar template for rat brain, and cropped ABI template for mouse brain.
 
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
