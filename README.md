@@ -32,7 +32,7 @@ Check this in fsleyes! If they do not, you need to reorient and rescale the temp
 	2. Reorient & rescale voxel size of the template: SPM does a good job!
 	3. Re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
 Do the same for all files in your template folder (Ref: [SPM reorientation, see the 1st 2 mins](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s)).
-You might also need to crop the template files to better fit the coverage of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good job on this. Generic templates for rat and mouse brains are included. SIGMA_Wistar template for rat brain, and cropped ABI template for mouse brain.
+You might also need to crop the template files to better fit the coverage of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good job on this. Two templates are included: 1) SIGMA_Wistar template for rat brain, and 2) modified Allen Brain Institute Mouse template for mouse brain.
 
 ### Topup parameter files (./lib/topup/)
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
@@ -112,5 +112,5 @@ Output: \_mc_topup_norm_fil
         0.25mm â†’ 10x = 2.5mm â†’, sigma=2.5/2.3548 = 1.0166
         0.3mm â†’ 10x=3.0mm â†’, sigma=1.274
         0.25mm â†’ 20x = 5mm â†’, sigma=2.1233226        
-    c. Extract the averaged timeseries based on predetermined seeds.
+    c. Extract the averaged timeseries based on atlas.
 Output: \_mc_topup_norm_fil_reg_sm, \_mc_topup_norm_fil_reg_sm_seed.txt
