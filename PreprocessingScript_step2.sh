@@ -1,7 +1,9 @@
 model="rat"
+# model="mouse"
 Foldername=(data_"$model"1) 
 # ##--------parameter setup-----------------
-fil_l="0.01"; fil_h="0.25"; # temporal filtering bandwidth in Hz
+# fil_l="0.01"; fil_h="0.25"; # temporal filtering bandwidth in Hz
+fil_l="0.01"; fil_h="0.3"; # temporal filtering bandwidth in Hz
 sm_sigma="2.1233226" # spatial smoothing sigma
 # Note: FWHM=2.3548*sigma
 # 0.25mm â†’ 10x = 2.5mm â†’ sm_sigma=2.5/2.3548 = 1.0166
@@ -15,8 +17,8 @@ do
 
 	# ##-------------EPI registration estimation-------- 
 	echo "====================$workingdir: EPI registration estimation===================="
-	fslmaths ./"$workingdir"/EPI_n4_bet_edit.nii.gz -thrp 20 -bin ./"$workingdir"/EPI_n4_mask.nii.gz
-	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -mas ./"$workingdir"/EPI_n4_mask.nii ./"$workingdir"/EPI_n4_brain
+	# fslmaths ./"$workingdir"/EPI_n4_brain.nii.gz -thrp 20 -bin ./"$workingdir"/EPI_n4_mask.nii.gz
+	fslmaths ./"$workingdir"/EPI_n4.nii.gz -mas ./"$workingdir"/EPI_n4_mask.nii ./"$workingdir"/EPI_n4_brain
 	
 	antsRegistrationSyNQuick.sh -d 3 -f ./lib/tmp/"$model"EPItmp.nii -m ./"$workingdir"/EPI_n4_brain.nii.gz -o ./"$workingdir"/EPI_n4_brain_reg -t s -n 8
 	
@@ -27,13 +29,6 @@ do
 		antsApplyTransforms -d 3 -i ./lib/tmp/"$model"wmEPI.nii -r ./"$workingdir"/EPI_n4_brain.nii.gz -t [./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat, 1] -t ./"$workingdir"/EPI_n4_brain_reg1InverseWarp.nii.gz -o ./"$workingdir"/EPI_n4_wm.nii.gz
 		fslmaths ./"$workingdir"/EPI_n4_wm.nii.gz.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_wm_mask.nii.gz	
 		fslmaths ./"$workingdir"/EPI_n4_wm_mask.nii.gz -add ./"$workingdir"/EPI_n4_csf_mask.nii.gz ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
-	else
-	    echo "====================$workingdir: csf mask creation for mouse===================="
-		fslmaths ./"$workingdir"/EPI_n4.nii.gz -thrp 99 -bin ./"$workingdir"/EPI_csf_mask1pass
-		fslmaths ./"$workingdir"/EPI_n4.nii.gz -mas ./"$workingdir"/EPI_csf_mask1pass ./"$workingdir"/EPI_csf_masked1pass
-		fslmaths ./"$workingdir"/EPI_csf_masked1pass -thrP 90 -bin ./"${workingdir}"/EPI_n4_csf_mask.nii.gz	
-		rm ./"$workingdir"/EPI_csf_masked1pass
-		rm ./"$workingdir"/EPI_csf_mask1pass
 	fi
 
 	
@@ -120,15 +115,15 @@ do
 	fslmaths ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg.nii.gz -kernel gauss $sm_sigma -fmean ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm.nii.gz
 
 	3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
-	-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/gsEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/gsEPI_mc_topup_norm_fil_reg_sm_label_seed.txt
+	-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/gsEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/gsEPI_mc_topup_norm_fil_reg_sm_seed.txt
 	3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
-	-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm_label_seed.txt
+	-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm_seed.txt
 
 	if [ "$model" = "rat" ]; then
 		antsApplyTransforms -r ./lib/tmp/"$model"EPItmp.nii \
 		-i ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil.nii.gz -e 3 -t ./"$workingdir"/EPI_n4_brain_reg1Warp.nii.gz -t ./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat -o ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg.nii.gz --float
 		fslmaths ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg.nii.gz -kernel gauss $sm_sigma -fmean ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg_sm.nii.gz
 		3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
-		-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg_sm_label_seed.txt
+		-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg_sm_seed.txt
 	fi
 done
