@@ -36,15 +36,15 @@ You might also need to crop the template files to better fit the coverage of you
 #### 1. Imaging acquisition parameter file, "datain_topup_\*.txt"
 Two options are provided: 
 
-    datain_topup_mice.txt: for the mouse data sample
-    datain_topup_rat.txt: for the rat data sample
+    mousedatain_topup.txt: for the mouse data sample
+    ratdatain_topup_rat.txt: for the rat data sample
 The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. 
 #### 2. Image parameter configuration file, "\*.cnf": 
 Three "\*.cnf" options are provided:
 
     b02b0.cnf: a generally applicable (default) configration file provided by fsl 
-    EPI_topup_mice.cnf: a configration file optimized for the mouse datasample (./data_mouse/)
-    EPI_topup_rat.cnf: a configration file optimized for the rat datasample (./data_rat/)
+    mouseEPI_topup.cnf: a configration file optimized for the mouse datasample (./data_mouse/)
+    ratEPI_topup.cnf: a configration file optimized for the rat datasample (./data_rat/)
 These parameters totally depend on your image (e.g., dimension, resolution, etc). 
 
 ## IV. Main Pipeline
