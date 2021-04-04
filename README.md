@@ -10,9 +10,11 @@ This is a generally applicable fMRI preprocessing toolbox for the whole brain of
 ## II. Data Files 
 The two input data files are needed, each has voxel size 10X from the scanning file (i.e., use 10X when generating .nii files by Bruker2nifti):
 
-    EPI0.nii, 4-dim: the forward epi scan of the whole brain timeseries
-    EPI_reverse0.nii, 3-dim: reverse epi scan of 1 volume of the same brain
-    <Note: EPI_reverse0.nii needs to be in the same dimension and resolution as the 1st vol of EPI0.nii.>
+    EPI0.nii, 4-dim: the forward epi scan of the whole brain timeseries  
+    EPI_forward0.nii, 3-dim: a 1 volume forward epi scan of the brain
+    EPI_reverse0.nii, 3-dim: a 1 volume reverse epi scan of the same brain
+*Note: EPI_reverse0.nii, EPI_forward0.nii, and the volumes of EPI0.nii needs to be in the same dimension and resolution. If the EPI0.nii was scanned immediately after EPI_reverse0.nii, then EPI_reverse0.nii can be taken as the 1st volume of EPI0.nii.*
+
 This is a EPI template registration pipeline, so the T2 scan of each brain is not required. Two datasamples, one for rat whole brain (./data_rat1/) and one for mouse whole brain (./data_mouse1/), are provided.     
 
 ## III. Library Files 
