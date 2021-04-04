@@ -47,7 +47,7 @@ Three "\*.cnf" options are provided:
     b02b0.cnf: a generally applicable (default) configration file provided by fsl 
     mouseEPI_topup.cnf: a configration file optimized for the mouse datasample (./data_mouse1/)
     ratEPI_topup.cnf: a configration file optimized for the rat datasample (./data_rat1/)
-These parameters totally depend on your image (e.g., dimension, resolution, etc). 
+These parameters totally depend on your image (e.g., dimension, resolution, etc). If you would like to use b020.cnf, rename the file as mouseEPI_topup.cnf or ratEPI_topup.cnf to be used.
 
 ## IV. Main Pipeline
 ### Step1: run "PreprocessingScript_step1.sh"
