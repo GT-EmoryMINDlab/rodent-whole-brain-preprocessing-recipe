@@ -14,9 +14,11 @@ do
 	then
 		echo "Long TR, need STC"
 		slicetimer -i ./"$workingdir"/EPI0.nii.gz  -o ./"$workingdir"/EPI.nii.gz  -r 2 -v	
+		slicetimer -i ./"$workingdir"/EPI_reverse0.nii.gz  -o ./"$workingdir"/EPI_reverse.nii.gz  -r 2 -v	
 	else
 		echo "Short TR, do not need STC"
 		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI0.nii.gz ./"$workingdir"/EPI.nii.gz
+		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_reverse0.nii.gz ./"$workingdir"/EPI_reverse.nii.gz
 	fi
 
 	# ##-------------Motion correction-------- 
@@ -45,10 +47,10 @@ do
 	fslroi ./"$workingdir"/EPI.nii ./"$workingdir"/EPI_forward 0 1
 	fslmerge -t ./"$workingdir"/rpEPI ./"$workingdir"/EPI_forward ./"$workingdir"/EPI_reverse
 	mcflirt -in ./"$workingdir"/rpEPI -refvol 0 -out ./"$workingdir"/rpEPI_mc -stats -plots -report -rmsrel -rmsabs -mats	
-	# topup --imain=./"$workingdir"/rpEPI_mc --config=b02b0.cnf \
-	# 	--datain=datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
-	topup --imain=./"$workingdir"/rpEPI_mc --config=./lib/topup/EPI_topup_"$model".cnf \
-		--datain=./lib/topup/datain_topup_"$model".txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
+	# topup --imain=./"$workingdir"/rpEPI_mc --config=./lib/topup/b02b0.cnf \
+	# 	--datain=./lib/topup/datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
+	topup --imain=./"$workingdir"/rpEPI_mc --config=./lib/topup/"$model"EPI_topup.cnf \
+		--datain=./lib/topup/"$model"datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
 	applytopup --imain=./"$workingdir"/EPI_mc --inindex=1 --datain=./lib/topup/datain_topup_"$model".txt \
 		--topup=./"$workingdir"/tu_g --method=jac --out=./"$workingdir"/EPI_g
 	fslmaths ./"$workingdir"/EPI_g -abs ./"$workingdir"/EPI_topup
