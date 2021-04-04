@@ -17,12 +17,12 @@ This is a EPI template registration pipeline, so the T2 scan of each brain is no
 
 ## III. Library Files 
 ### Templates preparation (./lib/tmp/)
-The template folder includes the following 4 files. 
+The template folder includes the following 4 files for either rat or mouse. 
 	
 	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section IV, Step 2.)
 	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
-	wmMask.nii, csfMask.nii or wmEPI.nii, csfEPI.nii: WM and/or CSF mask or masked EPI
+	wmMask.nii, *csfMask.nii or *wmEPI.nii, *csfEPI.nii: WM and/or CSF mask or masked EPI
 All these files need to be in the same orientation and similar resolution as your EPI images, i.e., EPI0.nii(.gz). 
 Check this in fsleyes! If they do not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes the following 3 steps:
 
