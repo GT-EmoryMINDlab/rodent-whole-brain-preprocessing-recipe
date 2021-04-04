@@ -68,7 +68,7 @@ The following files are generated in ./data/mc_qc/ to control the quality of mot
 Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3d* toolbox. One can run both functions and pick the best extrated brain for manual editing in the next step.
 
     fsl bet: does better job for some rat brain extractions.
-    PCNN3D: does better job for mice brain extraction. One can run PCNN3d in Matlab after Step 1 is completed.    
+    PCNN3D: does better job for mice brain extraction. One can run PCNN3d in Matlab after "PreprocessingScript_step1.sh" is completed.    
 ### Step2: Precise brain extraction & EPI template generation
 #### 1.  Manually edit the brain mask using fsleyes editing tool
     a. Consistently follow ONE direction slice-by-slice for mask editing (15~20mins/rat brain, 10~15mins/mouse brain)
