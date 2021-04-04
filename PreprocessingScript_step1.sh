@@ -26,8 +26,8 @@ do
 	fslmaths ./"$workingdir"/EPI.nii.gz -Tmean ./"$workingdir"/EPI_mean.nii.gz
 	mcflirt -in ./"$workingdir"/EPI.nii.gz -reffile ./"$workingdir"/EPI_mean.nii.gz -out ./"$workingdir"/EPI_mc -stats -plots -report -rmsrel -rmsabs -mats	
 
-	echo " $workingdir: Motion correction QC"
-	mkdir ./"$workingdir"/mc_qc
+	echo " $workingdir: Motion correction QC"	
+	mkdir -p ./"$workingdir"/mc_qc/
 	fsl_tsplot -i ./"$workingdir"/EPI_mc.par -t 'MCFLIRT rotations (radians)' -u 1 --start=1 --finish=3 -a x,y,z -w 640 -h 144 -o  ./"$workingdir"/mc_qc/EPI_mc_rot.png
 	fsl_tsplot -i ./"$workingdir"/EPI_mc.par -t 'MCFLIRT estimated translations (mm)' -u 1 --start=4 --finish=6 -a x,y,z -w 640 -h 144 -o ./"$workingdir"/mc_qc/EPI_mc_trans.png
 	fsl_tsplot -i ./"$workingdir"/EPI_mc_rel.rms,./"$workingdir"/EPI_mc_abs.rms -t 'MCFLIRT estimated mean displacement (mm)' -u 1 -w 640 -h 144 -a absolute,relative -o ./"$workingdir"/mc_qc/EPI_mc_disp.png
@@ -37,10 +37,10 @@ do
 	fslmaths ./"$workingdir"/EPI_mc -Tmean ./"$workingdir"/mc_qc/EPI_mc_mean
 	fslmaths ./"$workingdir"/mc_qc/EPI_mc_mean.nii.gz -div ./"$workingdir"/mc_qc/EPI_mc_std.nii.gz  ./"$workingdir"/mc_qc/EPI_mc_tSNR.nii.gz
 	fslmaths ./"$workingdir"/mc_qc/EPI_mc_mean.nii.gz -thrp 15 -bin ./"$workingdir"/mc_qc/EPI_snr_mask.nii.gz
-	fslstats -K ./"$workingdir"/mc_qc/EPI_snr_mask.nii.gz ./"$workingdir"/mc_qc/EPI_mc_tSNR.nii.gz-n -m > ./"$workingdir"/mc_qc/EPI_mean_tSNR.txt	
+	fslstats -K ./"$workingdir"/mc_qc/EPI_snr_mask.nii.gz ./"$workingdir"/mc_qc/EPI_mc_tSNR.nii.gz -n -m > ./"$workingdir"/mc_qc/EPI_mean_tSNR.txt	
 	rm ./"$workingdir"/mc_qc/EPI_snr_mask.nii.gz
-	rm ./"$workingdir"/mc_qc/EPI_mc_std
-	rm ./"$workingdir"/mc_qc/EPI_mc_mean
+	rm ./"$workingdir"/mc_qc/EPI_mc_std.nii.gz
+	rm ./"$workingdir"/mc_qc/EPI_mc_mean.nii.gz
 	
 	##-------------Topup correction-------- 
 	echo " $workingdir: Topup correction"
@@ -51,7 +51,7 @@ do
 	# 	--datain=./lib/topup/datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
 	topup --imain=./"$workingdir"/rpEPI_mc --config=./lib/topup/"$model"EPI_topup.cnf \
 		--datain=./lib/topup/"$model"datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
-	applytopup --imain=./"$workingdir"/EPI_mc --inindex=1 --datain=./lib/topup/datain_topup_"$model".txt \
+	applytopup --imain=./"$workingdir"/EPI_mc --inindex=1 --datain=./lib/topup/"$model"datain_topup.txt \
 		--topup=./"$workingdir"/tu_g --method=jac --out=./"$workingdir"/EPI_g
 	fslmaths ./"$workingdir"/EPI_g -abs ./"$workingdir"/EPI_topup
 	fslmaths ./"$workingdir"/EPI_topup -Tmean ./"$workingdir"/EPI_topup_mean

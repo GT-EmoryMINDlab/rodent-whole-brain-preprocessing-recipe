@@ -13,12 +13,12 @@ for (( i=0; i<${#Foldername[@]}; i++ ))
 do
 	workingdir="${Foldername[i]}"
 
-# ##-------------Apply brain mask-------- 
+	# ##-------------Apply brain mask-------- 
 	echo " $workingdir: Masking brain"
 	fslmaths ./"${workingdir}"/EPI_n4_bet_edit.nii.gz -thrp 20 -bin ./"${workingdir}"/EPI_n4_mask.nii.gz
-	fslmaths ./"${workingdir}"/EPI_n4.nii.gz -mas ./"${workingdir}"/EPI_n4_mask.nii ./"${workingdir}"/EPI_n4_brain
+	fslmaths ./"${workingdir}"/EPI_n4_bet.nii.gz -mas ./"${workingdir}"/EPI_n4_mask.nii ./"${workingdir}"/EPI_n4_brain
 	
-# ##-------------EPI registration estimation & mask creation-------- 
+	# ##-------------EPI registration estimation & mask creation-------- 
 	echo " $workingdir: EPI registration estimation"
 	antsRegistrationSyNQuick.sh -d 3 -f ./lib/tmp/"$model"EPItmp.nii -m ./"${workingdir}"/EPI_n4_brain.nii.gz -o ./"${workingdir}"/EPI_n4_brain_reg -t s -n 8
 	
@@ -70,6 +70,7 @@ do
 	# extract CSF/WMCSF/Global signals---noise
 	fslmeants -i ./"${workingdir}"/EPI_topup.nii.gz -o ./"${workingdir}"/csfEPI.txt -m ./"${workingdir}"/EPI_n4_csf_mask.nii.gz	
 	fslmeants -i ./"${workingdir}"/EPI_topup.nii.gz -o ./"${workingdir}"/gsEPI.txt -m ./"${workingdir}"/EPI_n4_mask.nii.gz
+	fslmeants -i ./"${workingdir}"/EPI_topup.nii.gz -o ./"${workingdir}"/wmcsfEPI.txt -m ./"${workingdir}"/EPI_n4_wmcsf_mask.nii.gz
 	# 	# combine all regressors into one design matrix---
 	paste -d ./"${workingdir}"/quad_regressionEPI.txt ./"${workingdir}"/EPI_nonbrain_PCA_vec.1D ./"${workingdir}"/EPI_mc.par ./"${workingdir}"/motionEPI.deriv.par ./"${workingdir}"/csfEPI.txt >> ./"${workingdir}"/csfEPI_nuisance_design.txt
 	paste -d ./"${workingdir}"/quad_regressionEPI.txt ./"${workingdir}"/EPI_nonbrain_PCA_vec.1D ./"${workingdir}"/EPI_mc.par ./"${workingdir}"/motionEPI.deriv.par ./"${workingdir}"/gsEPI.txt >> ./"${workingdir}"/gsEPI_nuisance_design.txt
@@ -116,6 +117,5 @@ do
 	-nomeanout -nobriklab -nzmean -quiet ./"${workingdir}"/gsEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"${workingdir}"/gsEPI_mc_topup_norm_fil_reg_sm_label_seed.txt
 	3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
 	-nomeanout -nobriklab -nzmean -quiet ./"${workingdir}"/csfEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"${workingdir}"/csfEPI_mc_topup_norm_fil_reg_sm_label_seed.txt
-# re
 
 done
