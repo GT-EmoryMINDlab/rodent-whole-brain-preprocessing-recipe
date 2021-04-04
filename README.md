@@ -50,7 +50,7 @@ These parameters totally depend on your image (e.g., dimension, resolution, etc)
 ## IV. Main Pipeline
 ### Step1: run "PreprocessingScript_step1.sh"
 The following 4 procedures will be performed in this step.
-#### 1. Slice time correction: optional for long TRs (e.g., TR>=1s)
+#### 1. Slice time correction: optional for long TRs (e.g., TR>1s)
 #### 2. Motion correction: (motions are corrected to its mean)
 The following files are generated in ./data/mc_qc/ to control the quality of motions:
 
@@ -93,7 +93,7 @@ The input is the "EPI_n4_bet_edit.nii.gz" file saved from Step 2. The following 
     a. Amplify the regressed signals
     b. Bandpass filter: bandwidth depends on the use of anesthesia
     	e.g., 0.01–0.1Hz for iso and 0.01–0.25Hz for dmed, see Wen-Ju Pan et al., Neuroimage, 2013
-#### 5. EPI template registration & spatial smoothing
+#### 5. EPI template registration & spatial smoothing 
     a. EPI template registration: transform cleaned-up data to template space by the transformation matrix estimated in (2.a)
     b. Use Gaussian kernel for spatial smoothing. Setup "sigma" value at the begining of the file:
         FWHM=2.3548*sigma
