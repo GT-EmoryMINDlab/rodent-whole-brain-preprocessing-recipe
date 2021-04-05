@@ -101,7 +101,7 @@ Output: \_n4_brain_reg
     c. 6 motion regressors (based on motion correction results) 
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
     e. csf or/and wmcsf signals 
-The script also generates a global signal regression version which only regresses out the 3 trends (a) and global signals of the brain.
+The script also generates a global signal regression version which only regresses out the 3 trends (a) and global signals of the brain. One can modify the list of regressors in Ln85--Ln86 and Ln91 in "PreprocessingScript_step2.sh".
 #### 4. Normalization & temporal filtering
     a. Normalize the regressed signals
     b. Bandpass filter: bandwidth depends on the use of anesthesia
