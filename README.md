@@ -1,7 +1,7 @@
 # Rodent Whole-Brain fMRI Data Preprocessing Toolbox
 This is a generally applicable fMRI preprocessing toolbox for the whole brain of mice and rats developed by Nan Xu. It implements the rodent brain preprocessing pipeline as described in ([Kai-Hsiang Chuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X)) and ([Hsu-Lei Lee, et al. Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S1053811919302344?via%3Dihub)). In this toolbox, the initial preprocessing script used in ([Hsu-Lei Lee, et al. Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S1053811919302344?via%3Dihub)) was re-engineered to adapt to multiple fMRI group datasets of rodent brains. This toolbox has been tested on 3 different fMRI group datasets of rodent whole brains with different imaging and experimental settings (2 rats groups and 1 mice group). Reasonable FC maps and QPPs were obtained. 
 
-If you find this toolbox useful for your work, please cite as: Nan Xu, Leo Zhang, Zengmin Li, Kai-Hsiang Chuang, Shella Keilholz, 2021. Rodent whole-brain fMRI data preprocessing toolbox. https://github.com/GT-EmoryMINDlab/rodent-whole-brain-preprocessing-recipe
+If you find this toolbox useful for your work, please cite as: Nan Xu, Leo Zhang, Zengmin Li, Wen-Ju Pan, Kai-Hsiang Chuang, Shella Keilholz, 2021. Rodent whole-brain fMRI data preprocessing toolbox. https://github.com/GT-EmoryMINDlab/rodent-whole-brain-preprocessing-recipe
 
 ## I. Prerequisite software
 1. FSL5.0, AFNI and ANTs--can be installed on a PC (see "SoftwareInstallation_fsl_afni_ants.txt")
