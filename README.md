@@ -121,3 +121,5 @@ Output: \_mc_topup_norm_fil
         0.25mm â†’ 20x = 5mm â†’, sigma=2.1233226        
     c. Extract the averaged timeseries based on atlas.
 Output: \_mc_topup_norm_fil_reg_sm, \_mc_topup_norm_fil_reg_sm_seed.txt
+
+The resulting FC map for each datasample is included in the data folder.
