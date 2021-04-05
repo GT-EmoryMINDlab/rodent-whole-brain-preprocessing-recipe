@@ -83,7 +83,8 @@ do
 	
 	# 	# combine all regressors into one design matrix---
 	paste -d ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/csfEPI.txt >> ./"$workingdir"/csfEPI_nuisance_design.txt
-	paste -d ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
+	paste -d ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
+	# paste -d ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
 	
 	fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/gsEPI_nuisance_design.txt -o ./"$workingdir"/gsEPI_nuisance --out_res=./"$workingdir"/gsEPI_mc_topup_res --out_p=./"$workingdir"/gsEPI_nuisance_p --out_z=./"$workingdir"/gsEPI_nuisance_z
 	fslmaths ./"$workingdir"/gsEPI_nuisance_z -abs ./"$workingdir"/gsEPI_nuisance_z_abs
