@@ -59,7 +59,7 @@ The following 4 procedures will be performed in this step.
 #### 1. Slice time correction: optional for long TRs (e.g., TR>1s)
 This is controled by the indicator "NeedSTC" at the beginning of the file. 
 #### 2. Motion correction: (motions are corrected to its mean) 
-The following files are generated in ./data/mc_qc/ to control the quality of motions:
+The following files are generated in ./data_*/mc_qc/ to control the quality of motions:
 
     3 motion plots: 
         --rotational motions (EPI_mc_rot.png) 
