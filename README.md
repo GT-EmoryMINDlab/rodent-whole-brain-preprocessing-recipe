@@ -8,7 +8,7 @@ This is a generally applicable fMRI preprocessing toolbox for the whole brain of
 2. Matlab is needed for calling PCNN3D (which is superior for mouse brain mask creation, see below for details). 
 
 ## II. Data Files 
-The two input data files are needed, each has voxel size 10X from the scanning file (i.e., use 10X when generating .nii files by Bruker2nifti):
+Three input data files are needed, each has voxel size 10X from the scanning file (i.e., use 10X when generating .nii files by Bruker2nifti):
 
     EPI0.nii, 4-dim: the forward epi scan of the whole brain timeseries  
     EPI_forward0.nii, 3-dim: a 1 volume forward epi scan of the brain
