@@ -87,6 +87,7 @@ Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)
     d. (Only for mouse data) save the edited csf mask as "EPI_csf_mask.nii.gz" 
 For a, you can change the Opacity of the mask to visualize its boundary location on brain.\
 Output: \_n4_mask (\_n4_csf_mask)
+*In the two datasamples, the edited brain (and csf) masks are included in the data folder.*
 #### 2. EPI template generation (optional): run "GenerateEPItmp.sh"
 This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder.
 ### Step3: run "PreprocessingScript_step2.sh"
