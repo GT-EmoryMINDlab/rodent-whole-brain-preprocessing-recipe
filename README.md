@@ -69,9 +69,10 @@ The following files are generated in ./data_*/mc_qc/ to control the quality of m
     Difference between 1st and last time frame (*_sub.nii.gz)
 Output: \_mc   
 #### 3. Distortion correction using fsl topup
-    a. Relign 1 reverse EPI scan to the 1st volume of the forward EPI data 
-    b. Estimate the topup correction parameters (see the required topup parameter files in section III) 
-    c. Apply topup correction
+    a. Realign EPI_forward0 to the tmeporal mean of EPI0
+    b. Apply the same realignment to EPI_reverse0
+    c. Estimate the topup correction parameters (see the required topup parameter files in section III) 
+    d. Apply topup correction
 Output: \_topup    
 #### 4. Raw brain mask creation
 Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3D* toolbox. In the script, both functions are called, and one can pick the tightest mask for manual editing in the next step. You might need to play with "bet_f" at the head of "PreprocessingScript_step1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tigher mask.
