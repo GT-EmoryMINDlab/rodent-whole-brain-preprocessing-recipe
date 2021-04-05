@@ -62,9 +62,9 @@ This is controled by the indicator "NeedSTC" at the beginning of the file.
 The following files are generated in ./data/mc_qc/ to control the quality of motions:
 
     3 motion plots: 
-    	--rotational motions (EPI_mc_rot.png) 
-		--translational motions (EPI_mc_trans.png)
-		--mean displacement (EPI_mc_disp.png)
+        --rotational motions (EPI_mc_rot.png) 
+	--translational motions (EPI_mc_trans.png)
+	--mean displacement (EPI_mc_disp.png)
     Temporal SNR (*_tSNR.txt)
     Difference between 1st and last time frame (*_sub.nii.gz)
 Output: \_mc   
@@ -85,9 +85,9 @@ Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)
     b. Consistently follow ONE direction slice-by-slice and edit the mask (15~20mins/rat mask, 10~15mins/mouse mask)
     c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
     d. (Only for mouse data) save the edited csf mask as "EPI_csf_mask.nii.gz" 
-For a, you can change the Opacity of the mask to visualize its boundary location on brain.\
-Output: \_n4_mask (\_n4_csf_mask)\
-*For the two datasamples, the edited brain (and csf) masks are included in the data folder.*
+For a, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
+Output: \_n4_mask (\_n4_csf_mask)
+
 #### 2. EPI template generation (optional): run "GenerateEPItmp.sh"
 This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder.
 ### Step3: run "PreprocessingScript_step2.sh"
