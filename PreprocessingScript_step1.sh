@@ -22,14 +22,14 @@ do
 	if [[ $NeedSTC -eq 1 ]]
 	then
 		echo "Long TR, need STC"
-		slicetimer -i ./"$workingdir"/EPI0.nii.gz  -o ./"$workingdir"/EPI.nii.gz  -r 2 -v	
-		slicetimer -i ./"$workingdir"/EPI_reverse0.nii.gz  -o ./"$workingdir"/EPI_reverse.nii.gz  -r 2 -v	
-		slicetimer -i ./"$workingdir"/EPI_forward0.nii.gz  -o ./"$workingdir"/EPI_forward.nii.gz  -r 2 -v	
+		slicetimer -i ./"$workingdir"/EPI0  -o ./"$workingdir"/EPI.nii.gz  -r 2 -v	
+		slicetimer -i ./"$workingdir"/EPI_reverse0  -o ./"$workingdir"/EPI_reverse.nii.gz  -r 2 -v	
+		slicetimer -i ./"$workingdir"/EPI_forward0  -o ./"$workingdir"/EPI_forward.nii.gz  -r 2 -v	
 	else
 		echo "Short TR, do not need STC"
-		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI0.nii.gz ./"$workingdir"/EPI.nii.gz
-		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_reverse0.nii.gz ./"$workingdir"/EPI_reverse.nii.gz
-		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_forward0.nii.gz ./"$workingdir"/EPI_forward.nii.gz
+		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI0 ./"$workingdir"/EPI.nii.gz
+		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_reverse0 ./"$workingdir"/EPI_reverse.nii.gz
+		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_forward0 ./"$workingdir"/EPI_forward.nii.gz
 	fi
 
 	# ##-------------Motion correction-------- 
