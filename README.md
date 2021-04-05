@@ -81,13 +81,13 @@ Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3
 Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)    
 ### Step2: Precise brain extraction & EPI template generation
 #### 1.  Manually edit the brain mask using fsleyes editing tool
-    a. Overlay the mask file _bet_mask.nii.gz or _pcnn3d_mask.nii.gz or \_csf_mask0.nii.gz on top of the _n4.nii.gz file    
+    a. Overlay the mask file _mask.nii.gz or _mask0.nii.gz on top of the _n4.nii.gz file    
     b. Consistently follow ONE direction slice-by-slice and edit the mask (15~20mins/rat mask, 10~15mins/mouse mask)
     c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
     d. (Only for mouse data) save the edited csf mask as "EPI_csf_mask.nii.gz" 
 For a, you can change the Opacity of the mask to visualize its boundary location on brain.\
-Output: \_n4_mask (\_n4_csf_mask)
-*In the two datasamples, the edited brain (and csf) masks are included in the data folder.*
+Output: \_n4_mask (\_n4_csf_mask)\
+*For the two datasamples, the edited brain (and csf) masks are included in the data folder.*
 #### 2. EPI template generation (optional): run "GenerateEPItmp.sh"
 This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder.
 ### Step3: run "PreprocessingScript_step2.sh"
