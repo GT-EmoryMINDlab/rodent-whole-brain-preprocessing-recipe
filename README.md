@@ -70,7 +70,7 @@ Output: \_mc
     c. Apply topup correction
 Output: \_topup    
 #### 4. Raw brain mask creation
-Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3D* toolbox. One can run both functions and pick the tightest mask for manual editing in the next step. You might need to play with "bet_f" at the head of "PreprocessingScript_step1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tigher mask.
+Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3D* toolbox. In the script, both functions are called, and one can pick the tightest mask for manual editing in the next step. You might need to play with "bet_f" at the head of "PreprocessingScript_step1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tigher mask.
 
     fsl bet: better for rat brain. 
     PCNN3D: better for mouse brain. 
