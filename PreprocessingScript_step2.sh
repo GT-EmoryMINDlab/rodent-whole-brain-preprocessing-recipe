@@ -3,14 +3,17 @@
 ##########################################################################
 model="rat"
 # model="mouse"
-Foldername=(data_"$model"1) 
-# fil_l="0.01"; fil_h="0.25"; # temporal filtering bandwidth in Hz
-fil_l="0.01"; fil_h="0.3"; # temporal filtering bandwidth in Hz
+Foldername=(data_"$model"1) #If you have group data, this can be extended to ...
+# Foldername=(data_"$model"1, data_"$model"2, data_"$model"3, data_"$model"4)
+TR="2" # the time sampling rate (TR) in sec of your data
+fil_l="0.01"; fil_h="0.25"; # temporal filtering bandwidth in Hz
+# fil_l="0.01"; fil_h="0.3"; # temporal filtering bandwidth in Hz
 sm_sigma="2.1233226" # spatial smoothing sigma
 # Note: FWHM=2.3548*sigma
 # 0.25mm â†’ 10x = 2.5mm â†’ sm_sigma=2.5/2.3548 = 1.0166
 # 0.3mm â†’ 10x=3.0mm â†’ sm_sigma=1.274
 # 0.25mm â†’ 20x = 5mm â†’ sm_sigma=2.1233226
+
 
 ##########################################################################
 ##########################     Program      ##############################
@@ -101,13 +104,13 @@ do
 
 	echo "====================$workingdir: Normalization & temporal filtering===================="
 	fslmaths ./"$workingdir"/gsEPI_mc_topup_res -div ./"$workingdir"/EPI_topup_mean -mul 10000 ./"$workingdir"/gsEPI_mc_topup_norm
-	3dBandpass -band $fil_l $fil_h -notrans -overwrite -prefix ./"$workingdir"/gsEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/gsEPI_mc_topup_norm.nii.gz	
+	3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/gsEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/gsEPI_mc_topup_norm.nii.gz	
 	fslmaths ./"$workingdir"/csfEPI_mc_topup_res -div ./"$workingdir"/EPI_topup_mean -mul 10000 ./"$workingdir"/csfEPI_mc_topup_norm
-	3dBandpass -band $fil_l $fil_h -notrans -overwrite -prefix ./"$workingdir"/csfEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/csfEPI_mc_topup_norm.nii.gz
+	3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/csfEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/csfEPI_mc_topup_norm.nii.gz
 
 	if [ "$model" = "rat" ]; then
 		fslmaths ./"$workingdir"/wmcsfEPI_mc_topup_res -div ./"$workingdir"/EPI_topup_mean -mul 10000 ./"$workingdir"/wmcsfEPI_mc_topup_norm
-		3dBandpass -band $fil_l $fil_h -notrans -overwrite -prefix ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/wmcsfEPI_mc_topup_norm.nii.gz
+		3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/wmcsfEPI_mc_topup_norm.nii.gz
 	fi
 	echo "====================$workingdir: EPI registration & spatial smoothing & seed extraction===================="
 	antsApplyTransforms -r ./lib/tmp/"$model"EPItmp.nii \
