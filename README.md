@@ -63,8 +63,8 @@ The following files are generated in ./data/mc_qc/ to control the quality of mot
 
     3 motion plots: 
         --rotational motions (EPI_mc_rot.png) 
-	--translational motions (EPI_mc_trans.png)
-	--mean displacement (EPI_mc_disp.png)
+	    --translational motions (EPI_mc_trans.png)
+	    --mean displacement (EPI_mc_disp.png)
     Temporal SNR (*_tSNR.txt)
     Difference between 1st and last time frame (*_sub.nii.gz)
 Output: \_mc   
