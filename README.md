@@ -100,7 +100,7 @@ Output: \_n4_brain_reg
     b. 10 PCs from non brain tissues
     c. 6 motion regressors (based on motion correction results) 
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
-    e. wmcsf or/and csf signals 
+    e. csf or/and wmcsf signals 
 The script also generates a global signal regression version which only regresses out the 3 trends (a) and global signals of the brain.
 #### 4. Normalization & temporal filtering
     a. Normalize the regressed signals
