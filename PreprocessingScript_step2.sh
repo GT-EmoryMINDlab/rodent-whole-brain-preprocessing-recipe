@@ -83,9 +83,9 @@ do
 	fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
 	
 	# 	# combine all regressors into one design matrix---
-	paste -d ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/csfEPI.txt >> ./"$workingdir"/csfEPI_nuisance_design.txt
-	paste -d ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
-	# paste -d ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
+	paste -d" " ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/csfEPI.txt >> ./"$workingdir"/csfEPI_nuisance_design.txt
+	paste -d" " ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
+	# paste -d" " ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
 	
 	fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/gsEPI_nuisance_design.txt -o ./"$workingdir"/gsEPI_nuisance --out_res=./"$workingdir"/gsEPI_mc_topup_res --out_p=./"$workingdir"/gsEPI_nuisance_p --out_z=./"$workingdir"/gsEPI_nuisance_z
 	fslmaths ./"$workingdir"/gsEPI_nuisance_z -abs ./"$workingdir"/gsEPI_nuisance_z_abs
@@ -96,7 +96,7 @@ do
 	3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/csfEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/csfEPI_nuisance_brain_z.txt
 	if [ "$model" = "rat" ]; then
 		fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/wmcsfEPI.txt -m ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
-		paste -d ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/wmcsfEPI.txt >> ./"$workingdir"/wmcsfEPI_nuisance_design.txt
+		paste -d" " ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/wmcsfEPI.txt >> ./"$workingdir"/wmcsfEPI_nuisance_design.txt
 		fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/wmcsfEPI_nuisance_design.txt -o ./"$workingdir"/wmcsfEPI_nuisance --out_res=./"$workingdir"/wmcsfEPI_mc_topup_res --out_p=./"$workingdir"/wmcsfEPI_nuisance_p --out_z=./"$workingdir"/wmcsfEPI_nuisance_z
 		fslmaths ./"$workingdir"/wmcsfEPI_nuisance_z -abs ./"$workingdir"/wmcsfEPI_nuisance_z_abs
 		3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/wmcsfEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/wmcsfEPI_nuisance_brain_z.txt
