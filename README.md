@@ -83,7 +83,7 @@ Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)
 ### Step2: Precise brain extraction & EPI template generation
 #### 1.  Manually edit the brain mask using fsleyes editing tool
     a. Overlay the mask file _mask.nii.gz or _mask0.nii.gz on top of the _n4.nii.gz file    
-    b. Consistently follow ONE direction slice-by-slice and edit the mask (15~20mins/rat mask, 10~15mins/mouse mask)
+    b. Consistently follow ONE direction slice-by-slice and edit the mask (20~30mins/rat mask, 15~20mins/mouse mask)
     c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
     d. (Only for mouse data) save the edited csf mask as "EPI_csf_mask.nii.gz" 
 For a, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
