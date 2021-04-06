@@ -86,7 +86,7 @@ do
 	"$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; run PCNN3D_run_v1_3.m; exit"	
 	echo "--------------------$workingdir: brain mask FSL bet--------------------"	
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
-	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -thrp 20 -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
+	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
  	
 	## Then, manually edit the mask slice by slice in fsleyes
 done
