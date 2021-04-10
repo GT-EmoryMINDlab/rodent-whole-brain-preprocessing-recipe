@@ -14,6 +14,35 @@ sm_sigma="2.1233226" # spatial smoothing sigma
 # 0.3mm â†’ 10x=3.0mm â†’ sm_sigma=1.274
 # 0.25mm â†’ 20x = 5mm â†’ sm_sigma=2.1233226
 
+h_flag=''
+nuisance=''
+
+usage() {
+  printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
+  printf "Usage: ./preproc-script-2.sh [OPTIONS]\n\n"
+  printf "Options:\n"
+  printf "    -n    Nuisance Regression Parameters (combinations supported)\n"
+  printf "    [Values]\n"
+  printf "        a: 3 Detrends (constant/linear/quadratic trends)\n"
+  printf "        b: 10 Principle Components (non-brain tissues)\n"
+  printf "        c: 6 Motion Regressors (based on motion correction)\n"
+  printf "        d: 6 Motion Derivative Regressors (temporal derivatives of c)\n"
+  printf "        e: CSF & WMCSF Signals\n"
+  printf "    [Example]\n"
+  printf "        ./preproc-script-2.sh -n abc\n\n"
+  printf "    -h    Help (displays these usage details)\n"
+  printf "    [Example]\n"
+  printf "        ./preproc-script-2.sh -h\n\n"
+}
+
+while getopts 'hn:' flag; do
+  case "${flag}" in
+    n) nuisance="${OPTARG}" ;;
+    h) usage ;;
+    *) usage
+       exit 1 ;;
+  esac
+done
 
 ##########################################################################
 ##########################     Program      ##############################
@@ -73,15 +102,31 @@ do
 
 	# ##-------------Nuisance regressors---------------------------
 	echo "====================$workingdir: Nuisance regression: motions, motion devs, PCA noise, trends, gs/wmcsf/csf===================="
-	# Calculate motion derivative regressors (AFNI)---works for small motion defects
-	1d_tool.py -overwrite -infile ./"$workingdir"/EPI_mc.par -derivative -write ./"$workingdir"/motionEPI.deriv.par
-	# get constant, linear, quad trends
-	NR=$(3dinfo -nv ./"$workingdir"/EPI_topup.nii.gz);
-	1dBport -band 0 0 -nodata ${NR} -quad > ./"$workingdir"/quad_regressionEPI.txt
-	# extract CSF/WMCSF/Global signals---noise
-	fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/csfEPI.txt -m ./"$workingdir"/EPI_n4_csf_mask.nii.gz	
-	fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
-	
+
+	if [[ $nuisance == *"a"* ]]; then
+    # get constant, linear, quad trends
+	  NR=$(3dinfo -nv ./"$workingdir"/EPI_topup.nii.gz);
+	  1dBport -band 0 0 -nodata ${NR} -quad > ./"$workingdir"/quad_regressionEPI.txt
+  fi
+  if [[ $nuisance == *"b"* ]]; then
+    printf "\n"
+  fi
+  if [[ $nuisance == *"c"* ]]; then
+    printf "\n"
+  fi
+  if [[ $nuisance == *"d"* ]]; then
+    # Calculate motion derivative regressors (AFNI)---works for small motion defects
+	  1d_tool.py -overwrite -infile ./"$workingdir"/EPI_mc.par -derivative -write ./"$workingdir"/motionEPI.deriv.par
+  fi
+  if [[ $nuisance == *"e"* ]]; then
+    # extract CSF/WMCSF/Global signals---noise
+	  fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/csfEPI.txt -m ./"$workingdir"/EPI_n4_csf_mask.nii.gz
+	  fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
+  fi
+
+
+
+	# TODO: paste operation arguments need to be conditional based on above criteria
 	# 	# combine all regressors into one design matrix---
 	paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/csfEPI.txt > ./"$workingdir"/csfEPI_nuisance_design.txt
 	paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
