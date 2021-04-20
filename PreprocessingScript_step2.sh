@@ -13,36 +13,94 @@ sm_sigma="2.1233226" # spatial smoothing sigma
 # 0.25mm â†’ 10x = 2.5mm â†’ sm_sigma=2.5/2.3548 = 1.0166
 # 0.3mm â†’ 10x=3.0mm â†’ sm_sigma=1.274
 # 0.25mm â†’ 20x = 5mm â†’ sm_sigma=2.1233226
-
-h_flag=''
-nuisance=''
+nuis=false
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
   printf "Usage: ./preproc-script-2.sh [OPTIONS]\n\n"
   printf "Options:\n"
-  printf "    -n    Nuisance Regression Parameters (combinations supported)\n"
-  printf "    [Values]\n"
-  printf "        a: 3 Detrends (constant/linear/quadratic trends)\n"
-  printf "        b: 10 Principle Components (non-brain tissues)\n"
-  printf "        c: 6 Motion Regressors (based on motion correction)\n"
-  printf "        d: 6 Motion Derivative Regressors (temporal derivatives of c)\n"
-  printf "        e: CSF & WMCSF Signals\n"
-  printf "    [Example]\n"
-  printf "        ./preproc-script-2.sh -n abc\n\n"
-  printf "    -h    Help (displays these usage details)\n"
-  printf "    [Example]\n"
-  printf "        ./preproc-script-2.sh -h\n\n"
+  printf " --nuis      Nuisance Regression Parameters (combinations supported)\n"
+  printf " [Values]\n"
+  printf "    trends: 3 Detrends (constant/linear/quadratic trends)\n"
+  printf "    gs: Global Signals\n"
+  printf "    mot: 6 Motion Regressors (based on motion correction)\n"
+  printf "    motder: 6 Motion Derivative Regressors (temporal derivatives of c)\n"
+  printf "    csf: CSF Signals\n"
+  printf "    wmcsf: WMCSF Signals only valid for rat brains\n"
+  printf "    10pca: 10 Principle Components (non-brain tissues)\n"
+  printf "    spca: Selected Principle Components (non-brain tissues) will add more here, but let's leave it for now\n"
+  printf " [Note:] By default, nuisance regressions with and without global signals will be generated.\n\n"
+  printf " [Example]\n"
+  printf "    ./preproc-script-2.sh --nuis=trends,mot,spca,csf\n\n"
+  printf " --help      Help (displays these usage details)\n"
+  printf " [Example]\n"
+  printf "    ./preproc-script-2.sh --help\n\n"
 }
 
-while getopts 'hn:' flag; do
-  case "${flag}" in
-    n) nuisance="${OPTARG}" ;;
-    h) usage ;;
-    *) usage
-       exit 1 ;;
+# Iterate through all specified nuisance regressors
+iter_nuis() {
+  nuis_arr="$1"
+  for i in "${nuis_arr[@]}"
+    do
+       eval_nuis "$i"
+    done
+}
+
+# Evaluate which options need to be written to the nuisance design text file
+eval_nuis() {
+  param="$1"
+
+  if [[ $param = "trends" ]]; then
+    paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt > ./"$workingdir"/nuisance_design.txt
+  fi
+  if [[ $param = "gs" ]]; then
+    paste -d"\t" ./"$workingdir"/gsEPI.txt > ./"$workingdir"/nuisance_design.txt
+  fi
+  if [[ $param = "mot" ]]; then
+    paste -d"\t" ./"$workingdir"/EPI_mc.par > ./"$workingdir"/nuisance_design.txt
+  fi
+  if [[ $param = "motder" ]]; then
+    # Calculate motion derivative regressors (AFNI)---works for small motion defects
+	  1d_tool.py -overwrite -infile ./"$workingdir"/EPI_mc.par -derivative -write ./"$workingdir"/motionEPI.deriv.par
+	  paste -d"\t" ./"$workingdir"/motionEPI.deriv.par > ./"$workingdir"/nuisance_design.txt
+  fi
+  if [[ $param = "10pca" ]]; then
+    paste -d"\t" ./"$workingdir"/EPI_nonbrain_PCA_vec.1D > ./"$workingdir"/nuisance_design.txt
+  fi
+  if [[ $param = "spca" ]]; then
+    paste -d"\t" ./"$workingdir"/EPI_nonbrain_PCA_select.txt > ./"$workingdir"/nuisance_design.txt
+  fi
+  if [[ $param = "csf" ]]; then
+    paste -d"\t" ./"$workingdir"/csfEPI.txt > ./"$workingdir"/nuisance_design.txt
+  fi
+  if [[ $param = "wmcsf" ]]; then
+    paste -d"\t" ./"$workingdir"/wmcsfEPI.txt > ./"$workingdir"/nuisance_design.txt
+  fi
+}
+
+# === Command Line Argument Parsing
+# Parsing long options to short
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--help") set -- "$@" "-h" ;;
+    "--nuis") set -- "$@" "-n" ;;
+    *)        set -- "$@" "$arg"
   esac
 done
+
+# Evaluating set options
+OPTIND=1
+while getopts "hn:" opt
+do
+  case "$opt" in
+    "h") usage; exit 0 ;;
+    "n") nuis=true
+         nuis_args="${OPTARG}" ;;
+    "?") usage >&2; exit 1 ;;
+  esac
+done
+shift $(($OPTIND-1))
 
 ##########################################################################
 ##########################     Program      ##############################
@@ -51,28 +109,28 @@ for (( i=0; i<${#Foldername[@]}; i++ ))
 do
 	workingdir="${Foldername[i]}"
 
-	# ##-------------EPI registration estimation-------- 
+	# ##-------------EPI registration estimation--------
 	echo "====================$workingdir: EPI registration estimation===================="
 	# fslmaths ./"$workingdir"/EPI_n4_brain.nii.gz -thrp 20 -bin ./"$workingdir"/EPI_n4_mask.nii.gz
 	fslmaths ./"$workingdir"/EPI_n4.nii.gz -mas ./"$workingdir"/EPI_n4_mask.nii ./"$workingdir"/EPI_n4_brain
-	
+
 	antsRegistrationSyNQuick.sh -d 3 -f ./lib/tmp/"$model"EPItmp.nii -m ./"$workingdir"/EPI_n4_brain.nii.gz -o ./"$workingdir"/EPI_n4_brain_reg -t s -n 8
-	
+
 	if [ "$model" = "rat" ]; then
 	    echo "====================$workingdir: wmcsf & csf mask creation for rat===================="
-		antsApplyTransforms -d 3 -i ./lib/tmp/"$model"csfEPI.nii -r ./"$workingdir"/EPI_n4_brain.nii.gz -t [./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat, 1] -t ./"$workingdir"/EPI_n4_brain_reg1InverseWarp.nii.gz -o ./"$workingdir"/EPI_n4_csf.nii.gz	
-		fslmaths ./"$workingdir"/EPI_n4_csf.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_csf_mask.nii.gz	
+		antsApplyTransforms -d 3 -i ./lib/tmp/"$model"csfEPI.nii -r ./"$workingdir"/EPI_n4_brain.nii.gz -t [./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat, 1] -t ./"$workingdir"/EPI_n4_brain_reg1InverseWarp.nii.gz -o ./"$workingdir"/EPI_n4_csf.nii.gz
+		fslmaths ./"$workingdir"/EPI_n4_csf.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_csf_mask.nii.gz
 		antsApplyTransforms -d 3 -i ./lib/tmp/"$model"wmEPI.nii -r ./"$workingdir"/EPI_n4_brain.nii.gz -t [./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat, 1] -t ./"$workingdir"/EPI_n4_brain_reg1InverseWarp.nii.gz -o ./"$workingdir"/EPI_n4_wm.nii.gz
-		fslmaths ./"$workingdir"/EPI_n4_wm.nii.gz.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_wm_mask.nii.gz	
+		fslmaths ./"$workingdir"/EPI_n4_wm.nii.gz.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_wm_mask.nii.gz
 		fslmaths ./"$workingdir"/EPI_n4_wm_mask.nii.gz -add ./"$workingdir"/EPI_n4_csf_mask.nii.gz ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
 		fslmaths ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz -bin ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
 	fi
 
-	
+
 	#-------------PCA denoising-------------------
 	echo "====================$workingdir: PCA noise selection===================="
 	fslmaths ./"$workingdir"/EPI_n4.nii.gz -thrp 10 -bin -sub ./"$workingdir"/EPI_n4_mask.nii.gz ./"$workingdir"/bg_mask_EPI.nii.gz
-	3dpc -overwrite -mask ./"$workingdir"/bg_mask_EPI.nii.gz -pcsave 10 -prefix ./"$workingdir"/EPI_nonbrain_PCA ./"$workingdir"/EPI_topup.nii.gz	
+	3dpc -overwrite -mask ./"$workingdir"/bg_mask_EPI.nii.gz -pcsave 10 -prefix ./"$workingdir"/EPI_nonbrain_PCA ./"$workingdir"/EPI_topup.nii.gz
 	fsl_tsplot -i ./"$workingdir"/EPI_nonbrain_PCA_vec.1D -o ./"$workingdir"/EPI_nonbrain_PCA_vec -t 'Top PCA vectors' -x 'scan number' -y 'intensity (au)'
 
 	### Begin----------PCA selection QC----------------------------
@@ -95,47 +153,29 @@ do
 	# echoes the index of read to be included, where value > 0.01
 	fi
 	PCAcount=$(( ${PCAcount} + 1 ));
-	# increments index       
+	# increments index
 	done < ./"$workingdir"/EPI_nuisance_pixel.txt
 	# output filename for the indices
 	### ----------PCA selection QC----------------------------END
 
 	# ##-------------Nuisance regressors---------------------------
-	echo "====================$workingdir: Nuisance regression: motions, motion devs, PCA noise, trends, gs/wmcsf/csf===================="
-
-	if [[ $nuisance == *"a"* ]]; then
+  if [[ $nuis == true ]]; then
+    echo "====================$workingdir: Nuisance regression: motions, motion devs, PCA noise, trends, gs/wmcsf/csf===================="
     # get constant, linear, quad trends
-	  NR=$(3dinfo -nv ./"$workingdir"/EPI_topup.nii.gz);
-	  1dBport -band 0 0 -nodata ${NR} -quad > ./"$workingdir"/quad_regressionEPI.txt
-  fi
-  if [[ $nuisance == *"b"* ]]; then
-    printf "\n"
-  fi
-  if [[ $nuisance == *"c"* ]]; then
-    printf "\n"
-  fi
-  if [[ $nuisance == *"d"* ]]; then
-    # Calculate motion derivative regressors (AFNI)---works for small motion defects
-	  1d_tool.py -overwrite -infile ./"$workingdir"/EPI_mc.par -derivative -write ./"$workingdir"/motionEPI.deriv.par
-  fi
-  if [[ $nuisance == *"e"* ]]; then
+    NR=$(3dinfo -nv ./"$workingdir"/EPI_topup.nii.gz);
+    1dBport -band 0 0 -nodata ${NR} -quad > ./"$workingdir"/quad_regressionEPI.txt
     # extract CSF/WMCSF/Global signals---noise
-	  fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/csfEPI.txt -m ./"$workingdir"/EPI_n4_csf_mask.nii.gz
-	  fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
+    fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/csfEPI.txt -m ./"$workingdir"/EPI_n4_csf_mask.nii.gz
+    fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
+    # Parse user set options and iterate through them to write to nuisance design text file
+    IFS=',' read -r -a nuis_arr <<< "$nuis_args"
+    iter_nuis "${nuis_arr[@]}"
   fi
 
-
-
-	# TODO: paste operation arguments need to be conditional based on above criteria
-	# 	# combine all regressors into one design matrix---
-	paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/csfEPI.txt > ./"$workingdir"/csfEPI_nuisance_design.txt
-	paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/gsEPI.txt >> ./"$workingdir"/gsEPI_nuisance_design.txt
-	# paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/gsEPI.txt > ./"$workingdir"/gsEPI_nuisance_design.txt
-	
 	fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/gsEPI_nuisance_design.txt -o ./"$workingdir"/gsEPI_nuisance --out_res=./"$workingdir"/gsEPI_mc_topup_res --out_p=./"$workingdir"/gsEPI_nuisance_p --out_z=./"$workingdir"/gsEPI_nuisance_z
 	fslmaths ./"$workingdir"/gsEPI_nuisance_z -abs ./"$workingdir"/gsEPI_nuisance_z_abs
 	3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/gsEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/gsEPI_nuisance_brain_z.txt
-	
+
 	fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/csfEPI_nuisance_design.txt -o ./"$workingdir"/csfEPI_nuisance --out_res=./"$workingdir"/csfEPI_mc_topup_res --out_p=./"$workingdir"/csfEPI_nuisance_p --out_z=./"$workingdir"/csfEPI_nuisance_z
 	fslmaths ./"$workingdir"/csfEPI_nuisance_z -abs ./"$workingdir"/csfEPI_nuisance_z_abs
 	3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/csfEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/csfEPI_nuisance_brain_z.txt
@@ -151,7 +191,7 @@ do
 
 	echo "====================$workingdir: Normalization & temporal filtering===================="
 	fslmaths ./"$workingdir"/gsEPI_mc_topup_res -div ./"$workingdir"/EPI_topup_mean -mul 10000 ./"$workingdir"/gsEPI_mc_topup_norm
-	3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/gsEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/gsEPI_mc_topup_norm.nii.gz	
+	3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/gsEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/gsEPI_mc_topup_norm.nii.gz
 	fslmaths ./"$workingdir"/csfEPI_mc_topup_res -div ./"$workingdir"/EPI_topup_mean -mul 10000 ./"$workingdir"/csfEPI_mc_topup_norm
 	3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/csfEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/csfEPI_mc_topup_norm.nii.gz
 
