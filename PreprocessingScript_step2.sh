@@ -155,6 +155,7 @@ do
 	PCAcount=$(( ${PCAcount} + 1 ));
 	# increments index
 	done < ./"$workingdir"/EPI_nuisance_pixel.txt
+	eval "$NUIcom > ./"$workingdir"/EPI_nonbrain_PCA_select.txt"
 	# output filename for the indices
 	### ----------PCA selection QC----------------------------END
 
