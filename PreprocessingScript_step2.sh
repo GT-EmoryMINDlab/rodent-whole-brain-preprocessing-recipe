@@ -13,37 +13,58 @@ sm_sigma="2.1233226" # spatial smoothing sigma
 # 0.25mm â†’ 10x = 2.5mm â†’ sm_sigma=2.5/2.3548 = 1.0166
 # 0.3mm â†’ 10x=3.0mm â†’ sm_sigma=1.274
 # 0.25mm â†’ 20x = 5mm â†’ sm_sigma=2.1233226
-nuis=false
+nuis=true
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
   printf "Usage: ./preproc-script-2.sh [OPTIONS]\n\n"
+  printf "[Example]\n"
+  printf "    ./preproc-script-2.sh --model=rat --nuis=trends,mot,spca,csf\n\n"
   printf "Options:\n"
+  printf " --help      Help (displays these usage details)\n\n"
   printf " --nuis      Nuisance Regression Parameters (combinations supported)\n"
-  printf " [Values]\n"
-  printf "    trends: 3 Detrends (constant/linear/quadratic trends)\n"
-  printf "    gs: Global Signals\n"
-  printf "    mot: 6 Motion Regressors (based on motion correction)\n"
-  printf "    motder: 6 Motion Derivative Regressors (temporal derivatives of c)\n"
-  printf "    csf: CSF Signals\n"
-  printf "    wmcsf: WMCSF Signals only valid for rat brains\n"
-  printf "    10pca: 10 Principle Components (non-brain tissues)\n"
-  printf "    spca: Selected Principle Components (non-brain tissues) will add more here, but let's leave it for now\n"
-  printf " [Note:] By default, nuisance regressions with and without global signals will be generated.\n\n"
-  printf " [Example]\n"
-  printf "    ./preproc-script-2.sh --nuis=trends,mot,spca,csf\n\n"
-  printf " --help      Help (displays these usage details)\n"
-  printf " [Example]\n"
-  printf "    ./preproc-script-2.sh --help\n\n"
+  printf "             [Values]\n"
+  printf "             trends: 3 Detrends (constant/linear/quadratic trends)\n"
+  printf "             gs: Global Signals\n"
+  printf "             mot: 6 Motion Regressors (based on motion correction)\n"
+  printf "             motder: 6 Motion Derivative Regressors (temporal derivatives of c)\n"
+  printf "             csf: CSF Signals\n"
+  printf "             wmcsf: WMCSF Signals only valid for rat brains\n"
+  printf "             10pca: 10 Principle Components (non-brain tissues)\n"
+  printf "             spca: Selected Principle Components (non-brain tissues)\n"
+  printf "             [Note:] By default, nuisance regressions with and without global signals will be generated.\n\n"
+  printf " --model     Specifies which rodent type to use\n"
+  printf "             [Values]\n"
+  printf "             rat: Select rat-related files and directories (Default)\n"
+  printf "             mouse: Select mouse-related files and directories\n\n"
+  printf " --tr        The time sampling rate (TR) in seconds\n"
+  printf "             [Values]\n"
+  printf "             Any numerical value (Default: 2)\n\n"
+  printf " --smooth    Spatial smoothing sigma\n"
+  printf "             [Values]\n"
+  printf "             Any numerical value (Default: 2.1233226)\n\n"
+  printf " --l_band    Minimum temporal filtering bandwidth in Hz\n"
+  printf "             [Values]\n"
+  printf "             Any numerical value (Default: 0.01)\n\n"
+  printf " --h_band    Maximum temporal filtering bandwidth in Hz\n"
+  printf "             [Values]\n"
+  printf "             Any numerical value (Default: 0.25)\n\n"
 }
 
 # Iterate through all specified nuisance regressors
 iter_nuis() {
   nuis_arr="$1"
+  paste_files=""
+
   for i in "${nuis_arr[@]}"
     do
-       eval_nuis "$i"
+      paste_files="${paste_files} $(eval_nuis "$i")"
     done
+
+  if [ "$paste_files" != "" ]; then
+    paste_files="${paste_files:1}"
+    paste -d"\t" $paste_files > ./"$workingdir"/nuisance_design.txt
+   fi
 }
 
 # Evaluate which options need to be written to the nuisance design text file
@@ -51,30 +72,31 @@ eval_nuis() {
   param="$1"
 
   if [[ $param = "trends" ]]; then
-    paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt > ./"$workingdir"/nuisance_design.txt
+    1dBport -band 0 0 -nodata ${NR} -quad > ./"$workingdir"/quad_regressionEPI.txt
+    echo ./"$workingdir"/quad_regressionEPI.txt
   fi
   if [[ $param = "gs" ]]; then
-    paste -d"\t" ./"$workingdir"/gsEPI.txt > ./"$workingdir"/nuisance_design.txt
+    echo ./"$workingdir"/gsEPI.txt
   fi
   if [[ $param = "mot" ]]; then
-    paste -d"\t" ./"$workingdir"/EPI_mc.par > ./"$workingdir"/nuisance_design.txt
+    echo ./"$workingdir"/EPI_mc.par
   fi
   if [[ $param = "motder" ]]; then
     # Calculate motion derivative regressors (AFNI)---works for small motion defects
 	  1d_tool.py -overwrite -infile ./"$workingdir"/EPI_mc.par -derivative -write ./"$workingdir"/motionEPI.deriv.par
-	  paste -d"\t" ./"$workingdir"/motionEPI.deriv.par > ./"$workingdir"/nuisance_design.txt
+	  echo ./"$workingdir"/motionEPI.deriv.par
   fi
   if [[ $param = "10pca" ]]; then
-    paste -d"\t" ./"$workingdir"/EPI_nonbrain_PCA_vec.1D > ./"$workingdir"/nuisance_design.txt
+    echo ./"$workingdir"/EPI_nonbrain_PCA_vec.1D
   fi
   if [[ $param = "spca" ]]; then
-    paste -d"\t" ./"$workingdir"/EPI_nonbrain_PCA_select.txt > ./"$workingdir"/nuisance_design.txt
+    echo ./"$workingdir"/EPI_nonbrain_PCA_select.txt
   fi
   if [[ $param = "csf" ]]; then
-    paste -d"\t" ./"$workingdir"/csfEPI.txt > ./"$workingdir"/nuisance_design.txt
+    echo ./"$workingdir"/csfEPI.txt
   fi
   if [[ $param = "wmcsf" ]]; then
-    paste -d"\t" ./"$workingdir"/wmcsfEPI.txt > ./"$workingdir"/nuisance_design.txt
+    echo ./"$workingdir"/wmcsfEPI.txt
   fi
 }
 
@@ -85,18 +107,28 @@ for arg in "$@"; do
   case "$arg" in
     "--help") set -- "$@" "-h" ;;
     "--nuis") set -- "$@" "-n" ;;
+    "--model") set -- "$@" "-m" ;;
+    "--tr") set -- "$@" "-t" ;;
+    "--smooth") set -- "$@" "-s" ;;
+    "--l_band") set -- "$@" "-l" ;;
+    "--h_band") set -- "$@" "-u" ;;
     *)        set -- "$@" "$arg"
   esac
 done
 
 # Evaluating set options
 OPTIND=1
-while getopts "hn:" opt
+while getopts "hn:m:t:s:l:u:" opt
 do
   case "$opt" in
     "h") usage; exit 0 ;;
     "n") nuis=true
          nuis_args="${OPTARG}" ;;
+    "m") model="${OPTARG}" ;;
+    "t") TR="${OPTARG}" ;;
+    "s") sm_sigma="${OPTARG}" ;;
+    "l") fil_l="${OPTARG}" ;;
+    "u") fil_h="${OPTARG}" ;;
     "?") usage >&2; exit 1 ;;
   esac
 done
@@ -164,7 +196,6 @@ do
     echo "====================$workingdir: Nuisance regression: motions, motion devs, PCA noise, trends, gs/wmcsf/csf===================="
     # get constant, linear, quad trends
     NR=$(3dinfo -nv ./"$workingdir"/EPI_topup.nii.gz);
-    1dBport -band 0 0 -nodata ${NR} -quad > ./"$workingdir"/quad_regressionEPI.txt
     # extract CSF/WMCSF/Global signals---noise
     fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/csfEPI.txt -m ./"$workingdir"/EPI_n4_csf_mask.nii.gz
     fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
@@ -173,17 +204,14 @@ do
     iter_nuis "${nuis_arr[@]}"
   fi
 
-	fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/gsEPI_nuisance_design.txt -o ./"$workingdir"/gsEPI_nuisance --out_res=./"$workingdir"/gsEPI_mc_topup_res --out_p=./"$workingdir"/gsEPI_nuisance_p --out_z=./"$workingdir"/gsEPI_nuisance_z
+	fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/nuisance_design.txt -o ./"$workingdir"/gsEPI_nuisance --out_res=./"$workingdir"/gsEPI_mc_topup_res --out_p=./"$workingdir"/gsEPI_nuisance_p --out_z=./"$workingdir"/gsEPI_nuisance_z
 	fslmaths ./"$workingdir"/gsEPI_nuisance_z -abs ./"$workingdir"/gsEPI_nuisance_z_abs
 	3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/gsEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/gsEPI_nuisance_brain_z.txt
 
-	fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/csfEPI_nuisance_design.txt -o ./"$workingdir"/csfEPI_nuisance --out_res=./"$workingdir"/csfEPI_mc_topup_res --out_p=./"$workingdir"/csfEPI_nuisance_p --out_z=./"$workingdir"/csfEPI_nuisance_z
-	fslmaths ./"$workingdir"/csfEPI_nuisance_z -abs ./"$workingdir"/csfEPI_nuisance_z_abs
-	3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/csfEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/csfEPI_nuisance_brain_z.txt
 	if [ "$model" = "rat" ]; then
 		fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/wmcsfEPI.txt -m ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
-		paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/wmcsfEPI.txt > ./"$workingdir"/wmcsfEPI_nuisance_design.txt
-		fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/wmcsfEPI_nuisance_design.txt -o ./"$workingdir"/wmcsfEPI_nuisance --out_res=./"$workingdir"/wmcsfEPI_mc_topup_res --out_p=./"$workingdir"/wmcsfEPI_nuisance_p --out_z=./"$workingdir"/wmcsfEPI_nuisance_z
+		paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/wmcsfEPI.txt > ./"$workingdir"/nuisance_design.txt
+		fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/nuisance_design.txt -o ./"$workingdir"/wmcsfEPI_nuisance --out_res=./"$workingdir"/wmcsfEPI_mc_topup_res --out_p=./"$workingdir"/wmcsfEPI_nuisance_p --out_z=./"$workingdir"/wmcsfEPI_nuisance_z
 		fslmaths ./"$workingdir"/wmcsfEPI_nuisance_z -abs ./"$workingdir"/wmcsfEPI_nuisance_z_abs
 		3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/wmcsfEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/wmcsfEPI_nuisance_brain_z.txt
 	fi
