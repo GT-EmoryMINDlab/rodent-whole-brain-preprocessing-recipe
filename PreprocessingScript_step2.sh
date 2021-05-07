@@ -199,6 +199,9 @@ do
     # extract CSF/WMCSF/Global signals---noise
     fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/csfEPI.txt -m ./"$workingdir"/EPI_n4_csf_mask.nii.gz
     fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
+    if [ "$model" = "rat" ]; then
+	fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/wmcsfEPI.txt -m ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
+    fi
     # Parse user set options and iterate through them to write to nuisance design text file
     IFS=',' read -r -a nuis_arr <<< "$nuis_args"
     iter_nuis "${nuis_arr[@]}"
