@@ -19,7 +19,7 @@ usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
   printf "Usage: ./preproc-script-2.sh [OPTIONS]\n\n"
   printf "[Example]\n"
-  printf "    ./preproc-script-2.sh --model=rat --nuis=trends,mot,spca,csf\n\n"
+  printf "    ./preproc-script-2.sh --model rat --nuis trends,mot,spca,csf\n\n"
   printf "Options:\n"
   printf " --help      Help (displays these usage details)\n\n"
   printf " --nuis      Nuisance Regression Parameters (combinations supported)\n"
@@ -76,6 +76,7 @@ eval_nuis() {
     echo ./"$workingdir"/quad_regressionEPI.txt
   fi
   if [[ $param = "gs" ]]; then
+    fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
     echo ./"$workingdir"/gsEPI.txt
   fi
   if [[ $param = "mot" ]]; then
@@ -93,11 +94,23 @@ eval_nuis() {
     echo ./"$workingdir"/EPI_nonbrain_PCA_select.txt
   fi
   if [[ $param = "csf" ]]; then
+    fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/csfEPI.txt -m ./"$workingdir"/EPI_n4_csf_mask.nii.gz
     echo ./"$workingdir"/csfEPI.txt
   fi
   if [[ $param = "wmcsf" ]]; then
     echo ./"$workingdir"/wmcsfEPI.txt
   fi
+}
+
+eval_model_wmcsf() {
+  nuis_arr="$1"
+  for i in "${nuis_arr[@]}"
+    do
+      if [[ $model == mouse ]] && [[ $i == wmcsf ]]; then
+        printf "ERROR: Model cannot be mouse with wmcsf selected. Exiting...\n"
+        exit 1
+      fi
+    done
 }
 
 # === Command Line Argument Parsing
@@ -134,6 +147,9 @@ do
 done
 shift $(($OPTIND-1))
 
+IFS=',' read -r -a nuis_arr <<< "$nuis_args"
+eval_model_wmcsf "${nuis_arr[@]}"
+
 ##########################################################################
 ##########################     Program      ##############################
 ##########################################################################
@@ -160,7 +176,7 @@ do
 
 
 	#-------------PCA denoising-------------------
-	echo "====================$workingdir: PCA noise selection===================="
+  echo "====================$workingdir: PCA noise selection===================="
 	fslmaths ./"$workingdir"/EPI_n4.nii.gz -thrp 10 -bin -sub ./"$workingdir"/EPI_n4_mask.nii.gz ./"$workingdir"/bg_mask_EPI.nii.gz
 	3dpc -overwrite -mask ./"$workingdir"/bg_mask_EPI.nii.gz -pcsave 10 -prefix ./"$workingdir"/EPI_nonbrain_PCA ./"$workingdir"/EPI_topup.nii.gz
 	fsl_tsplot -i ./"$workingdir"/EPI_nonbrain_PCA_vec.1D -o ./"$workingdir"/EPI_nonbrain_PCA_vec -t 'Top PCA vectors' -x 'scan number' -y 'intensity (au)'
@@ -196,25 +212,13 @@ do
     echo "====================$workingdir: Nuisance regression: motions, motion devs, PCA noise, trends, gs/wmcsf/csf===================="
     # get constant, linear, quad trends
     NR=$(3dinfo -nv ./"$workingdir"/EPI_topup.nii.gz);
-    # extract CSF/WMCSF/Global signals---noise
-    fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/csfEPI.txt -m ./"$workingdir"/EPI_n4_csf_mask.nii.gz
-    fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
     # Parse user set options and iterate through them to write to nuisance design text file
-    IFS=',' read -r -a nuis_arr <<< "$nuis_args"
     iter_nuis "${nuis_arr[@]}"
   fi
 
 	fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/nuisance_design.txt -o ./"$workingdir"/gsEPI_nuisance --out_res=./"$workingdir"/gsEPI_mc_topup_res --out_p=./"$workingdir"/gsEPI_nuisance_p --out_z=./"$workingdir"/gsEPI_nuisance_z
 	fslmaths ./"$workingdir"/gsEPI_nuisance_z -abs ./"$workingdir"/gsEPI_nuisance_z_abs
 	3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/gsEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/gsEPI_nuisance_brain_z.txt
-
-	if [ "$model" = "rat" ]; then
-		fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/wmcsfEPI.txt -m ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
-		paste -d"\t" ./"$workingdir"/quad_regressionEPI.txt ./"$workingdir"/EPI_nonbrain_PCA_vec.1D ./"$workingdir"/EPI_mc.par ./"$workingdir"/motionEPI.deriv.par ./"$workingdir"/wmcsfEPI.txt > ./"$workingdir"/nuisance_design.txt
-		fsl_glm -i ./"$workingdir"/EPI_topup.nii.gz -d ./"$workingdir"/nuisance_design.txt -o ./"$workingdir"/wmcsfEPI_nuisance --out_res=./"$workingdir"/wmcsfEPI_mc_topup_res --out_p=./"$workingdir"/wmcsfEPI_nuisance_p --out_z=./"$workingdir"/wmcsfEPI_nuisance_z
-		fslmaths ./"$workingdir"/wmcsfEPI_nuisance_z -abs ./"$workingdir"/wmcsfEPI_nuisance_z_abs
-		3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/wmcsfEPI_nuisance_z_abs.nii.gz > ./"$workingdir"/wmcsfEPI_nuisance_brain_z.txt
-	fi
 
 	### END of nuisance#######################################
 
@@ -224,10 +228,6 @@ do
 	fslmaths ./"$workingdir"/csfEPI_mc_topup_res -div ./"$workingdir"/EPI_topup_mean -mul 10000 ./"$workingdir"/csfEPI_mc_topup_norm
 	3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/csfEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/csfEPI_mc_topup_norm.nii.gz
 
-	if [ "$model" = "rat" ]; then
-		fslmaths ./"$workingdir"/wmcsfEPI_mc_topup_res -div ./"$workingdir"/EPI_topup_mean -mul 10000 ./"$workingdir"/wmcsfEPI_mc_topup_norm
-		3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/wmcsfEPI_mc_topup_norm.nii.gz
-	fi
 	echo "====================$workingdir: EPI registration & spatial smoothing & seed extraction===================="
 	antsApplyTransforms -r ./lib/tmp/"$model"EPItmp.nii \
 	-i ./"$workingdir"/gsEPI_mc_topup_norm_fil.nii.gz -e 3 -t ./"$workingdir"/EPI_n4_brain_reg1Warp.nii.gz -t ./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat -o ./"$workingdir"/gsEPI_mc_topup_norm_fil_reg.nii.gz --float
@@ -242,11 +242,4 @@ do
 	3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
 	-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm_seed.txt
 
-	if [ "$model" = "rat" ]; then
-		antsApplyTransforms -r ./lib/tmp/"$model"EPItmp.nii \
-		-i ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil.nii.gz -e 3 -t ./"$workingdir"/EPI_n4_brain_reg1Warp.nii.gz -t ./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat -o ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg.nii.gz --float
-		fslmaths ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg.nii.gz -kernel gauss $sm_sigma -fmean ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg_sm.nii.gz
-		3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
-		-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/wmcsfEPI_mc_topup_norm_fil_reg_sm_seed.txt
-	fi
 done

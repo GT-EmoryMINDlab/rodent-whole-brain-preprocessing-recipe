@@ -12,7 +12,7 @@ If you find this toolbox useful for your work, please cite as: Nan Xu, Leo Zhang
         * 3.2.1 [Imaging acquisition parameter file (datain_topup_\*.txt)](#section-3-2-1)
         * 3.2.2 [Image parameter configuration file (\*.cnf)](#section-3-2-2)
 * 4 - [Main Pipeline](#section-4)
-    * 4.1 [(Step 1) Run 'PreprocessingScript_step1.sh'](#section-4-1)
+    * 4.1 [(Step 1) Run 'preproc-script-1.sh'](#section-4-1)
         * 4.1.1 [Slice time correction](#section-4-1-1)
         * 4.1.2 [Motion correction](#section-4-1-2)
         * 4.1.3 [Distortion correction](#section-4-1-3)
@@ -20,7 +20,7 @@ If you find this toolbox useful for your work, please cite as: Nan Xu, Leo Zhang
     * 4.2 [(Step 2) Precise brain extraction & EPI template generation](#section-4-2)
         * 4.2.1 [Manual brain mask edits](#section-4-2-1)
         * 4.2.2 [EPI template generation](#section-4-2-2)
-    * 4.3 [(Step 3) Run 'PreprocessingScript_step2.sh'](#section-4-3)
+    * 4.3 [(Step 3) Run 'preproc-script-2.sh'](#section-4-3)
         * 4.3.1 [EPI registration estimation & wm/csf mask generation](#section-4-3-1)
         * 4.3.2 [Tissue noise estimation by PCA](#section-4-3-2)
         * 4.3.3 [Nuisance regressions](#section-4-3-3)
@@ -90,7 +90,7 @@ These parameters totally depend on your image (e.g., dimension, resolution, etc)
 <a name="section-4"></a>
 ## 4. Main Pipeline
 <a name="section-4-1"></a>
-### 4.1 (Step 1) Run 'PreprocessingScript_step1.sh'
+### 4.1 (Step 1) Run 'preproc-script-1.sh'
 The following 4 procedures will be performed in this step.
 
 <a name="section-4-1-1"></a>
@@ -119,7 +119,7 @@ Output: \_topup
 
 <a name="section-4-1-4"></a>
 #### 4.1.4 Raw brain mask creation
-Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3D* toolbox. In the script, both functions are called, and one can pick the tightest mask for manual editing in the next step. You might need to play with "bet_f" at the head of "PreprocessingScript_step1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tigher mask.
+Two brain extraction options are provided: *fsl bet* function, and Matlab *PCNN3D* toolbox. In the script, both functions are called, and one can pick the tightest mask for manual editing in the next step. You might need to play with "bet_f" at the head of "preproc-script-1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tigher mask.
 
     fsl bet: better for some rat brains. 
     PCNN3D: better for some mouse brains. 
@@ -141,7 +141,7 @@ Output: \_n4_mask (\_n4_csf_mask)
 This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder.
 
 <a name="section-4-3"></a>
-### 4.3 (Step 3) Run 'PreprocessingScript_step2.sh'
+### 4.3 (Step 3) Run 'preproc-script-2.sh'
 The input files are "EPI_n4", "EPI_topup", and "EPI_topup_mean" generated from Step 1, as well as the mask(s) "EPI_n4_mask" (and "EPI_csf_mask" for mouse data) saved from Step 2. The following 5 procedures will be performed.
 
 <a name="section-4-3-1"></a>
@@ -163,7 +163,7 @@ Output: \_n4_brain_reg
     c. 6 motion regressors (based on motion correction results) 
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
     e. csf or/and wmcsf signals 
-The script also generates a global signal regression version which only regresses out the 3 trends (a) and global signals of the brain. One can modify the list of regressors in Ln85--Ln86 and Ln91 in "PreprocessingScript_step2.sh".
+The script also generates a global signal regression version which only regresses out the 3 trends (a) and global signals of the brain. One can modify the list of regressors in Ln85--Ln86 and Ln91 in "preproc-script-2.sh".
 
 <a name="section-4-3-4"></a>
 #### 4.3.4 Normalization & temporal filtering

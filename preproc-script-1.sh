@@ -8,7 +8,54 @@ Foldername=(data_"$model"1) # Foldername=(data_mouse) #If you have group data, t
 bet_f=0.55 # You might need to play with this parameter for creating the tightest brain mask to save you some time of manual editing.
 # NeedSTC=0; 
 NeedSTC=1;
-matlab_dir="/mnt/c/Program Files/MATLAB/R2018b/bin/matlab.exe"; 
+matlab_dir="/mnt/c/Program Files/MATLAB/R2018b/bin/matlab.exe";
+
+usage() {
+  printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
+  printf "Usage: ./preproc-script-1.sh [OPTIONS]\n\n"
+  printf "[Example]\n"
+  printf "    ./preproc-script-1.sh --model rat --bet 0.55\n\n"
+  printf "Options:\n"
+  printf " --help      Help (displays these usage details)\n\n"
+  printf " --bet       Brain mask parameter in FSL bet\n"
+  printf "             [Values]\n"
+  printf "             Any numerical value (Default: 0.55)\n\n"
+  printf " --stc       Specifies if STC is needed (long TR vs. short TR)\n"
+  printf "             [Values]\n"
+  printf "             1: STC is required, long TR (Default)\n"
+  printf "             0: STC is not required, short TR\n\n"
+  printf " --model     Specifies which rodent type to use\n"
+  printf "             [Values]\n"
+  printf "             rat: Select rat-related files and directories (Default)\n"
+  printf "             mouse: Select mouse-related files and directories\n\n"
+}
+
+# === Command Line Argument Parsing
+# Parsing long options to short
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--help") set -- "$@" "-h" ;;
+    "--model") set -- "$@" "-m" ;;
+    "--bet") set -- "$@" "-b" ;;
+    "--stc") set -- "$@" "-s" ;;
+    *)        set -- "$@" "$arg"
+  esac
+done
+
+# Evaluating set options
+OPTIND=1
+while getopts "hm:b:s:" opt
+do
+  case "$opt" in
+    "h") usage; exit 0 ;;
+    "m") model="${OPTARG}" ;;
+    "b") bet_f="${OPTARG}" ;;
+    "s") NeedSTC="${OPTARG}" ;;
+    "?") usage >&2; exit 1 ;;
+  esac
+done
+shift $(($OPTIND-1))
 
 ##########################################################################
 ##########################     Program      ##############################
