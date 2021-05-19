@@ -212,6 +212,9 @@ do
     echo "====================$workingdir: Nuisance regression: motions, motion devs, PCA noise, trends, gs/wmcsf/csf===================="
     # get constant, linear, quad trends
     NR=$(3dinfo -nv ./"$workingdir"/EPI_topup.nii.gz);
+    if [ "$model" = "rat" ]; then
+      fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/wmcsfEPI.txt -m ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
+    fi
     # Parse user set options and iterate through them to write to nuisance design text file
     iter_nuis "${nuis_arr[@]}"
   fi
