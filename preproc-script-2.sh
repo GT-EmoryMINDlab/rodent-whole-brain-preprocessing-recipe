@@ -246,9 +246,9 @@ do
 	antsApplyTransforms -r ./lib/tmp/"$model"EPItmp.nii \
 	-i ./"$workingdir"/0EPI_mc_topup_norm_fil.nii.gz -e 3 -t ./"$workingdir"/EPI_n4_brain_reg1Warp.nii.gz -t ./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat -o ./"$workingdir"/0EPI_mc_topup_norm_fil_reg.nii.gz --float
 
-	fslmaths ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg.nii.gz -kernel gauss $sm_sigma -fmean ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm.nii.gz
+	fslmaths ./"$workingdir"/0EPI_mc_topup_norm_fil_reg.nii.gz -kernel gauss $sm_sigma -fmean ./"$workingdir"/0EPI_mc_topup_norm_fil_reg_sm.nii.gz
 
 	3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
-	-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/csfEPI_mc_topup_norm_fil_reg_sm_seed.txt
+	-nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/0EPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/0EPI_mc_topup_norm_fil_reg_sm_seed.txt
 
 done
