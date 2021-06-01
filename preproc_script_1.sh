@@ -12,9 +12,9 @@ matlab_dir="/mnt/c/Program Files/MATLAB/R2018b/bin/matlab.exe";
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
-  printf "Usage: ./preproc-script-1.sh [OPTIONS]\n\n"
+  printf "Usage: ./preproc_script_1.sh [OPTIONS]\n\n"
   printf "[Example]\n"
-  printf "    ./preproc-script-1.sh --model rat --bet 0.55\n\n"
+  printf "    ./preproc_script_1.sh --model rat --bet 0.55\n\n"
   printf "Options:\n"
   printf " --help      Help (displays these usage details)\n\n"
   printf " --bet       Brain mask parameter in FSL bet\n"
