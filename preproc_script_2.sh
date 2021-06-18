@@ -2,9 +2,6 @@
 ##########################    Parameters    ##############################
 ##########################################################################
 model="rat"
-# model="mouse"
-Foldername=(data_"$model"1) #If you have group data, this can be extended to ...
-# Foldername=(data_"$model"1, data_"$model"2, data_"$model"3, data_"$model"4)
 TR="2" # the time sampling rate (TR) in sec of your data
 fil_l="0.01"; fil_h="0.25"; # temporal filtering bandwidth in Hz
 # fil_l="0.01"; fil_h="0.3"; # temporal filtering bandwidth in Hz
@@ -72,7 +69,7 @@ iter_nuis() {
   if [ "$paste_files" != "" ]; then
     paste_files="${paste_files:1}"
     paste -d"\t" $paste_files > ./"$workingdir"/nuisance_design.txt
-   fi
+  fi
 }
 
 # Evaluate which options need to be written to the nuisance design text file
@@ -155,6 +152,9 @@ do
 done
 shift $(($OPTIND-1))
 
+Foldername=(data_"$model"1) #If you have group data, this can be extended to ...
+# Foldername=(data_"$model"1, data_"$model"2, data_"$model"3, data_"$model"4)
+
 IFS=',' read -r -a nuis_arr <<< "$nuis_args"
 eval_model_wmcsf "${nuis_arr[@]}"
 
@@ -235,6 +235,10 @@ do
     3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/EPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/EPI_mc_topup_norm.nii.gz
 
     #default option: only detrending but no signal regression
+    fsl_glm -i ./"$workingdir"/0EPI_topup.nii.gz -d ./"$workingdir"/0nuisance_design.txt -o ./"$workingdir"/0EPI_nuisance --out_res=./"$workingdir"/0EPI_mc_topup_res --out_p=./"$workingdir"/0EPI_nuisance_p --out_z=./"$workingdir"/0EPI_nuisance_z
+    fslmaths ./"$workingdir"/0EPI_nuisance_z -abs ./"$workingdir"/0EPI_nuisance_z_abs
+    3dROIstats -mask ./"$workingdir"/0EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/0EPI_nuisance_z_abs.nii.gz > ./"$workingdir"/0EPI_nuisance_brain_z.txt
+
     fslmaths ./"$workingdir"/0EPI_mc_topup_res -div ./"$workingdir"/EPI_topup_mean -mul 10000 ./"$workingdir"/0EPI_mc_topup_norm
     3dBandpass -band $fil_l $fil_h -dt "$TR" -notrans -overwrite -prefix ./"$workingdir"/0EPI_mc_topup_norm_fil.nii.gz -input ./"$workingdir"/0EPI_mc_topup_norm.nii.gz
     # TODO: test the below three lines

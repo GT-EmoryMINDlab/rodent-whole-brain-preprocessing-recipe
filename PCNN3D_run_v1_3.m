@@ -16,6 +16,9 @@ BrSize=[1500,3000]; % brain size range for RAT (mm3)
 StrucRadius=7; % use =3 for low resolution, use 5 or 7 for highres data
 ZoomFactor=10; % resolution magnification factor
 addpath('./PCNN3D_matlab/')
+if model_type=='mouse'
+    BrSize=[300,400]
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% run PCNN
 [nii] = load_untouch_nii(datpath);

@@ -2,13 +2,17 @@
 ##########################    Parameters    ##############################
 ##########################################################################
 model="rat"
-# model="mouse"
-Foldername=(data_"$model"1) # Foldername=(data_mouse) #If you have group data, this can be extended to ...
-# Foldername=(data_"$model"1, data_"$model"2, data_"$model"3, data_"$model"4)
 bet_f=0.55 # You might need to play with this parameter for creating the tightest brain mask to save you some time of manual editing.
 # NeedSTC=0; 
 NeedSTC=1;
-matlab_dir="/mnt/c/Program Files/MATLAB/R2018b/bin/matlab.exe";
+
+# If kernel version references Microsoft, identify WSL and set an explicit path for Matlab, otherwise call directly
+wsl_kernel_version=$(cat /proc/version | grep -i 'microsoft\|cygwin')
+if [ "$wsl_kernel_version" == "" ]; then
+  matlab_dir="matlab";
+else
+  matlab_dir="/mnt/c/Program Files/MATLAB/R2018b/bin/matlab.exe";
+fi
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
@@ -56,6 +60,9 @@ do
   esac
 done
 shift $(($OPTIND-1))
+
+Foldername=(data_"$model"1) #If you have group data, this can be extended to ...
+# Foldername=(data_"$model"1, data_"$model"2, data_"$model"3, data_"$model"4)
 
 ##########################################################################
 ##########################     Program      ##############################
@@ -130,7 +137,7 @@ do
 	fi
 	# PCNN3d brain extraction. One can also run the file in Matlab.
 	echo "--------------------$workingdir: brain mask PCNN3D--------------------"	
-	"$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; run PCNN3D_run_v1_3.m; exit"	
+	"$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; model_type='$model'; run PCNN3D_run_v1_3.m; exit"
 	echo "--------------------$workingdir: brain mask FSL bet--------------------"	
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
 	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
