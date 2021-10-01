@@ -179,7 +179,7 @@ do
 		antsApplyTransforms -d 3 -i ./lib/tmp/"$model"csfEPI.nii -r ./"$workingdir"/EPI_n4_brain.nii.gz -t [./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat, 1] -t ./"$workingdir"/EPI_n4_brain_reg1InverseWarp.nii.gz -o ./"$workingdir"/EPI_n4_csf.nii.gz
 		fslmaths ./"$workingdir"/EPI_n4_csf.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_csf_mask.nii.gz
 		antsApplyTransforms -d 3 -i ./lib/tmp/"$model"wmEPI.nii -r ./"$workingdir"/EPI_n4_brain.nii.gz -t [./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat, 1] -t ./"$workingdir"/EPI_n4_brain_reg1InverseWarp.nii.gz -o ./"$workingdir"/EPI_n4_wm.nii.gz
-		fslmaths ./"$workingdir"/EPI_n4_wm.nii.gz.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_wm_mask.nii.gz
+		fslmaths ./"$workingdir"/EPI_n4_wm.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_wm_mask.nii.gz
 		fslmaths ./"$workingdir"/EPI_n4_wm_mask.nii.gz -add ./"$workingdir"/EPI_n4_csf_mask.nii.gz ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
 		fslmaths ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz -bin ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
 	fi
@@ -205,7 +205,7 @@ do
 	if [ ${PCAin} -eq 1 ]
 	    # if value is > 0.01
 	then
-	NUIcom="${NUIcom} ./${workingdir}/${EPI_nonbrain_PCA}0${PCAcount}.1D"
+	NUIcom="${NUIcom} ./${workingdir}/EPI_nonbrain_PCA0${PCAcount}.1D"
 	# appends to NUIcom
 	echo "include PCA #${PCAcount}"
 	# echoes the index of read to be included, where value > 0.01
