@@ -105,6 +105,7 @@ eval_nuis() {
     echo ./"$workingdir"/csfEPI.txt
   fi
   if [[ $param = "wmcsf" ]]; then
+    fslmeants -i ./"$workingdir"/EPI_topup.nii.gz -o ./"$workingdir"/wmcsfEPI.txt -m ./"$workingdir"/EPI_n4_wmcsf_mask.nii.gz
     echo ./"$workingdir"/wmcsfEPI.txt
   fi
 }
@@ -175,7 +176,7 @@ do
 	antsRegistrationSyNQuick.sh -d 3 -f ./lib/tmp/"$model"EPItmp.nii -m ./"$workingdir"/EPI_n4_brain.nii.gz -o ./"$workingdir"/EPI_n4_brain_reg -t s -n 8
 
 	if [ "$model" = "rat" ]; then
-	    echo "====================$workingdir: wmcsf & csf mask creation for rat===================="
+	  echo "====================$workingdir: wmcsf & csf mask creation for rat===================="
 		antsApplyTransforms -d 3 -i ./lib/tmp/"$model"csfEPI.nii -r ./"$workingdir"/EPI_n4_brain.nii.gz -t [./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat, 1] -t ./"$workingdir"/EPI_n4_brain_reg1InverseWarp.nii.gz -o ./"$workingdir"/EPI_n4_csf.nii.gz
 		fslmaths ./"$workingdir"/EPI_n4_csf.nii.gz  -thrp 40 -bin ./"$workingdir"/EPI_n4_csf_mask.nii.gz
 		antsApplyTransforms -d 3 -i ./lib/tmp/"$model"wmEPI.nii -r ./"$workingdir"/EPI_n4_brain.nii.gz -t [./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat, 1] -t ./"$workingdir"/EPI_n4_brain_reg1InverseWarp.nii.gz -o ./"$workingdir"/EPI_n4_wm.nii.gz

@@ -10,14 +10,20 @@
 % 4/4/2021 modified by Nan Xu
 
 %% init setup
-% datpath='./data_mouse1/EPI_n4.nii.gz'; % data path 
-% BrSize=[300,400]; % brain size range for MOUSE (mm3).
-BrSize=[1500,3000]; % brain size range for RAT (mm3)
+% datpath='./data_mouse1/EPI_n4.nii.gz'; % data path
 StrucRadius=7; % use =3 for low resolution, use 5 or 7 for highres data
 ZoomFactor=10; % resolution magnification factor
 addpath('./PCNN3D_matlab/')
-if model_type=='mouse'
-    BrSize=[300,400]
+addpath('./nifti')
+
+% Based on model passed from preproc-script-1.sh, set the brain size range for mouse/rat (mm3)
+model_bool=strcmp(model_type,'rat');
+if model_bool==1
+    disp('Rat Model: using brain size 700x900')
+    BrSize=[700,900];
+else
+    disp('Mouse Model: using brain size 300x400')
+    BrSize=[300,400];
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% run PCNN
