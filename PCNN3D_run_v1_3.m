@@ -13,8 +13,8 @@
 % datpath='./data_mouse1/EPI_n4.nii.gz'; % data path
 StrucRadius=7; % use =3 for low resolution, use 5 or 7 for highres data
 ZoomFactor=10; % resolution magnification factor
+addpath('./NIfTI_toolbox')
 addpath('./PCNN3D_matlab/')
-addpath('./nifti')
 
 % Based on model passed from preproc-script-1.sh, set the brain size range for mouse/rat (mm3)
 model_bool=strcmp(model_type,'rat');

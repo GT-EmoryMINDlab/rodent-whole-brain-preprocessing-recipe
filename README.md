@@ -30,8 +30,8 @@ If you find this toolbox useful for your work, please cite as: Nan Xu, Leo Zhang
 <a name="section-1"></a>
 ## 1. Dependencies
 1. FSL5.0, AFNI and ANTs--can be installed on a PC (see "SoftwareInstallation_fsl_afni_ants.txt")
-2. Matlab and NIfTI and ANALYZE toolbox (https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) are needed for calling PCNN3D (which is superior for mouse brain mask creation, see below for details). 
-# TODO: git clone, executable permissions, possible file renaming
+2. Matlab and [NIfTI and ANALYZE toolbox](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) (*Jimmy Shen, 2014*) are needed for calling PCNN3D (which is superior for mouse brain mask creation, see below for details). 
+The toolbox has been cloned to this repository in *NIfTI_toolbox* for convenience.
 
 <a name="section-2"></a>
 ## 2. Data Files 

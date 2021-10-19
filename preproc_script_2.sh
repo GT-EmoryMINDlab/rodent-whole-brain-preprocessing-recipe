@@ -7,12 +7,12 @@ fil_l="0.01"; fil_h="0.25"; # temporal filtering bandwidth in Hz
 # fil_l="0.01"; fil_h="0.3"; # temporal filtering bandwidth in Hz
 # sm_sigma="2.1233226" # spatial smoothing sigma
 smfwhm="3" # spatial smoothing FWHM
-sm_sigma=$(echo "$smfwhm/2.3548"| bc )
 # Note: FWHM=2.3548*sigma
 # 0.25mm â†’ 10x = 2.5mm â†’ sm_sigma=2.5/2.3548 = 1.0166
 # 0.3mm â†’ 10x=3.0mm â†’ sm_sigma=1.274
 # 0.25mm â†’ 20x = 5mm â†’ sm_sigma=2.1233226
 nuis=true
+user_fldir=false
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
@@ -39,15 +39,18 @@ usage() {
   printf " --tr        The time sampling rate (TR) in seconds\n"
   printf "             [Values]\n"
   printf "             Any numerical value (Default: 2)\n\n"
-  printf " --smooth    Spatial smoothing sigma\n"
+  printf " --smooth    Spatial smoothing FWHM, which determines the spatial smoothing sigma\n"
   printf "             [Values]\n"
-  printf "             Any numerical value (Default: 2.1233226)\n\n"
+  printf "             Any numerical value (Default: smfwhm=3, sm_sigma=smfwhm/2.3548)\n\n"
   printf " --l_band    Minimum temporal filtering bandwidth in Hz\n"
   printf "             [Values]\n"
   printf "             Any numerical value (Default: 0.01)\n\n"
   printf " --h_band    Maximum temporal filtering bandwidth in Hz\n"
   printf "             [Values]\n"
   printf "             Any numerical value (Default: 0.25)\n\n"
+  printf " --fldir     Name of the folder (or folders for group data) to write data\n"
+  printf "             [Values]\n"
+  printf "             Any string value or list of comma-delimited string values (Default: data_<model>1)\n\n"
 }
 
 # Iterate through all specified nuisance regressors
@@ -133,13 +136,14 @@ for arg in "$@"; do
     "--smooth") set -- "$@" "-s" ;;
     "--l_band") set -- "$@" "-l" ;;
     "--h_band") set -- "$@" "-u" ;;
+    "--fldir") set -- "$@" "-f" ;;
     *)        set -- "$@" "$arg"
   esac
 done
 
 # Evaluating set options
 OPTIND=1
-while getopts "hn:m:t:s:l:u:" opt
+while getopts "hn:m:t:s:l:u:f:" opt
 do
   case "$opt" in
     "h") usage; exit 0 ;;
@@ -147,9 +151,11 @@ do
          nuis_args="${OPTARG}" ;;
     "m") model="${OPTARG}" ;;
     "t") TR="${OPTARG}" ;;
-    "s") sm_sigma="${OPTARG}" ;;
+    "s") smfwhm="${OPTARG}" ;;
     "l") fil_l="${OPTARG}" ;;
     "u") fil_h="${OPTARG}" ;;
+    "f") user_fldir=true
+         fldir_args="${OPTARG}" ;;
     "?") usage >&2; exit 1 ;;
   esac
 done
@@ -157,6 +163,12 @@ shift $(($OPTIND-1))
 
 Foldername=(data_"$model"1) #If you have group data, this can be extended to ...
 # Foldername=(data_"$model"1, data_"$model"2, data_"$model"3, data_"$model"4)
+
+if [[ $user_fldir == true ]]; then
+  IFS=',' read -r -a Foldername <<< "$fldir_args"
+fi
+
+sm_sigma=$(echo "$smfwhm/2.3548"| bc )
 
 IFS=',' read -r -a nuis_arr <<< "$nuis_args"
 eval_model_wmcsf "${nuis_arr[@]}"
