@@ -13,6 +13,8 @@ smfwhm="3" # spatial smoothing FWHM
 # 0.25mm â†’ 20x = 5mm â†’ sm_sigma=2.1233226
 nuis=true
 user_fldir=false
+custom_atlas=false
+epi_atlas=./lib/tmp/"$model"EPIatlas.nii
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
@@ -51,6 +53,9 @@ usage() {
   printf " --fldir     Name of the folder (or folders for group data) to write data\n"
   printf "             [Values]\n"
   printf "             Any string value or list of comma-delimited string values (Default: data_<model>1)\n\n"
+  printf " --atlas     Name of the file to use as the EPI atlas\n"
+  printf "             [Values]\n"
+  printf "             Any string value with the relative path of the file (Default: ./lib/tmp/<model>EPIatlas.nii)\n\n"
 }
 
 # Iterate through all specified nuisance regressors
@@ -137,25 +142,29 @@ for arg in "$@"; do
     "--l_band") set -- "$@" "-l" ;;
     "--h_band") set -- "$@" "-u" ;;
     "--fldir") set -- "$@" "-f" ;;
+    "--atlas") set -- "$@" "-a" ;;
     *)        set -- "$@" "$arg"
   esac
 done
 
 # Evaluating set options
 OPTIND=1
-while getopts "hn:m:t:s:l:u:f:" opt
+while getopts "hn:m:t:s:l:u:f:a:" opt
 do
   case "$opt" in
     "h") usage; exit 0 ;;
     "n") nuis=true
          nuis_args="${OPTARG}" ;;
-    "m") model="${OPTARG}" ;;
+    "m") model="${OPTARG}"
+         epi_atlas=./lib/tmp/"$model"EPIatlas.nii ;;
     "t") TR="${OPTARG}" ;;
     "s") smfwhm="${OPTARG}" ;;
     "l") fil_l="${OPTARG}" ;;
     "u") fil_h="${OPTARG}" ;;
     "f") user_fldir=true
          fldir_args="${OPTARG}" ;;
+    "a") custom_atlas=true
+         custom_atlas_path="${OPTARG}" ;;
     "?") usage >&2; exit 1 ;;
   esac
 done
@@ -166,6 +175,10 @@ Foldername=(data_"$model"1) #If you have group data, this can be extended to ...
 
 if [[ $user_fldir == true ]]; then
   IFS=',' read -r -a Foldername <<< "$fldir_args"
+fi
+
+if [[ $custom_atlas == true ]]; then
+  epi_atlas="$custom_atlas_path"
 fi
 
 sm_sigma=$(echo "$smfwhm/2.3548"| bc )
@@ -265,14 +278,14 @@ do
     -i ./"$workingdir"/EPI_mc_topup_norm_fil.nii.gz -e 3 -t ./"$workingdir"/EPI_n4_brain_reg1Warp.nii.gz -t ./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat -o ./"$workingdir"/EPI_mc_topup_norm_fil_reg.nii.gz --float
     fslmaths ./"$workingdir"/EPI_mc_topup_norm_fil_reg.nii.gz -kernel gauss $sm_sigma -fmean ./"$workingdir"/EPI_mc_topup_norm_fil_reg_sm.nii.gz
     
-    3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
+    3dROIstats -mask "$epi_atlas" \
     -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/EPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/EPI_mc_topup_norm_fil_reg_sm_seed.txt
 
     antsApplyTransforms -r ./lib/tmp/"$model"EPItmp.nii \
     -i ./"$workingdir"/0EPI_mc_topup_norm_fil.nii.gz -e 3 -t ./"$workingdir"/EPI_n4_brain_reg1Warp.nii.gz -t ./"$workingdir"/EPI_n4_brain_reg0GenericAffine.mat -o ./"$workingdir"/0EPI_mc_topup_norm_fil_reg.nii.gz --float
     fslmaths ./"$workingdir"/0EPI_mc_topup_norm_fil_reg.nii.gz -kernel gauss $sm_sigma -fmean ./"$workingdir"/0EPI_mc_topup_norm_fil_reg_sm.nii.gz
 
-    3dROIstats -mask ./lib/tmp/"$model"EPIatlas.nii \
+    3dROIstats -mask "$epi_atlas" \
     -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/0EPI_mc_topup_norm_fil_reg_sm.nii.gz > ./"$workingdir"/0EPI_mc_topup_norm_fil_reg_sm_seed.txt
   fi
 done
