@@ -15,6 +15,7 @@ nuis=true
 user_fldir=false
 custom_atlas=false
 epi_atlas=./lib/tmp/"$model"EPIatlas.nii
+custom_regressor=""
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
@@ -56,6 +57,9 @@ usage() {
   printf " --atlas     Name of the file to use as the EPI atlas\n"
   printf "             [Values]\n"
   printf "             Any string value with the relative path of the file (Default: ./lib/tmp/<model>EPIatlas.nii)\n\n"
+  printf " --regr      Name of the file that contains additional nuisance regressor(s) to add to nuisance_design.txt\n"
+  printf "             [Values]\n"
+  printf "             Any string value with the relative path of the file (Default: None)\n\n"
 }
 
 # Iterate through all specified nuisance regressors
@@ -79,6 +83,9 @@ iter_nuis() {
   if [ "$paste_files" != "" ]; then
     paste_files="${paste_files:1}"
     paste -d"\t" $paste_files > ./"$workingdir"/nuisance_design.txt
+  fi
+  if [ "$custom_regressor" != "" ]; then
+    paste -d"\t" $custom_regressor > ./"$workingdir"/nuisance_design.txt
   fi
 }
 
@@ -143,13 +150,14 @@ for arg in "$@"; do
     "--h_band") set -- "$@" "-u" ;;
     "--fldir") set -- "$@" "-f" ;;
     "--atlas") set -- "$@" "-a" ;;
+    "--regr") set -- "$@" "-r" ;;
     *)        set -- "$@" "$arg"
   esac
 done
 
 # Evaluating set options
 OPTIND=1
-while getopts "hn:m:t:s:l:u:f:a:" opt
+while getopts "hn:m:t:s:l:u:f:a:r:" opt
 do
   case "$opt" in
     "h") usage; exit 0 ;;
@@ -165,6 +173,7 @@ do
          fldir_args="${OPTARG}" ;;
     "a") custom_atlas=true
          custom_atlas_path="${OPTARG}" ;;
+    "r") custom_regressor="${OPTARG}" ;;
     "?") usage >&2; exit 1 ;;
   esac
 done

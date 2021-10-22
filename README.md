@@ -91,6 +91,43 @@ These parameters totally depend on your image (e.g., dimension, resolution, etc)
 ## 4. Main Pipeline
 <a name="section-4-1"></a>
 ### 4.1 (Step 1) Run 'preproc_script_1.sh'
+The following details describe the parameters available to users via the command line:
+```
+Usage: ./preproc_script_1.sh [OPTIONS]
+
+[Example]
+    ./preproc_script_1.sh --model rat --bet 0.55
+
+Options:
+ --help         Help (displays these usage details)
+
+ --bet          Brain mask parameter in FSL bet
+                [Values]
+                Any numerical value (Default: 0.55)
+
+ --stc          Specifies if STC is needed (long TR vs. short TR)
+                [Values]
+                1: STC is required, long TR (Default)
+                0: STC is not required, short TR
+
+ --model        Specifies which rodent type to use
+                [Values]
+                rat: Select rat-related files and directories (Default)
+                mouse: Select mouse-related files and directories
+
+ --fldir        Name of the folder (or folders for group data) to write data
+                [Values]
+                Any string value or list of comma-delimited string values (Default: data_<model>1)
+
+ --matlab_dir   Location of matlab on the system
+                [Values]
+                Any string value (Default: matlab)
+
+```
+The above documentation can also be retrieved from the command line via `help` argument:
+
+    ./preproc_script_1.sh --help
+
 The following 4 procedures will be performed in this step.
 
 <a name="section-4-1-1"></a>
@@ -127,6 +164,66 @@ Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)
 
 <a name="section-4-2"></a>
 ### 4.2 (Step 2) Precise Brain Extraction & EPI Template Generation
+The following details describe the parameters available to users via the command line:
+```
+Usage: ./preproc_script_2.sh [OPTIONS]
+
+[Example]
+    ./preproc_script_2.sh --model rat --nuis trends,mot,spca,csf
+
+Options:
+ --help      Help (displays these usage details)
+
+ --nuis      Nuisance Regression Parameters (combinations supported)
+             [Values]
+             trends: 3 Detrends (constant/linear/quadratic trends)
+             gs: Global Signals
+             mot: 6 Motion Regressors (based on motion correction)
+             motder: 6 Motion Derivative Regressors (temporal derivatives of c)
+             csf: CSF Signals
+             wmcsf: WMCSF Signals only valid for rat brains
+             10pca: 10 Principle Components (non-brain tissues)
+             spca: Selected Principle Components (non-brain tissues)
+             [Note:] By default, nuisance regressions with and without global signals will be generated.
+
+ --model     Specifies which rodent type to use
+             [Values]
+             rat: Select rat-related files and directories (Default)
+             mouse: Select mouse-related files and directories
+
+ --tr        The time sampling rate (TR) in seconds
+             [Values]
+             Any numerical value (Default: 2)
+
+ --smooth    Spatial smoothing FWHM in mm, which determines the spatial smoothing sigma
+             [Values]
+             Any numerical value (Default: smfwhm=3 (mm), sm_sigma=smfwhm/2.3548)
+
+ --l_band    Minimum temporal filtering bandwidth in Hz
+             [Values]
+             Any numerical value (Default: 0.01)
+
+ --h_band    Maximum temporal filtering bandwidth in Hz
+             [Values]
+             Any numerical value (Default: 0.25)
+
+ --fldir     Name of the folder (or folders for group data) to write data
+             [Values]
+             Any string value or list of comma-delimited string values (Default: data_<model>1)
+
+ --atlas     Name of the file to use as the EPI atlas
+             [Values]
+             Any string value with the relative path of the file (Default: ./lib/tmp/<model>EPIatlas.nii)
+
+ --regr      Name of the file that contains additional nuisance regressor(s) to add to nuisance_design.txt
+             [Values]
+             Any string value with the relative path of the file (Default: None)
+
+```
+The above documentation can also be retrieved from the command line via `help` argument:
+
+    ./preproc_script_2.sh --help
+
 <a name="section-4-2-1"></a>
 #### 4.2.1  Manual brain mask edits (fsleyes editing tool)
     a. Overlay the mask file _mask.nii.gz or _mask0.nii.gz on top of the _n4.nii.gz file    
