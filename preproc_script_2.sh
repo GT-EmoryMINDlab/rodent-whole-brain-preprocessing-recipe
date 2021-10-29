@@ -21,7 +21,7 @@ usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
   printf "Usage: ./preproc_script_2.sh [OPTIONS]\n\n"
   printf "[Example]\n"
-  printf "    ./preproc_script_2.sh --model rat --nuis trends,mot,spca,csf\n\n"
+  printf "    ./preproc_script_2.sh --model rat --tr 2 --fldir alt_data_folder --nuis trends,mot,spca,csf\n\n"
   printf "Options:\n"
   printf " --help      Help (displays these usage details)\n\n"
   printf " --nuis      Nuisance Regression Parameters (combinations supported)\n"
@@ -34,7 +34,10 @@ usage() {
   printf "             wmcsf: WMCSF Signals only valid for rat brains\n"
   printf "             10pca: 10 Principle Components (non-brain tissues)\n"
   printf "             spca: Selected Principle Components (non-brain tissues)\n"
-  printf "             [Note:] By default, nuisance regressions with and without global signals will be generated.\n\n"
+  printf "             [Note:] By default, nuisance regressions with only 3 detrends will be generated, and the default output files have the prefix 0EPI_*.\n\n"
+  printf " --add_regr  Name of the file that contains additional nuisance regressor(s) to add to nuisance_design.txt\n"
+  printf "             [Values]\n"
+  printf "             Any string value with the relative path of the file (Default: None)\n\n"
   printf " --model     Specifies which rodent type to use\n"
   printf "             [Values]\n"
   printf "             rat: Select rat-related files and directories (Default)\n"
@@ -57,9 +60,7 @@ usage() {
   printf " --atlas     Name of the file to use as the EPI atlas\n"
   printf "             [Values]\n"
   printf "             Any string value with the relative path of the file (Default: ./lib/tmp/<model>EPIatlas.nii)\n\n"
-  printf " --regr      Name of the file that contains additional nuisance regressor(s) to add to nuisance_design.txt\n"
-  printf "             [Values]\n"
-  printf "             Any string value with the relative path of the file (Default: None)\n\n"
+
 }
 
 # Iterate through all specified nuisance regressors
@@ -85,7 +86,7 @@ iter_nuis() {
     paste -d"\t" $paste_files > ./"$workingdir"/nuisance_design.txt
   fi
   if [ "$custom_regressor" != "" ]; then
-    paste -d"\t" $custom_regressor > ./"$workingdir"/nuisance_design.txt
+    paste -d"\t" $paste_files $custom_regressor > ./"$workingdir"/nuisance_design.txt
   fi
 }
 
@@ -150,7 +151,7 @@ for arg in "$@"; do
     "--h_band") set -- "$@" "-u" ;;
     "--fldir") set -- "$@" "-f" ;;
     "--atlas") set -- "$@" "-a" ;;
-    "--regr") set -- "$@" "-r" ;;
+    "--add_regr") set -- "$@" "-r" ;;
     *)        set -- "$@" "$arg"
   esac
 done
