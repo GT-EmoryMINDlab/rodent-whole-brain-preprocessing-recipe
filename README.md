@@ -93,7 +93,7 @@ These parameters totally depend on your image (e.g., dimension, resolution, etc)
 ### 4.1 (Step 1) Run 'preproc_script_1.sh'
 The following details describe the parameters available to users via the command line:
 ```
-Usage: ./preproc_script_1.sh [OPTIONS]
+Usage: ./preproc_script_1.sh --model rat --fldir data_rat1 --stc 1 --bet 0.55 --matlab_dir matlab [OPTIONS]
 
 [Example]
     ./preproc_script_1.sh --model rat --bet 0.55
@@ -101,28 +101,27 @@ Usage: ./preproc_script_1.sh [OPTIONS]
 Options:
  --help         Help (displays these usage details)
 
- --bet          Brain mask parameter in FSL bet
+ --model        Specifies which rodent type to use
                 [Values]
-                Any numerical value (Default: 0.55)
+                rat: Select rat-related files and directories (Default)
+                mouse: Select mouse-related files and directories
+
+ --fldir        Name of the folder (or folders for group data) to write data.
+                [Values]
+                Any string value or list of comma-delimited string values (Default: data_<model>1)
 
  --stc          Specifies if STC is needed (long TR vs. short TR)
                 [Values]
                 1: STC is required, long TR (Default)
                 0: STC is not required, short TR
 
- --model        Specifies which rodent type to use
+ --bet          Brain mask parameter in FSL bet
                 [Values]
-                rat: Select rat-related files and directories (Default)
-                mouse: Select mouse-related files and directories
-
- --fldir        Name of the folder (or folders for group data) to write data
-                [Values]
-                Any string value or list of comma-delimited string values (Default: data_<model>1)
+                Any numerical value (Default: 0.55)
 
  --matlab_dir   Location of matlab on the system
                 [Values]
                 Any string value (Default: matlab)
-
 ```
 The above documentation can also be retrieved from the command line via `help` argument:
 
