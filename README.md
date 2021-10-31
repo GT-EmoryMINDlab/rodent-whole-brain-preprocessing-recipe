@@ -55,9 +55,9 @@ This is a EPI template registration pipeline, so the T2 scan of each brain is no
 
 The template folder includes the following 4 files for either rat or mouse. 
 	
-	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section 4.2.2.)
-	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
+	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section 4.2.2.)	
 	EPIatlas.nii: the atlas for extracting seed based timeseries.
+	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, *csfMask.nii or *wmEPI.nii, *csfEPI.nii: WM and/or CSF mask or masked EPI
 All these files need to be in the same orientation and similar resolution as your EPI images, i.e., EPI0.nii(.gz). 
