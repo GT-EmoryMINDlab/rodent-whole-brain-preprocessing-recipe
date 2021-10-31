@@ -206,7 +206,7 @@ Options:
              [Values]
              Any numerical value (Default: 0.25)
 
- --fldir     Name of the folder (or folders for group data) to write data
+ --fldir     Name of the data folder (or folders for group data) to be preprocessed
              [Values]
              Any string value or list of comma-delimited string values (Default: data_<model>1)
 
