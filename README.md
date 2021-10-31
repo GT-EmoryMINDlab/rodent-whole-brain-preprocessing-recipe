@@ -106,7 +106,7 @@ Options:
                 rat: Select rat-related files and directories (Default)
                 mouse: Select mouse-related files and directories
 
- --fldir        Name of the folder (or folders for group data) to write data.
+ --fldir        Name of the data folder (or folders for group data) to be preprocessed.
                 [Values]
                 Any string value or list of comma-delimited string values (Default: data_<model>1)
 
