@@ -178,9 +178,7 @@ This procedure is only needed when you do not have "\*EPItmp.nii" in the templat
 
 <a name="section-4-3"></a>
 ### 4.3 (Step 3) Run 'preproc_script_2.sh'
-The input files are "EPI_n4", "EPI_topup", and "EPI_topup_mean" generated from Step 1, as well as the mask(s) "EPI_n4_mask" (and "EPI_csf_mask" for mouse data) saved from Step 2. The following 5 procedures will be performed.
-
-The following details describe the parameters available to users via the command line:
+The input files are "EPI_n4", "EPI_topup", and "EPI_topup_mean" generated from Step 1, as well as the mask(s) "EPI_n4_mask" (and "EPI_csf_mask" for mouse data) saved from Step 2. As described in 4.3.1--4.3.5, 5 procedures will be performed. The following details describe the parameters available to users via the command line:
 ```
 Usage: ./preproc_script_2.sh [OPTIONS]
 
