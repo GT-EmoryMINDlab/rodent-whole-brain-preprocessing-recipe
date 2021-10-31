@@ -163,6 +163,23 @@ Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)
 
 <a name="section-4-2"></a>
 ### 4.2 (Step 2) Precise Brain Extraction & EPI Template Generation
+<a name="section-4-2-1"></a>
+#### 4.2.1  Manual brain mask edits (fsleyes editing tool)
+    a. Overlay the mask file _mask.nii.gz or _mask0.nii.gz on top of the _n4.nii.gz file    
+    b. Consistently follow ONE direction slice-by-slice and edit the mask (20~30mins/rat mask, 15~20mins/mouse mask)
+    c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
+    d. (Only for mouse data) save the edited csf mask as "EPI_csf_mask.nii.gz" 
+For a, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
+Output: \_n4_mask (\_n4_csf_mask)
+
+<a name="section-4-2-2"></a>
+#### 4.2.2 EPI template generation (optional): run "GenerateEPItmp.sh"
+This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder.
+
+<a name="section-4-3"></a>
+### 4.3 (Step 3) Run 'preproc_script_2.sh'
+The input files are "EPI_n4", "EPI_topup", and "EPI_topup_mean" generated from Step 1, as well as the mask(s) "EPI_n4_mask" (and "EPI_csf_mask" for mouse data) saved from Step 2. The following 5 procedures will be performed.
+
 The following details describe the parameters available to users via the command line:
 ```
 Usage: ./preproc_script_2.sh [OPTIONS]
@@ -222,23 +239,6 @@ Options:
 The above documentation can also be retrieved from the command line via `help` argument:
 
     ./preproc_script_2.sh --help
-
-<a name="section-4-2-1"></a>
-#### 4.2.1  Manual brain mask edits (fsleyes editing tool)
-    a. Overlay the mask file _mask.nii.gz or _mask0.nii.gz on top of the _n4.nii.gz file    
-    b. Consistently follow ONE direction slice-by-slice and edit the mask (20~30mins/rat mask, 15~20mins/mouse mask)
-    c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
-    d. (Only for mouse data) save the edited csf mask as "EPI_csf_mask.nii.gz" 
-For a, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
-Output: \_n4_mask (\_n4_csf_mask)
-
-<a name="section-4-2-2"></a>
-#### 4.2.2 EPI template generation (optional): run "GenerateEPItmp.sh"
-This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder.
-
-<a name="section-4-3"></a>
-### 4.3 (Step 3) Run 'preproc_script_2.sh'
-The input files are "EPI_n4", "EPI_topup", and "EPI_topup_mean" generated from Step 1, as well as the mask(s) "EPI_n4_mask" (and "EPI_csf_mask" for mouse data) saved from Step 2. The following 5 procedures will be performed.
 
 <a name="section-4-3-1"></a>
 #### 4.3.1 EPI registration estimation and wm/csf mask generation
