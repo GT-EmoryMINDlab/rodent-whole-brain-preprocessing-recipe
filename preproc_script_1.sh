@@ -17,18 +17,11 @@ fi
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
-  printf "Usage: ./preproc_script_1.sh --model rat --stc 1 --bet 0.55 --fldir data_rat1 [OPTIONS]\n\n"
+  printf "Usage: ./preproc_script_1.sh --model rat --fldir data_rat1 --stc 1 --bet 0.55 --matlab_dir matlab [OPTIONS]\n\n"
   printf "[Example]\n"
   printf "    ./preproc_script_1.sh --model rat --bet 0.55\n\n"
   printf "Options:\n"
   printf " --help         Help (displays these usage details)\n\n"
-  printf " --bet          Brain mask parameter in FSL bet\n"
-  printf "                [Values]\n"
-  printf "                Any numerical value (Default: 0.55)\n\n"
-  printf " --stc          Specifies if STC is needed (long TR vs. short TR)\n"
-  printf "                [Values]\n"
-  printf "                1: STC is required, long TR (Default)\n"
-  printf "                0: STC is not required, short TR\n\n"
   printf " --model        Specifies which rodent type to use\n"
   printf "                [Values]\n"
   printf "                rat: Select rat-related files and directories (Default)\n"
@@ -36,10 +29,16 @@ usage() {
   printf " --fldir        Name of the folder (or folders for group data) to write data. \n"
   printf "                [Values]\n"
   printf "                Any string value or list of comma-delimited string values (Default: data_<model>1)\n\n"
+  printf " --stc          Specifies if STC is needed (long TR vs. short TR)\n"
+  printf "                [Values]\n"
+  printf "                1: STC is required, long TR (Default)\n"
+  printf "                0: STC is not required, short TR\n\n"  
+  printf " --bet          Brain mask parameter in FSL bet\n"
+  printf "                [Values]\n"
+  printf "                Any numerical value (Default: 0.55)\n\n"
   printf " --matlab_dir   Location of matlab on the system\n"
   printf "                [Values]\n"
   printf "                Any string value (Default: matlab)\n\n"
-
 }
 
 # === Command Line Argument Parsing
