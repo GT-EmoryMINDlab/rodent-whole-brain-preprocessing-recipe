@@ -28,7 +28,7 @@ usage() {
   printf "             [Values]\n"
   printf "             rat: Select rat-related files and directories (Default)\n"
   printf "             mouse: Select mouse-related files and directories\n\n"
-  printf " --fldir     Name of the folder (or folders for group data) to write data\n"
+  printf " --fldir     Name of the data folder (or folders for group data) to be preprocessed\n"
   printf "             [Values]\n"
   printf "             Any string value or list of comma-delimited string values (Default: data_<model>1)\n\n"
   printf " --nuis      Nuisance Regression Parameters (combinations supported)\n"
