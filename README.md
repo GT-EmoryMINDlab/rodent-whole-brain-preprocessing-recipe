@@ -183,7 +183,7 @@ The input files are "EPI_n4", "EPI_topup", and "EPI_topup_mean" generated from S
 Usage: ./preproc_script_2.sh [OPTIONS]
 
 [Example]
-    ./preproc_script_2.sh --model rat --nuis trends,mot,spca,csf
+    ./preproc_script_2.sh --model mouse --fldir data_mouse1 --nuis trends,mot,spca,csf  --tr 1 --smooth 4 --atlas ./lib/tmp/mouseEPIatlas.nii
 
 Options:
  --help      Help (displays these usage details)
