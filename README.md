@@ -252,13 +252,14 @@ Output: \_n4_brain_reg
     b. Extract the top 10 PCs from the masked tissues.
     
 <a name="section-4-3-3"></a>
-#### 4.3.3 Nuisance regressions: 26 regressors ([Kai-HsiangChuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X))
+#### 4.3.3 Nuisance regressions: 26 possible regressors ([Kai-HsiangChuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X)) & a user specified file of regressors
     a. 3 for detrends: constant, linear, and quadratic trends
     b. 10 PCs from non brain tissues
     c. 6 motion regressors (based on motion correction results) 
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
     e. csf or/and wmcsf signals 
-The script also generates a global signal regression version which only regresses out the 3 trends (a) and global signals of the brain. One can modify the list of regressors in Ln85--Ln86 and Ln91 in "preproc_script_2.sh".
+    f. a .txt file containing user specified regressors (e.g., task patterns regression)
+The script also generates a default outputs (0EPI_\*) which only regresses out the 3 trends (a). One can specify any combinations of above regressors in the command line.
 
 <a name="section-4-3-4"></a>
 #### 4.3.4 Normalization & temporal filtering
