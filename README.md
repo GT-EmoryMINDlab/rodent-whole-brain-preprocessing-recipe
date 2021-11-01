@@ -151,7 +151,7 @@ Output: \_mc
 
 <a name="section-4-1-3"></a>
 #### 4.1.3 Distortion correction using fsl topup
-    a. Realign EPI_forward0 to the tmeporal mean of EPI0
+    a. Realign EPI_forward0 to the temporal mean of EPI0
     b. Apply the same realignment to EPI_reverse0
     c. Estimate the topup correction parameters (see the required topup parameter files in section III) 
     d. Apply topup correction
@@ -178,7 +178,7 @@ Output: \_n4_mask (\_n4_csf_mask)
 
 <a name="section-4-2-2"></a>
 #### 4.2.2 EPI template generation (optional): run "generateEPItmp.sh"
-This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder or want to generate your data specific EPI template. If the latter case (likely for the mouse group data preprocessing), please rename the existing "<model>EPItmp.nii" (if there's one in the template folder) as "<model>EPItmp0.nii" before running the script to avoid overwritting. The following details describe the parameters available to users via the command line:
+The script normalizes the masked EPI brains to a standard template, and then compute the average of the normalized EPI brains, which gives the final EPI template of your group data. This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder or want to generate your data specific EPI template. If the latter case (likely for the mouse group data preprocessing), please rename the existing "<model>EPItmp.nii" (if there's one in the template folder) as "<model>EPItmp0.nii" before running the script to avoid overwritting. The following details describe the parameters available to users via the command line:
 ```
 Usage: ./generateEPItmp.sh [OPTIONS]
 
