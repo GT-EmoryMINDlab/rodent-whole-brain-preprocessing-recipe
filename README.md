@@ -97,7 +97,10 @@ The following details describe the parameters available to users via the command
 Usage: ./preproc_script_1.sh [OPTIONS]
 
 [Example]
-    ./preproc_script_1.sh --model rat --fldir data_rat1 --stc 1 --bet 0.55 --matlab_dir matlab 
+    ./preproc_script_1.sh --model rat \
+    >--fldir data_rat1,data_rat2,data_rat3 \
+    >--stc 1 --bet 0.55 \
+    >--matlab_dir matlab 
 
 Options:
  --help         Help (displays these usage details)
@@ -184,10 +187,23 @@ The input files are "EPI_n4", "EPI_topup", and "EPI_topup_mean" generated from S
 Usage: ./preproc_script_2.sh [OPTIONS]
 
 [Example]
-    ./preproc_script_2.sh --model mouse --fldir data_mouse1,data2,data3 --nuis trends,mot,spca,csf  --tr 1 --smooth 4 --atlas ./lib/tmp/mouseEPIatlas.nii
+    ./preproc_script_2.sh --model mouse \
+    >--fldir data_mouse1,data2,data3 \
+    >--nuis trends,mot,spca,csf  \
+    >--tr 1 --l_band 0.01 --h_band 0.3\
+    >--smooth 4 --atlas ./lib/tmp/mouseEPIatlas.nii
 
 Options:
  --help      Help (displays these usage details)
+
+ --model     Specifies which rodent type to use
+             [Values]
+             rat: Select rat-related files and directories (Default)
+             mouse: Select mouse-related files and directories
+
+ --fldir     Name of the data folder (or folders for group data) to be preprocessed
+             [Values]
+             Any string value or list of comma-delimited string values (Default: data_<model>1)
 
  --nuis      Nuisance Regression Parameters (combinations supported)
              [Values]
@@ -199,20 +215,17 @@ Options:
              wmcsf: WMCSF Signals only valid for rat brains
              10pca: 10 Principle Components (non-brain tissues)
              spca: Selected Principle Components (non-brain tissues)
-             [Note:] By default, nuisance regressions with and without global signals will be generated.
-
- --model     Specifies which rodent type to use
+             [Note:] All specified regressors will be aggregated to the output file nuisance_design.txt. In addition, the specificed brain signals
+                      (i.e., global, WMCSF, or CSF signals) will also be saved into an individual file, i.e., gsEPI.txt, csfEPI.txt, or wmcsfEPI.txt.
+             [Note:] By default, nuisance regressions with only 3 detrends will be generated, and the default output files have the prefix 0EPI_*
+		     
+ --add_regr  Name of the file that contains additional nuisance regressor(s) (e.g., task patterns to be regressed)
              [Values]
-             rat: Select rat-related files and directories (Default)
-             mouse: Select mouse-related files and directories
+             Any string value with the relative path of the file (Default: None)
 
  --tr        The time sampling rate (TR) in seconds
              [Values]
              Any numerical value (Default: 2)
-
- --smooth    Spatial smoothing FWHM in mm, which determines the spatial smoothing sigma
-             [Values]
-             Any numerical value (Default: smfwhm=3 (mm), sm_sigma=smfwhm/2.3548)
 
  --l_band    Minimum temporal filtering bandwidth in Hz
              [Values]
@@ -222,17 +235,13 @@ Options:
              [Values]
              Any numerical value (Default: 0.25)
 
- --fldir     Name of the data folder (or folders for group data) to be preprocessed
+ --smooth    Spatial smoothing FWHM in mm, which determines the spatial smoothing sigma
              [Values]
-             Any string value or list of comma-delimited string values (Default: data_<model>1)
+             Any numerical value (Default: smfwhm=3 (mm))
 
  --atlas     Name of the file to use as the EPI atlas
              [Values]
              Any string value with the relative path of the file (Default: ./lib/tmp/<model>EPIatlas.nii)
-
- --regr      Name of the file that contains additional nuisance regressor(s) to add to nuisance_design.txt
-             [Values]
-             Any string value with the relative path of the file (Default: None)
 
 ```
 The above documentation can also be retrieved from the command line via `help` argument:
