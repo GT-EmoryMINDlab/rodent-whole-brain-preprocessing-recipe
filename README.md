@@ -177,8 +177,36 @@ For a, you can change the Opacity of the mask to visualize its boundary location
 Output: \_n4_mask (\_n4_csf_mask)
 
 <a name="section-4-2-2"></a>
-#### 4.2.2 EPI template generation (optional): run "GenerateEPItmp.sh"
-This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder.
+#### 4.2.2 EPI template generation (optional): run "generateEPItmp.sh"
+This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder or want to generate your data specific EPI template. The following details describe the parameters available to users via the command line:
+```
+Usage: ./generateEPItmp.sh [OPTIONS]
+
+[Example]
+    ./generateEPItmp.sh --model mouse --fldir data_mouse1,data_mouse2 --tmp ./lib/tmp/mouseT2tmp.nii
+
+Options:
+ --help         Help (displays these usage details)
+
+ --model        Specifies which rodent type to use
+                [Values]
+                rat: Select rat-related files and directories
+                mouse: Select mouse-related files and directories (Default)
+
+ --fldir        Name of the data folder (or folders for group data) to be preprocessed.
+                [Values]
+                Any string value or list of comma-delimited string values (Default: data_<model>1)
+
+ --tmp          Name of the file to use as the standard template
+                [Values]
+                Any string value with the relative path of the file (Default: ./lib/tmp/<model>T2tmp.nii)
+
+Output:  ./lib/tmp/<model>EPItmp_gp.nii
+
+```
+The above documentation can also be retrieved from the command line via `help` argument:
+
+    ./generateEPItmp.sh --help
 
 <a name="section-4-3"></a>
 ### 4.3 (Step 3) Run 'preproc_script_2.sh'
