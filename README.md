@@ -216,7 +216,7 @@ Usage: ./preproc_script_2.sh [OPTIONS]
 [Example]
     ./preproc_script_2.sh --model mouse \
     >--fldir data_mouse1,data2,data3 \
-    >--nuis trends,mot,spca,csf  \
+    >--nuis trends,mot,spca,csf  --add_regr taskreggresors.txt\
     >--tr 1 --l_band 0.01 --h_band 0.3\
     >--smooth 4 --atlas ./lib/tmp/mouseEPIatlas.nii
 
