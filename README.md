@@ -94,10 +94,10 @@ These parameters totally depend on your image (e.g., dimension, resolution, etc)
 ### 4.1 (Step 1) Run 'preproc_script_1.sh'
 The following details describe the parameters available to users via the command line:
 ```
-Usage: ./preproc_script_1.sh --model rat --fldir data_rat1 --stc 1 --bet 0.55 --matlab_dir matlab [OPTIONS]
+Usage: ./preproc_script_1.sh [OPTIONS]
 
 [Example]
-    ./preproc_script_1.sh --model rat --bet 0.55
+    ./preproc_script_1.sh --model rat --fldir data_rat1 --stc 1 --bet 0.55 --matlab_dir matlab 
 
 Options:
  --help         Help (displays these usage details)
