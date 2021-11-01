@@ -295,7 +295,7 @@ Output: \_n4_brain_reg
     c. 6 motion regressors (based on motion correction results) 
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
     e. csf or/and wmcsf signals 
-    f. 1 \*.txt file containing user specified regressors (e.g., task patterns regression)
+    f. one *.txt file containing user specified regressors (e.g., task patterns to be regressed)
 The script also generates a default outputs (0EPI_\*) which only regresses out the 3 trends (a). One can specify any combinations of above regressors in the command line.
 
 <a name="section-4-3-4"></a>
