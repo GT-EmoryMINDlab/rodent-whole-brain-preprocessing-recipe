@@ -17,9 +17,9 @@ fi
 
 usage() {
   printf "=== Rodent Whole-Brain fMRI Data Preprocessing Toolbox === \n\n"
-  printf "Usage: ./preproc_script_1.sh --model rat --fldir data_rat1 --stc 1 --bet 0.55 --matlab_dir matlab [OPTIONS]\n\n"
+  printf "Usage: ./preproc_script_1.sh [OPTIONS]\n\n"
   printf "[Example]\n"
-  printf "    ./preproc_script_1.sh --model rat --bet 0.55\n\n"
+  printf "    ./preproc_script_1.sh --model rat --fldir data_rat1 --stc 1 --bet 0.55 --matlab_dir matlab\n\n"
   printf "Options:\n"
   printf " --help         Help (displays these usage details)\n\n"
   printf " --model        Specifies which rodent type to use\n"
