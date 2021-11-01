@@ -296,7 +296,7 @@ Output: \_n4_brain_reg
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
     e. csf or/and wmcsf signals 
     f. one *.txt file containing user specified regressors (e.g., task patterns to be regressed)
-The script also generates a default outputs (0EPI_\*) which only regresses out the 3 trends (a). One can specify any combinations of above regressors in the command line.
+The script also generates a default outputs (0EPI_\*) which only regresses out the 3 trends (a). One can specify any combinations of above regressors in the command line. If you are preprocessing a group dataset, the same combination of regressors will be applied to all data.
 
 <a name="section-4-3-4"></a>
 #### 4.3.4 Normalization & temporal filtering
