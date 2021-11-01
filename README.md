@@ -97,10 +97,10 @@ The following details describe the parameters available to users via the command
 Usage: ./preproc_script_1.sh [OPTIONS]
 
 [Example]
-    ./preproc_script_1.sh --model rat \
-    >--fldir data_rat1,data_rat2,data_rat3 \
-    >--stc 1 --bet 0.55 \
-    >--matlab_dir matlab 
+    ./preproc_script_1.sh --model rat\
+    > --fldir data_rat1,data_rat2,data_rat3\
+    > --stc 1 --bet 0.55\
+    > --matlab_dir matlab 
 
 Options:
  --help         Help (displays these usage details)
@@ -214,11 +214,11 @@ The input files are "EPI_n4", "EPI_topup", and "EPI_topup_mean" generated from S
 Usage: ./preproc_script_2.sh [OPTIONS]
 
 [Example]
-    ./preproc_script_2.sh --model mouse \
-    >--fldir data_mouse1,data2,data3 \
-    >--nuis trends,mot,spca,csf  --add_regr taskreggresors.txt\
-    >--tr 1 --l_band 0.01 --h_band 0.3\
-    >--smooth 4 --atlas ./lib/tmp/mouseEPIatlas.nii
+    ./preproc_script_2.sh --model mouse\
+    > --fldir data_mouse1,data2,data3\
+    > --nuis trends,mot,spca,csf --add_regr taskreggresors.txt\
+    > --tr 1 --l_band 0.01 --h_band 0.3\
+    > --smooth 4 --atlas ./lib/tmp/mouseEPIatlas.nii
 
 Options:
  --help      Help (displays these usage details)
