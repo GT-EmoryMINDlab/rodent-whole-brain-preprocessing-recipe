@@ -215,9 +215,11 @@ Options:
              wmcsf: WMCSF Signals only valid for rat brains
              10pca: 10 Principle Components (non-brain tissues)
              spca: Selected Principle Components (non-brain tissues)
-             [Note:] All specified regressors will be aggregated to the output file nuisance_design.txt. In addition, the specificed brain signals
-                      (i.e., global, WMCSF, or CSF signals) will also be saved into an individual file, i.e., gsEPI.txt, csfEPI.txt, or wmcsfEPI.txt.
-             [Note:] By default, nuisance regressions with only 3 detrends will be generated, and the default output files have the prefix 0EPI_*
+             [Note:] All specified regressors will be aggregated to the output file nuisance_design.txt. 
+	     	     In addition, the specificed brain signals (i.e., global, WMCSF, or CSF signals) will 
+		     also be saved into an individual file, i.e., gsEPI.txt, csfEPI.txt, or wmcsfEPI.txt.
+             [Note:] By default, nuisance regressions with only 3 detrends will be generated, and the 
+	     	     default output files have the prefix 0EPI_*
 		     
  --add_regr  Name of the file that contains additional nuisance regressor(s) (e.g., task patterns to be regressed)
              [Values]
