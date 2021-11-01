@@ -22,7 +22,7 @@ If you find this toolbox useful for your work, please cite as: Nan Xu, Leo Zhang
         * 4.2.2 [EPI template generation](#section-4-2-2)
     * 4.3 [(Step 3) Run 'preproc_script_2.sh'](#section-4-3)
         * 4.3.1 [EPI registration estimation & wm/csf mask generation](#section-4-3-1)
-        * 4.3.2 [Tissue noise estimation by PCA](#section-4-3-2)
+        * 4.3.2 [Non-brain tissue noise estimation by PCA](#section-4-3-2)
         * 4.3.3 [Nuisance regressions](#section-4-3-3)
         * 4.3.4 [Normalization & temporal filtering](#section-4-3-4)
         * 4.3.5 [EPI template registration & spatial smoothing & seed extraction](#section-4-3-5)
@@ -247,9 +247,9 @@ One can check the alignment of "EPI_n4_brain_regWarped.nii.gz" with the EPI temp
 Output: \_n4_brain_reg
 
 <a name="section-4-3-2"></a>
-#### 4.3.2 Tissue noise estimation by PCA
-    a. Generate a tissue mask
-    b. Extract the top 10 PCs from the masked brain tissues.
+#### 4.3.2 Non-brain tissue noise estimation by PCA
+    a. Generate a mask for non-brain tissues
+    b. Extract the top 10 PCs from the masked tissues.
     
 <a name="section-4-3-3"></a>
 #### 4.3.3 Nuisance regressions: 26 regressors ([Kai-HsiangChuang, et al., Neuroimage, 2019](https://www.sciencedirect.com/science/article/pii/S105381191832192X))
