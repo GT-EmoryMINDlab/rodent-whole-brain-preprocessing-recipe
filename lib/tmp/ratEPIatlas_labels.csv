@@ -1,0 +1,60 @@
+Label,Hemisphere,Territories,System,Region of interest
+1,Inter hemispheric,Cortex,Cingular system,Cingulate Cortex 1
+2,Inter hemispheric,Cortex,Limbic System,Prelimbic Cortex
+3,Right,Cortex,Somatosensory system,Primary Somatosensory
+4,Left ,Cortex,Somatosensory system,Primary Somatosensory
+5,Inter hemispheric,Cortex,Limbic System,Prelimbic/Infralimbic
+6,Right,Cortex,Insular system,Insular Cortex
+7,Inter hemispheric,Basal ganglia,Striatal system,Accumbens Shell
+8,Right,Cortex,Motor Cortex,Primary and Secondary Motor
+9,Inter hemispheric,Cortex,Cingular system,Cingulate Cortex 2
+10,Right,Cortex,Amygdala,"Amygdala (Central, Basolateral)"
+11,Right,Cortex,Somatosensory system,Primary Somatosensory  Cortex (BE)
+12,Left ,Cortex,Somatosensory system,Primary Somatosensory  Cortex (BE)
+13,Left ,Basal ganglia,Striatal system,Striatum (Dorsal)
+14,Left ,Basal ganglia,Striatal system,Striatum (Ventral)
+15,Right,Basal ganglia,Striatal system,Striatum
+16,Left ,Cortex,Olfactory system,Endo/Piriform Cortex
+17,Right,Cortex,Insular system,Insular Cortex 2
+18,Inter hemispheric,Cortex,Cingular system,Cingulate Cortex 3
+19,Right,Diencephalon,Thalamus,dorsal thalamic nucleus
+20,Left ,Cortex,Insular system,Insular Cortex
+21,Inter hemispheric,Diencephalon,Hypothalamus,Hypothalamus 1
+22,Right,Cortex,Olfactory system,Piriform Cortex
+23,Left ,Cortex,Hippocampus Fomation,Dorsal Hippocampus
+24,Right,Cortex,Somatosensory system,Primary Somatosensory  Cortex (Auditory)
+25,Inter hemispheric,Cortex,Retrosplenial system,Retrosplenial Cortex 1
+26,Left ,Cortex,Olfactory system,Piriform Cortex
+27,Inter hemispheric,Diencephalon,Thalamus,ventral thalamic
+28,Inter hemispheric,Cortex,Retrosplenial system,Retrosplenial Granular Cortex c
+29,Left,Cortex,Somatosensory system,Parietal Cortex (Auditory)
+30,Inter hemispheric,Diencephalon,Hypothalamus,Hypothalamus 2
+31,Inter hemispheric,Cortex,Visual system,Secondary Visual cortex
+32,Left ,Cortex,Hippocampus Fomation,Cornu Ammonis 1 (transition dorsal ventral)
+33,Inter hemispheric,Diencephalon,Tegmentum,Dorsal Lateral Periaqueductal Gray Left
+34,Right,Cortex,Somatosensory system,Parietal Cortex (Auditory)
+35,Left ,Hind Brain,Visual system,medial geniculate nucleus
+36,Right,Cortex,Hippocampus Fomation,Dorsal Hippocampus
+37,Right,Cortex,Olfactory system,Intermedial Entorhinal cortex
+38,Inter hemispheric,Cortex,Retrosplenial system,Retrosplenial Cortex 2
+39,Left ,Cortex,Visual system,Primary and Secondary Visual Cortex
+40,Left ,Cortex,Hippocampus Fomation,Dorsal Dentate Gyrus 
+41,Inter hemispheric,Cortex,Retrosplenial system,Retrosplenial Cortex 3/Superior Gray
+42,Right,Cortex,Visual system,Primary and Secondary Visual Cortex
+43,Inter hemispheric,Mesencephalon,Tegmentum,Interpeduncular nucleus
+44,Right,Cortex,Hippocampus Fomation,Dorsal Dentate Gyrus/Entorhinal Cortex
+45,Inter hemispheric,Cortex,Retrosplenial system,Retrosplenial Cortex 4
+46,Right,Mesencephalon,Colliculi,inferior colliculus/external cortex
+47,Inter hemispheric,Mesencephalon,Pons,Ventral tegmental nucleus
+48,Left ,Cortex,Hippocampus Fomation,Cornu Ammonis 1 (Ventral)
+49,Left,Cortex,Retrosplenial system,Retrosplenial Granular Cortex Zone A/Postsubiculum
+50,Right,Cortex,Retrosplenial system,Retrosplenial Granular Cortex Zone A/Postsubiculum
+51,Inter hemispheric,Cortex,Retrosplenial system,Retrosplenial Cortex 5/Colliculus
+52,Inter hemispheric,Mesencephalon,Pons,Pontine nuclei
+53,Inter hemispheric,Mesencephalon,Pons,Raphe (pallidum/magnun) nuclei
+54,Left ,Mesencephalon,Pons,Pontine reticular/subcoeruleus
+55,Left,Mesencephalon,Colliculi,external colliculus (V1)
+56,Right,Mesencephalon,Pons,Subcoeruleum/pontine reticular nucleu
+57,Right,Mesencephalon,Colliculi,Colliculus
+58,Right,Cortex,Retrosplenial system,RSD/RSGa
+59,Right,Mesencephalon,Pons,Raphe/Median(paramedian) pontine reticular nu
