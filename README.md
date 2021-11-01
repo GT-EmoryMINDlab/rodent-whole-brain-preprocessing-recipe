@@ -178,7 +178,7 @@ Output: \_n4_mask (\_n4_csf_mask)
 
 <a name="section-4-2-2"></a>
 #### 4.2.2 EPI template generation (optional): run "generateEPItmp.sh"
-This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder or want to generate your data specific EPI template. In the latter case, please rename the existing "<model>EPItmp.nii" (if there's one in the template folder) as "<model>EPItmp0.nii" before running the script to avoid overwritting. The following details describe the parameters available to users via the command line:
+This procedure is only needed when you do not have "\*EPItmp.nii" in the template folder or want to generate your data specific EPI template. If the latter case (likely for the mice group data preprocessing), please rename the existing "<model>EPItmp.nii" (if there's one in the template folder) as "<model>EPItmp0.nii" before running the script to avoid overwritting. The following details describe the parameters available to users via the command line:
 ```
 Usage: ./generateEPItmp.sh [OPTIONS]
 
