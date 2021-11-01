@@ -202,7 +202,6 @@ Options:
                 Any string value with the relative path of the file (Default: ./lib/tmp/<model>T2tmp.nii)
 
 Output:  ./lib/tmp/<model>EPItmp_gp.nii
-
 ```
 The above documentation can also be retrieved from the command line via `help` argument:
 
@@ -272,7 +271,6 @@ Options:
  --atlas     Name of the file to use as the EPI atlas
              [Values]
              Any string value with the relative path of the file (Default: ./lib/tmp/<model>EPIatlas.nii)
-
 ```
 The above documentation can also be retrieved from the command line via `help` argument:
 
