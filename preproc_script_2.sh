@@ -10,7 +10,7 @@ smfwhm="3" # spatial smoothing FWHM
 # Note: FWHM=2.3548*sigma
 # 0.25mm â†’ 10x = 2.5mm â†’ sm_sigma=2.5/2.3548 = 1.0166
 # 0.3mm â†’ 10x=3.0mm â†’ sm_sigma=1.274
-# 0.25mm â†’ 20x = 5mm â†’ sm_sigma=2.1233226
+# 0.5mm â†’ 10x = 5mm â†’ sm_sigma=2.1233226
 nuis=true
 user_fldir=false
 custom_atlas=false
