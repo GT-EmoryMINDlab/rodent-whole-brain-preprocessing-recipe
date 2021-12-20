@@ -85,9 +85,9 @@ iter_nuis() {
     declare -p nuis_arr >/dev/null
   fi
 
-  for i in "${nuis_arr[@]}"
+  for nuis_iter in "${nuis_arr[@]}"
     do
-      paste_files="${paste_files} $(eval_nuis "$i")"
+      paste_files="${paste_files} $(eval_nuis "$nuis_iter")"
     done
 
   if [ "$paste_files" != "" ]; then
@@ -137,9 +137,9 @@ eval_nuis() {
 
 eval_model_wmcsf() {
 #  nuis_arr="$1"
-  for i in "${nuis_arr[@]}"
+  for wmcsf_iter in "${nuis_arr[@]}"
     do
-      if [[ $model == mouse ]] && [[ $i == wmcsf ]]; then
+      if [[ $model == mouse ]] && [[ $wmcsf_iter == wmcsf ]]; then
         printf "ERROR: Model cannot be mouse with wmcsf selected. Exiting...\n"
         exit 1
       fi
