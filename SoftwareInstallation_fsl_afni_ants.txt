@@ -34,7 +34,7 @@ $ sudo apt-get install dos2unix
 sudo apt-get install libcurl4-openssl-dev libxml2-dev libssl-dev libgfortran3
 sudo ln -s /usr/lib/x86_64-linux-gnu/libgsl.so.23 /usr/lib/x86_64-linux-gnu/libgsl.so.19
 
-d. Install R packages 1st following (https://cran.r-project.org/bin/linux/ubuntu/README.html#installation)
+d. Install R packages 1st following (https://cran.r-project.org/bin/linux/ubuntu/fullREADME.html)
 $ sudo apt install r-base-dev r-cran-rmpi
 
 2. Install FSL in A:\ (take about 40mins for downloading and installing)
@@ -101,7 +101,7 @@ $ tcsh s2.cp.files . ~
 $ cd ..
 f. Evaluate setup/system (important!)
 $ afni_system_check.py -check_all
-//Read the “Please Fix�? section at the end. If there are no suggestions, then rejoice! Otherwise, try the suggestion(s) there.
+//Read the “Please Fix�? section at the end. If there are no suggestions, then rejoice! Otherwise, try the suggestion(s) there.
 $ afni
 $ suma
 

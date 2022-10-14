@@ -158,11 +158,14 @@ do
 	echo "--------------------$workingdir: brain mask FSL bet--------------------"	
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
 	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
-	
-	# PCNN3d brain extraction. One can also run the file in Matlab.
-	echo "--------------------$workingdir: brain mask PCNN3D--------------------"	
-	"$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; model_type='$model'; run PCNN3D_run_v1_3.m; exit"
-	
+
+	if [[ $matlab_dir = "NA" ]]; then
+	  echo "Skipping MATLAB/PCNN3D"
+  else
+    # PCNN3d brain extraction. One can also run the file in Matlab.
+    echo "--------------------$workingdir: brain mask PCNN3D--------------------"
+    "$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; model_type='$model'; run PCNN3D_run_v1_3.m; exit"
+  fi
  	
 	## Then, manually edit the mask slice by slice in fsleyes
 done
