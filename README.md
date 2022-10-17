@@ -29,9 +29,22 @@ If you find this toolbox useful for your work, please credit it to: Nan Xu, Leo 
 
 <a name="section-1"></a>
 ## 1. Dependencies
-1. FSL5.0, AFNI and ANTs: A unix or a mac system with above 3 software packages installed is required. If you only has a PC, a less preferrable option is to install the three packages through a Windows Subsystem for Linux (see "SoftwareInstallation_fsl_afni_ants.txt" for more details).
-3. Matlab and [NIfTI and ANALYZE toolbox](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) (*Jimmy Shen, 2014*) are needed for calling PCNN3D (which is superior for mouse brain mask creation, see below for details). 
+1. FSL5.0, AFNI and ANTs: A Linux or MacOS system with above 3 software packages installed is required. For Windows systems, it's possible to install the three packages through a Windows Subsystem for Linux (see "SoftwareInstallation_fsl_afni_ants.txt" for more details).
+2. Matlab and [NIfTI and ANALYZE toolbox](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) (*Jimmy Shen, 2014*) are needed for calling PCNN3D (which is superior for mouse brain mask creation, see below for details). 
 The toolbox has been cloned to this repository in *NIfTI_toolbox* for convenience.
+
+*Supported Matlab Operating Systems:* Matlab software is supported in Windows (10, 11, and Server 2019) as well as MacOS and Linux. For the full Linux system requirements, please
+refer to the [official documentation](https://www.mathworks.com/support/requirements/matlab-linux.html). If installing WSL using a Linux distribution other than Ubuntu or Debian as described in *SoftwareInstallation_fsl_afni_ants.txt*, replace all
+`apt` and `apt-get` commands with the equivalent command for your OS package manager (e.g., [zypper](https://en.opensuse.org/SDB:Zypper_usage) for SUSE).
+
+The following Linux distributions are officially supported: 
+- Ubuntu
+- Debian
+- Red Hat
+- SUSE
+
+*Running Without Matlab Support:* By default, in *preproc_script_1.sh*, if WSL isn't detected, the default Matlab directory is set to `matlab`. Override this by passing a `--matlab_dir` argument in 
+the CLI. To run the first script without Matlab or PCNN3D, set the `--matlab_dir` argument to `NA`.
 
 <a name="section-2"></a>
 ## 2. Data Files 
@@ -41,12 +54,12 @@ Three input data files are needed, each has voxel size 10X from the scanning fil
     EPI_forward0.nii(.gz), 3-dim: a 1 volume forward epi scan of the brain
     EPI_reverse0.nii(.gz), 3-dim: a 1 volume reverse epi scan of the same brain
 Note: The 3D volumes in above three .nii(.gz) files need to be in the same dimension and resolution.\
---*If the EPI0.nii was scanned immediately after EPI_reverse0.nii, then the 1st volume of EPI0.nii can be extrated as EPI_forward0.nii. E.g.,*
+--*If the EPI0.nii was scanned immediately after EPI_reverse0.nii, then the 1st volume of EPI0.nii can be extracted as EPI_forward0.nii. E.g.,*
 
 		fslroi EPI0 EPI_forward0 0 1
---*Similarily, one can extract the last volume of EPI0.nii as EPI_forward0.nii if EPI0.nii was scanned immediately before.*
+--*Similarly, one can extract the last volume of EPI0.nii as EPI_forward0.nii if EPI0.nii was scanned immediately before.*
 
-This is a EPI template registration pipeline, so the T2 scan of each brain is not required. Two datasamples, one for rat whole brain (./data_rat1/) and one for mouse whole brain (./data_mouse1/), are provided.     
+This is an EPI template registration pipeline, so the T2 scan of each brain is not required. Two datasamples, one for rat whole brain (./data_rat1/) and one for mouse whole brain (./data_mouse1/), are provided.     
 
 <a name="section-3"></a>
 ## 3. Library Files 
@@ -77,7 +90,7 @@ Two options are provided:
 
     mousedatain_topup.txt: for the mouse data sample
     ratdatain_topup_rat.txt: for the rat data sample
-The parameters totally depend on your imaging acquisition protocal (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. 
+The parameters totally depend on your imaging acquisition protocol (see [Ref](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide#A--datain)). It's IMPORTANT to setup the correct parameters, as they significantly impact the final results. 
 
 <a name="section-3-2-2"></a>
 #### 3.2.2 Image parameter configuration file (\*.cnf)
@@ -135,7 +148,7 @@ The following 4 procedures will be performed in this step.
 
 <a name="section-4-1-1"></a>
 #### 4.1.1 Slice time correction: optional for long TRs (e.g., TR>1s)
-This is controled by the indicator "NeedSTC" at the beginning of the file.
+This is controlled by the indicator "NeedSTC" at the beginning of the file.
 
 <a name="section-4-1-2"></a>
 #### 4.1.2 Motion correction: (motions are corrected to its mean) 
@@ -173,7 +186,7 @@ Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)
     b. Consistently follow ONE direction slice-by-slice and edit the mask (20~30mins/rat mask, 15~20mins/mouse mask)
     c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
     d. (Only for mouse data) save the edited csf mask as "EPI_csf_mask.nii.gz" 
-For a, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
+For *Step A*, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
 Output: \_n4_mask (\_n4_csf_mask)
 
 <a name="section-4-2-2"></a>
@@ -312,4 +325,4 @@ Output: \_mc_topup_norm_fil
     c. Extract the averaged timeseries based on atlas.
 Output: \_mc_topup_norm_fil_reg_sm, \_mc_topup_norm_fil_reg_sm_seed.txt
 
-The resulting FC map for each datasample is included in the data folder.
+The resulting FC map for each data sample is included in the data folder.
