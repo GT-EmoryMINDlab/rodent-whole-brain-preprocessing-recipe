@@ -40,7 +40,7 @@ usage() {
   printf " --bet          Brain mask parameter in FSL bet\n"
   printf "                [Values]\n"
   printf "                Any numerical value (Default: 0.55)\n\n"
-  printf " --matlab_dir   Location of matlab on the system and put NA if no matlab installed in the system\n"
+  printf " --matlab_dir   Location of matlab on the system; type NA if no matlab is installed in the system\n"
   printf "                [Values]\n"
   printf "                Any string value (Default: matlab)\n\n"
 }
