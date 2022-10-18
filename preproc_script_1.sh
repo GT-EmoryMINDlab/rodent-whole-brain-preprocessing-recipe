@@ -177,7 +177,7 @@ do
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
 	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
 
-	echo "--------------------$workingdir: brain mask AFNI --------------------"	
+	echo "--------------------$workingdir: brain mask AFNI 3dSkullStrip--------------------"	
 	3dSkullStrip -input ./"$workingdir"/EPI_n4.nii.gz -prefix./"$workingdir"/EPI_n4_3dskull.nii.gz -rat 
 	3dmask_tool -input EPI_n4_3dskull.nii.gz -prefix EPI_n4_3dskull_mask.nii.gz -dilate_input 5 -5
 
