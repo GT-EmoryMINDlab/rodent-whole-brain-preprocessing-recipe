@@ -37,10 +37,10 @@ usage() {
   printf "                [Values]\n"
   printf "                1: STC is required, long TR (Default)\n"
   printf "                0: STC is not required, short TR\n\n"  
-  printf " --dc           Specifies if topup distortion correction (DC) is needed \n"
+  printf " --dc           Specifies if topup distortion correction (DC) will be performed \n"
   printf "                [Values]\n"
-  printf "                1: DC is required. A reverse EPI scan EPI_reverse0.nii is required for this option (Default)\n"
-  printf "                0: DC is not required, if the user does not have the reverse EPI scan. \n\n"
+  printf "                1: DC will be performed. A reverse EPI scan EPI_reverse0.nii is required for this option (Default)\n"
+  printf "                0: DC will not be performed, especially when the user does not have the reverse EPI scan. \n\n"
   printf " --bet          Brain mask parameter in FSL bet\n"
   printf "                [Values]\n"
   printf "                Any numerical value (Default: 0.55)\n\n"
@@ -59,6 +59,7 @@ for arg in "$@"; do
     "--model") set -- "$@" "-m" ;;
     "--bet") set -- "$@" "-b" ;;
     "--stc") set -- "$@" "-s" ;;
+    "--dc") set -- "$@" "-c" ;;
     "--fldir") set -- "$@" "-f" ;;
     "--matlab_dir") set -- "$@" "-d" ;;
     *)        set -- "$@" "$arg"
@@ -67,13 +68,14 @@ done
 
 # Evaluating set options
 OPTIND=1
-while getopts "hm:b:s:f:d:" opt
+while getopts "hm:b:s:c:f:d:" opt
 do
   case "$opt" in
     "h") usage; exit 0 ;;
     "m") model="${OPTARG}" ;;
     "b") bet_f="${OPTARG}" ;;
     "s") NeedSTC="${OPTARG}" ;;
+	"c") NeedDC="${OPTARG}" ;;
     "f") user_fldir=true
          fldir_args="${OPTARG}" ;;
     "d") matlab_dir="${OPTARG}" ;;
@@ -134,24 +136,35 @@ do
 
 	##-------------Topup correction--------
 	echo "====================$workingdir: Topup correction===================="
-	# fslroi ./"$workingdir"/EPI.nii ./"$workingdir"/EPI_forward 0 1
-	mcflirt -in ./"$workingdir"/EPI_forward -r ./"$workingdir"/EPI_mean.nii.gz -out ./"$workingdir"/EPI_forward -stats -plots -report -rmsrel -rmsabs -mats
-	applyxfm4D ./"$workingdir"/EPI_reverse ./"$workingdir"/EPI_forward ./"$workingdir"/EPI_reverse ./"$workingdir"/EPI_forward.mat -fourdigit
-	fslmerge -t ./"$workingdir"/rpEPI ./"$workingdir"/EPI_forward ./"$workingdir"/EPI_reverse
-	fslchfiletype NIFTI_GZ ./"$workingdir"/rpEPI ./"$workingdir"/rpEPI_mc
-	# mcflirt -in ./"$workingdir"/rpEPI -refvol 0 -out ./"$workingdir"/rpEPI_mc -stats -plots -report -rmsrel -rmsabs -mats
-	# topup --imain=./"$workingdir"/rpEPI_mc --config=./lib/topup/b02b0.cnf \
-	# 	--datain=./lib/topup/datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
-	topup --imain=./"$workingdir"/rpEPI_mc --config=./lib/topup/"$model"EPI_topup.cnf \
-		--datain=./lib/topup/"$model"datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
-	applytopup --imain=./"$workingdir"/EPI_mc --inindex=1 --datain=./lib/topup/"$model"datain_topup.txt \
-		--topup=./"$workingdir"/tu_g --method=jac --out=./"$workingdir"/EPI_g
-	fslmaths ./"$workingdir"/EPI_g -abs ./"$workingdir"/EPI_topup
-	fslmaths ./"$workingdir"/EPI_topup -Tmean ./"$workingdir"/EPI_topup_mean
+	if [[ $NeedDC -eq 1 ]]
+	then
+		echo "Performing topup correction..."
+		# fslroi ./"$workingdir"/EPI.nii ./"$workingdir"/EPI_forward 0 1
+		mcflirt -in ./"$workingdir"/EPI_forward -r ./"$workingdir"/EPI_mean.nii.gz -out ./"$workingdir"/EPI_forward -stats -plots -report -rmsrel -rmsabs -mats
+		applyxfm4D ./"$workingdir"/EPI_reverse ./"$workingdir"/EPI_forward ./"$workingdir"/EPI_reverse ./"$workingdir"/EPI_forward.mat -fourdigit
+		fslmerge -t ./"$workingdir"/rpEPI ./"$workingdir"/EPI_forward ./"$workingdir"/EPI_reverse
+		fslchfiletype NIFTI_GZ ./"$workingdir"/rpEPI ./"$workingdir"/rpEPI_mc
+		# mcflirt -in ./"$workingdir"/rpEPI -refvol 0 -out ./"$workingdir"/rpEPI_mc -stats -plots -report -rmsrel -rmsabs -mats
+		# topup --imain=./"$workingdir"/rpEPI_mc --config=./lib/topup/b02b0.cnf \
+		# 	--datain=./lib/topup/datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
+		topup --imain=./"$workingdir"/rpEPI_mc --config=./lib/topup/"$model"EPI_topup.cnf \
+			--datain=./lib/topup/"$model"datain_topup.txt --out=./"$workingdir"/tu_g --iout=./"$workingdir"/tus_g -v
+		applytopup --imain=./"$workingdir"/EPI_mc --inindex=1 --datain=./lib/topup/"$model"datain_topup.txt \
+			--topup=./"$workingdir"/tu_g --method=jac --out=./"$workingdir"/EPI_g
+		fslmaths ./"$workingdir"/EPI_g -abs ./"$workingdir"/EPI_topup
+		fslmaths ./"$workingdir"/EPI_topup -Tmean ./"$workingdir"/EPI_topup_mean
+
+		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_topup  ./"$workingdir"/EPI_c 
+		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_topup_mean  ./"$workingdir"/EPI_c_mean
+	else
+		echo "Topup correction is not performed."
+		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_mc  ./"$workingdir"/EPI_c 
+		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_mc_mean  ./"$workingdir"/EPI_c_mean		
+	fi
 
 	##-------------Brain extraction--------
 	echo "====================$workingdir: Brain extraction===================="
-	N4BiasFieldCorrection -d 3 -i ./"$workingdir"/EPI_topup_mean.nii.gz -o ./"$workingdir"/EPI_n4.nii.gz -c [100x100x100,0] -b [50] -s 2
+	N4BiasFieldCorrection -d 3 -i ./"$workingdir"/EPI_c_mean.nii.gz -o ./"$workingdir"/EPI_n4.nii.gz -c [100x100x100,0] -b [50] -s 2
 	if [ "$model" = "mouse" ]; then
 		echo "--------------------$workingdir: CSF regions estimation for mouse--------------------"
 		fslmaths ./"$workingdir"/EPI_n4.nii.gz -thrp 99 -bin ./"$workingdir"/EPI_csf_mask1pass
@@ -164,13 +177,17 @@ do
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
 	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
 
+	echo "--------------------$workingdir: brain mask AFNI --------------------"	
+	3dSkullStrip -input ./"$workingdir"/EPI_n4.nii.gz -prefix./"$workingdir"/EPI_n4_3dskull.nii.gz -rat 
+	3dmask_tool -input EPI_n4_3dskull.nii.gz -prefix EPI_n4_3dskull_mask.nii.gz -dilate_input 5 -5
+
 	if [[ $matlab_dir = "NA" ]]; then
-	  echo "Skipping MATLAB/PCNN3D"
-  else
-    # PCNN3d brain extraction. One can also run the file in Matlab.
-    echo "--------------------$workingdir: brain mask PCNN3D--------------------"
-    "$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; model_type='$model'; run PCNN3D_run_v1_3.m; exit"
-  fi
+		echo "Skipping MATLAB/PCNN3D"
+  	else
+	    # PCNN3d brain extraction. One can also run the file in Matlab.
+	    echo "--------------------$workingdir: brain mask PCNN3D--------------------"
+	    "$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; model_type='$model'; run PCNN3D_run_v1_3.m; exit"
+ 	fi
  	
 	## Then, manually edit the mask slice by slice in fsleyes
 done
