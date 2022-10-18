@@ -29,11 +29,11 @@ If you find this toolbox useful for your work, please credit it to: Nan Xu, Leo 
 
 <a name="section-1"></a>
 ## 1. Dependencies
-1. FSL5.0, AFNI and ANTs: A Linux  or MacOS system with above 3 software packages installed is required. For Windows systems, it's possible to install the three packages through a Windows Subsystem for Linux (WSL, see "SoftwareInstallation_fsl_afni_ants.txt" for more details).
+1. FSL5.0, AFNI and ANTs: A Linux (i.e., (i.e., Ubuntu, Fedora, Red Hat)  or MacOS system with above 3 software packages installed is required. For Windows systems, it's possible to install the three packages through a Windows Subsystem for Linux (WSL, see "SoftwareInstallation_fsl_afni_ants.txt" for more details).
 2. Matlab (R2018a or a later version) and [NIfTI and ANALYZE toolbox](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) (*Jimmy Shen, 2014*) are required for calling PCNN3D (which is superior for mouse brain mask creation, see below for details). 
 The toolbox has been cloned to this repository in *NIfTI_toolbox* for convenience.
 
-*Supported Matlab Operating Systems:* Matlab software is supported in Windows (10, 11, and Server 2019) as well as MacOS and Linux (i.e., Ubuntu, Debian, RedHat, SUSE). For the full Linux system requirements, please
+*Supported Matlab Operating Systems:* Matlab software is supported in Windows (10, 11, and Server 2019) as well as MacOS and Linux (i.e., Ubuntu, Debian, Red Hat, SUSE). For the full Linux system requirements, please
 refer to the [official documentation](https://www.mathworks.com/support/requirements/matlab-linux.html). If installing WSL using a Linux distribution other than Ubuntu or Debian as described in *SoftwareInstallation_fsl_afni_ants.txt*, replace all
 `apt` and `apt-get` commands with the equivalent command for your OS package manager (e.g., [zypper](https://en.opensuse.org/SDB:Zypper_usage) for SUSE).
 
