@@ -33,16 +33,21 @@ usage() {
   printf "                [Values]\n"
   printf "                Any string value or list of comma-delimited string values\n"
   printf "                (Default: data_<model>1)\n\n"
-  printf " --stc          Specifies if STC is needed (long TR vs. short TR)\n"
+  printf " --stc          Specifies if slice time correction (STC) is needed (long TR vs. short TR)\n"
   printf "                [Values]\n"
   printf "                1: STC is required, long TR (Default)\n"
   printf "                0: STC is not required, short TR\n\n"  
+  printf " --dc           Specifies if topup distortion correction (DC) will be performed \n"
+  printf "                [Values]\n"
+  printf "                1: DC will be performed. A reverse EPI scan EPI_reverse0.nii is required for this option (Default)\n"
+  printf "                0: DC will not be performed, especially when the user does not have the reverse EPI scan. \n\n"
   printf " --bet          Brain mask parameter in FSL bet\n"
   printf "                [Values]\n"
   printf "                Any numerical value (Default: 0.55)\n\n"
-  printf " --matlab_dir   Location of matlab on the system; type NA if no matlab is installed in the system\n"
+  printf " --matlab_dir   Location of matlab on the system\n"
   printf "                [Values]\n"
-  printf "                Any string value (Default: matlab)\n\n"
+  printf "                Any string value (Default: matlab)\n"
+  printf "                NA: if no matlab is installed in the system\n\n"
 }
 
 # === Command Line Argument Parsing
@@ -159,13 +164,19 @@ do
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
 	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
 
+	echo "--------------------$workingdir: brain mask AFNI --------------------"	
+	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
+	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
+
+	3dSkullStrip -input sub-001_ses-1_task-rest_acq-EPI_bold.nii.gz -rat -prefix masked.nii.gz
+
 	if [[ $matlab_dir = "NA" ]]; then
-	  echo "Skipping MATLAB/PCNN3D"
-  else
-    # PCNN3d brain extraction. One can also run the file in Matlab.
-    echo "--------------------$workingdir: brain mask PCNN3D--------------------"
-    "$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; model_type='$model'; run PCNN3D_run_v1_3.m; exit"
-  fi
+		echo "Skipping MATLAB/PCNN3D"
+  	else
+	    # PCNN3d brain extraction. One can also run the file in Matlab.
+	    echo "--------------------$workingdir: brain mask PCNN3D--------------------"
+	    "$matlab_dir" -nodesktop -r "addpath(genpath('./PCNN3D_matlab')); datpath='./$workingdir/EPI_n4.nii.gz'; model_type='$model'; run PCNN3D_run_v1_3.m; exit"
+ 	fi
  	
 	## Then, manually edit the mask slice by slice in fsleyes
 done
