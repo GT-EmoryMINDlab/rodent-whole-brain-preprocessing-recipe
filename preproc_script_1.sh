@@ -5,6 +5,7 @@ model="rat"
 bet_f=0.55 # You might need to play with this parameter for creating the tightest brain mask to save you some time of manual editing.
 # NeedSTC=0; 
 NeedSTC=1;
+NeedDC=1;
 user_fldir=false
 
 # If kernel version references Microsoft, identify WSL and set an explicit path for Matlab, otherwise call directly
@@ -21,7 +22,7 @@ usage() {
   printf "[Example]\n"
   printf "    ./preproc_script_1.sh --model rat\ \n"
   printf "    > --fldir data_rat1,data_rat2\ \n"
-  printf "    > --stc 1 --bet 0.55\ \n"
+  printf "    > --stc 1 --dc 1 --bet 0.55\ \n"
   printf "    > --matlab_dir matlab\n\n"
   printf "Options:\n"
   printf " --help         Help (displays these usage details)\n\n"
@@ -177,7 +178,7 @@ do
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
 	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
 
-	echo "--------------------$workingdir: brain mask AFNI 3dSkullStrip--------------------"	
+	echo "--------------------$workingdir: brain mask AFNI --------------------"	
 	3dSkullStrip -input ./"$workingdir"/EPI_n4.nii.gz -prefix./"$workingdir"/EPI_n4_3dskull.nii.gz -rat 
 	3dmask_tool -input EPI_n4_3dskull.nii.gz -prefix EPI_n4_3dskull_mask.nii.gz -dilate_input 5 -5
 
