@@ -133,7 +133,7 @@ do
 	fslstats -K ./"$workingdir"/mc_qc/EPI_snr_mask.nii.gz ./"$workingdir"/mc_qc/EPI_mc_tSNR.nii.gz -n -m > ./"$workingdir"/mc_qc/EPI_mean_tSNR.txt
 	rm ./"$workingdir"/mc_qc/EPI_snr_mask.nii.gz
 	rm ./"$workingdir"/mc_qc/EPI_mc_std.nii.gz
-	rm ./"$workingdir"/mc_qc/EPI_mc_mean.nii.gz
+#    rm ./"$workingdir"/mc_qc/EPI_mc_mean.nii.gz
 
 	##-------------Topup correction--------
 	echo "====================$workingdir: Topup correction===================="
@@ -160,7 +160,7 @@ do
 	else
 		echo "Topup correction is not performed."
 		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_mc  ./"$workingdir"/EPI_c 
-		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_mc_mean  ./"$workingdir"/EPI_c_mean		
+		fslchfiletype NIFTI_GZ ./"$workingdir"/mc_qc/EPI_mc_mean  ./"$workingdir"/EPI_c_mean		
 	fi
 
 	##-------------Brain extraction--------
