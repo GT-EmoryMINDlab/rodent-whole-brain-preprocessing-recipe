@@ -59,7 +59,7 @@ The user can also process the data without the topup distortion correction, espe
 
 This is an EPI template registration pipeline, so the anatomical scan of each brain (usually the T2 scan due to the smaller brain size of rodents (Xu et al., 2022)) is not required. Two data samples, one for rat whole brain (./data_rat1/) and one for mouse whole brain (./data_mouse1/), are provided. 
 
-Notably, there is a clear brain size difference across human, rat and mouse. Ratiometrically, an isotropic voxel size of 1 mm in is comparable to an isotropic voxel size of 114 um in the rat brain or an isotropic voxel size of 70 um in the mouse brain (Xu et al., 2022). Standard preprocessing software packages including FSL5.0 (Jenkinson et al., 2012) and AFNI (Cox, 1996; Cox & Hyde, 1997) employed in this pipeline, are designed for human dataset. To make them applicable on the rodent dataset, the raw scanning data needs to be converted from bruker to nifti format by Bruker2nifti, using the 10x voxel-size increment.
+Notably, there is a clear brain size difference across human, rat and mouse. Ratiometrically, an isotropic voxel size of 1 mm in human brain is comparable to an isotropic voxel size of 114 um in the rat brain or an isotropic voxel size of 70 um in the mouse brain (Xu et al., 2022). Standard preprocessing software packages including FSL5.0 (Jenkinson et al., 2012) and AFNI (Cox, 1996; Cox & Hyde, 1997) employed in this pipeline, are designed for human dataset. To make them applicable on the rodent dataset, the raw scanning data needs to be converted from bruker to nifti format by Bruker2nifti, using the 10x voxel-size increment.
 
 <a name="section-3"></a>
 ## 3. Library Files 
