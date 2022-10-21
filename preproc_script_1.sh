@@ -76,7 +76,7 @@ do
     "m") model="${OPTARG}" ;;
     "b") bet_f="${OPTARG}" ;;
     "s") NeedSTC="${OPTARG}" ;;
-	"c") NeedDC="${OPTARG}" ;;
+    "c") NeedDC="${OPTARG}" ;;
     "f") user_fldir=true
          fldir_args="${OPTARG}" ;;
     "d") matlab_dir="${OPTARG}" ;;
