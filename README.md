@@ -1,5 +1,5 @@
 # Rodent Whole-Brain fMRI Data Processing Toolbox
-This is a generally applicable and user-friendly fMRI preprocessing toolbox for the whole brain of mice and rats. It provides the standard preprocessing procedures for preprocessing rodent brains as described in (Chuang et al., 2018; Lee et al., 2019). This toolbox was generalized for both mice and rat group data. It normalizes the group datasets to a standard template of the mouse or the rat model, and then extracts timeseries based on an atlas. This software toolbox allows a variety of combinations of preprocessing procedures and parameters being specified by users depending on the applications. Moreover, a user-specified repressors file can be added for task pattern regressions in addition to the classical detrending, motion parameters, brain tissue or noise regressions. This toolbox has been tested on 4 different fMRI group datasets of rodent whole brains with different imaging and experimental settings (3 rats groups and 1 mice group). Decent functional connectivity maps and quasiperiodic dynamic patterns (Thompson et al., 2014) were obtained. A video tutorial for using this toolbox is available [here](https://youtube.com/playlist?list=PLzl6lxEF9yCb3i0Coc5noXWzINKqWXTOd). A comprehensive user manual is enclosed below.
+This is a generally applicable and user-friendly fMRI preprocessing toolbox for the whole brain of mice and rats. It provides the standard preprocessing procedures for preprocessing rodent brains as described in (Chuang et al., 2018; Lee et al., 2019). This toolbox was generalized for both mice and rat group data. It normalizes the group datasets to a standard template of the mouse or the rat brain, and then extracts timeseries based on an atlas. This software toolbox allows a variety of combinations of preprocessing procedures and parameters that are specified by users depending on the applications. Moreover, a user-specified regressors file can be added for task pattern regressions in addition to the classical detrending, motion parameters, brain tissue or noise regressions. This toolbox has been tested on 5 different fMRI group datasets of rodent whole brains with different imaging and experimental settings (3 rat groups and 2 mouse groups). Decent functional connectivity maps and quasiperiodic dynamic patterns (Thompson et al., 2014) were obtained. A video tutorial for using this toolbox is available [here](https://youtube.com/playlist?list=PLzl6lxEF9yCb3i0Coc5noXWzINKqWXTOd). A comprehensive user manual is enclosed below.
 
 If you find this toolbox useful for your work, please credit it to: Nan Xu, Leo Zhang+, Sam Larson+, Zengmin Li, Nmachi Anumba, Lauren Daley, Wen-Ju Pan, Kai-Hsiang Chuang, Shella Keilholz, 2021. Rodent whole-brain fMRI data preprocessing toolbox. https://github.com/GT-EmoryMINDlab/rodent-whole-brain-preprocessing-recipe (+ equal contributions)
 
@@ -31,7 +31,7 @@ If you find this toolbox useful for your work, please credit it to: Nan Xu, Leo 
 
 <a name="section-1"></a>
 ## 1. Dependencies
-1. [FSL5.0](https://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/FslInstallation(2f)Linux.html) (Jenkinson et al., 2012), [AFNI](https://afni.nimh.nih.gov/download) (Cox, 1996; Cox & Hyde, 1997), and [ANTs](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) (Avants et al., 2022): A Linux or MacOS system with above 3 software packages installed is required. For Windows systems, it's possible to install the three packages through a Windows Subsystem for Linux (WSL, see "SoftwareInstallation_fsl_afni_ants.txt" for more details).
+1. [FSL5.0](https://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/FslInstallation(2f)Linux.html) (Jenkinson et al., 2012), [AFNI](https://afni.nimh.nih.gov/download) (Cox, 1996; Cox & Hyde, 1997), and [ANTs](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) (Avants et al., 2022): A Linux (i.e., Ubuntu, Fedora, and Red Hat) or MacOS system with the above 3 software packages installed is required. For Windows systems, it's possible to install the three packages through a Windows Subsystem for Linux (WSL, see "SoftwareInstallation_fsl_afni_ants.txt" for more details).
 2. [Matlab](https://www.mathworks.com/) (The Mathworks Inc., Natick, MA, USA, R2018a or a later version) and [NIfTI and ANALYZE toolbox](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) (Chen, 2022) are required for calling PCNN3D (Chou et al., 2011), which is superior for mouse brain mask creation (see Section 4.1.4 for more details). 
 The toolbox has been cloned to this repository in *NIfTI_toolbox* for convenience.
 
@@ -44,12 +44,12 @@ the CLI. To run the first script without Matlab or PCNN3D, set the `--matlab_dir
 
 <a name="section-2"></a>
 ## 2. Data Files 
-If process the data with the topup distortion correction (an optional procedure in Step 1), three input data files are required, each has voxel size 10X from the scanning file (i.e., use 10X when generating .nii files by Bruker2nifti):
+If the data will be processed with the topup distortion correction (an optional procedure in Step 1), three input data files are required, each has a voxel size 10X from the scanning file (i.e., use 10X when generating .nii files by Bruker2nifti):
 
     EPI0.nii(.gz), 4-dim: the forward epi scan of the whole brain timeseries  
     EPI_forward0.nii(.gz), 3-dim: a 1 volume forward epi scan of the brain
     EPI_reverse0.nii(.gz), 3-dim: a 1 volume reverse epi scan of the same brain
-Note: The 3D volumes in above three .nii(.gz) files need to be in the same dimension and resolution.\
+Note: The 3D volumes in the above three .nii(.gz) files need to be in the same dimension and resolution.\
 --*If the EPI0.nii was scanned immediately after EPI_reverse0.nii, then the 1st volume of EPI0.nii can be extracted as EPI_forward0.nii. E.g.,*
 
 	fslroi EPI0 EPI_forward0 0 1
@@ -59,7 +59,7 @@ The user can also process the data without the topup distortion correction, espe
 
 This is an EPI template registration pipeline, so the anatomical scan of each brain (usually the T2 scan due to the smaller brain size of rodents (Xu et al., 2022)) is not required. Two data samples, one for rat whole brain (./data_rat1/) and one for mouse whole brain (./data_mouse1/), are provided. 
 
-Notably, there is a clear brain size difference across human, rat and mouse. Ratiometrically, an isotropic voxel size of 1 mm in human brain is comparable to an isotropic voxel size of 114 um in the rat brain or an isotropic voxel size of 70 um in the mouse brain (Xu et al., 2022). Standard preprocessing software packages including FSL5.0 (Jenkinson et al., 2012) and AFNI (Cox, 1996; Cox & Hyde, 1997) employed in this pipeline, are designed for human dataset. To make them applicable on the rodent dataset, the raw scanning data needs to be converted from bruker to nifti format by Bruker2nifti, using the 10x voxel-size increment.
+Notably, there is a clear brain size difference across humans, rats and mice. Ratiometrically, an isotropic voxel size of 1 mm in human brain is comparable to an isotropic voxel size of 114 um in the rat brain or an isotropic voxel size of 70 um in the mouse brain (Xu et al., 2022). Standard preprocessing software packages, including FSL5.0 (Jenkinson et al., 2012) and AFNI (Cox, 1996; Cox & Hyde, 1997), employed in this pipeline, are designed for human datasets. To make them applicable to the rodent datasets, it is recommended to convert the raw scanning file from bruker to nifti format, using the 10x voxel-size increment.
 
 <a name="section-3"></a>
 ## 3. Library Files 
@@ -68,19 +68,19 @@ Notably, there is a clear brain size difference across human, rat and mouse. Rat
 
 The template folder includes the following 4 files for either rat or mouse. 
 	
-	EPItmp.nii: a EPI brain template (If you don't have this, you need to generate one in Section 4.2.2.)	
+	EPItmp.nii: an EPI brain template (If you don't have this, you need to generate one in Section 4.2.2.)	
 	EPIatlas.nii: the atlas for extracting seed based timeseries.
 	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, *csfMask.nii or *wmEPI.nii, *csfEPI.nii: WM and/or CSF mask or masked EPI
 All these files need to be in the same orientation and similar resolution as your EPI images, i.e., EPI0.nii(.gz). 
-Check this in fsleyes! If they do not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes the following 3 steps:
+Check this in fsleyes! If they are not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes the following 3 steps:
 
 	1. Delete orientation labels: fslorient -deleteorient T2tmp.nii
 	2. Reorient & rescale voxel size of the template: SPM does a good job!
 	3. Re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
 Do the same for all files in your template folder (see the 1st 2 mins of the [SPM reorientation tutorial](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s)).
-You might also need to crop the template files to better fit the field of view (FOV) of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good job on this. Two templates are provided, the SIGMA_Wistar rat brain template (Barrière et al., 2019), and a modified Allen Brain Institute Mouse template. The Allen mouse template (Lein et al., 2006) was modified to better fit mouse data sample provided. The voxel size for the provided template is 2mm for mouse and 3mm for rat. If you have a different FOV in your scan, please create your own study-specific template.
+You might also need to crop the template files to better fit the field of view (FOV) of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good job on this. Two templates are provided, the SIGMA_Wistar rat brain template (Barrière et al., 2019), and a modified Allen Brain Institute Mouse template. The Allen mouse template (Lein et al., 2006) was modified to better fit the mouse data sample provided. The voxel size for the provided template is 2mm for mouse and 3mm for rat. If you have a different FOV in your scan, please create your own study-specific template.
 
 <a name="section-3-2"></a>
 ### 3.2 Topup Parameters (./lib/topup/)
@@ -145,7 +145,7 @@ Options:
  --matlab_dir   Location of matlab on the system
                 [Values]
                 Any string value (Default: matlab)
-                NA: if no matlab is installed in the system
+                NA: if Matlab is not installed in the system
 ```
 The above documentation can also be retrieved from the command line via `help` argument:
 
@@ -161,7 +161,7 @@ This is controlled by the indicator "--stc" in the option.
 #### 4.1.2 Motion correction: (motions are corrected to its mean) 
 The following files are generated in ./data_*/mc_qc/ to control the quality of motions:
 
-    3 motion plots: Manually edit the brain mask using fsleyes editing tool
+    3 motion plots: 
         --rotational motions (EPI_mc_rot.png) 
 	    --translational motions (EPI_mc_trans.png)
 	    --mean displacement (EPI_mc_disp.png)
@@ -173,7 +173,7 @@ Output: \_mc
 #### 4.1.3 Distortion correction using fsl topup
 This is controlled by the indicator "--dc" in the option.
 
-If “--dc 1”, then
+If “--dc 1”, then the pipeline will
 
     a. Realign EPI_forward0 to the temporal mean of EPI0
     b. Apply the same realignment to EPI_reverse0
@@ -186,7 +186,7 @@ If “--dc 0”, then topup correction is not performed. Output: \_c (which is a
 
 <a name="section-4-1-4"></a>
 #### 4.1.4 Raw brain mask creation
-Three brain extraction options are provided: *FSL bet* function, *AFNI 3dskullstrip* function, and Matlab *PCNN3D* toolbox. In the script, all three functions are called, and one can pick the tightest mask for manual editing in the next step. You might need to play with "bet_f" at the head of "preproc_script_1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tighter mask.
+Three brain extraction options are provided: *FSL bet* function, *AFNI 3dskullstrip* function, and Matlab *PCNN3D* toolbox. In the script, all three functions are called, and one can pick the tightest mask for manual editing in the next step. You might need to play with the "--bet" parameter in the option of "preproc_script_1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tighter mask.
 
     FSL bet: better for some rat brains.
     AFNI 3dskullstrip: similar to FSL bet. 
@@ -200,7 +200,7 @@ Output:  \_n4_bet_mask, \_n4_3dskull_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for 
     a. Overlay the mask file _mask.nii.gz or _mask0.nii.gz on top of the _n4.nii.gz file    
     b. Consistently follow ONE direction slice-by-slice and edit the mask (20~30mins/rat mask, 15~20mins/mouse mask)
     c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
-    d. (Only for mouse data) save the edited csf mask as "EPI_csf_mask.nii.gz" 
+    d. (Only for mouse data) save the edited csf mask as "EPI_n4_csf_mask.nii.gz" 
 For *Step A*, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
 Output: \_n4_mask (\_n4_csf_mask)
 
@@ -237,7 +237,7 @@ The above documentation can also be retrieved from the command line via `help` a
 
 <a name="section-4-3"></a>
 ### 4.3 (Step 3) Run 'preproc_script_2.sh'
-The input files are "EPI_n4", "EPI_c", and "EPI_c_mean" generated from Step 1, as well as the mask(s) "EPI_n4_mask" (and "EPI_csf_mask" for mouse data) saved from Step 2. As described in 4.3.1--4.3.5, 5 procedures will be performed. The following details describe the parameters available to users via the command line:
+The input files are "EPI_n4", "EPI_c", and "EPI_c_mean" generated from Step 1, as well as the mask(s) "EPI_n4_mask" (and "EPI_n4_csf_mask" for mouse data) saved from Step 2. As described in 4.3.1--4.3.5, 5 procedures will be performed. The following details describe the parameters available to users via the command line:
 ```
 Usage: ./preproc_script_2.sh [OPTIONS]
 
@@ -263,15 +263,15 @@ Options:
  --nuis      Nuisance Regression Parameters (combinations supported)
              [Values]
              trends: 3 Detrends (constant/linear/quadratic trends)
-             gs: Global Signals
+             gs: Global Signal
              mot: 6 Motion Regressors (based on motion correction)
              motder: 6 Motion Derivative Regressors (temporal derivatives of c)
-             csf: CSF Signals
-             wmcsf: WMCSF Signals only valid for rat brains
-             10pca: 10 Principle Components (non-brain tissues)
-             spca: Selected Principle Components (non-brain tissues)
+             csf: CSF Signal
+             wmcsf: WMCSF Signal only valid for rat brains
+             10pca: 10 Principal Components (non-brain tissues)
+             spca: Selected Principal Components (non-brain tissues)
              [Note:] All specified regressors will be aggregated to the output file nuisance_design.txt. 
-	     	     In addition, the specificed brain signals (i.e., global, WMCSF, or CSF signals) will 
+	     	     In addition, the specified brain signal (i.e., global, WMCSF, or CSF signal) will 
 		     also be saved into an individual file, i.e., gsEPI.txt, csfEPI.txt, or wmcsfEPI.txt.
              [Note:] By default, nuisance regressions with only 3 detrends will be generated, and the 
 	     	     default output files have the prefix 0EPI_*
@@ -300,7 +300,7 @@ Options:
              [Values]
              Any string value with the relative path of the file (Default: ./lib/tmp/<model>EPIatlas.nii)
 ```
-The above documentation can also be retrieved from the command line via `help` argument:
+The above documentation can also be retrieved from the command line via the `help` argument:
 
     ./preproc_script_2.sh --help
 
@@ -322,7 +322,7 @@ Output: \_n4_brain_reg
     b. 10 PCs from non-brain tissues
     c. 6 motion regressors (based on motion correction results) 
     d. 6 motion derivative regressors: the temporal derivative of each motion regressor
-    e. csf or/and wmcsf signals 
+    e. csf or/and wmcsf signal(s)
     f. one *.txt file containing user specified regressors (e.g., task patterns to be regressed)
 The script also generates a default outputs (0EPI_\*) which only regresses out the 3 trends (a). One can specify any combinations of above regressors in the command line. If you are preprocessing a group dataset, the same combination of regressors will be applied to all data.
 
@@ -340,7 +340,7 @@ Output: \_mc_c_norm_fil
     c. Extract the averaged timeseries based on atlas.
 Output: \_mc_c_norm_fil_reg_sm, \_mc_c_norm_fil_reg_sm_seed.txt
 
-The resulting FC map (FC.mat) for each data sample is included in the data folder.
+The computed functional connectivity map (FC.tif) from the preprocessed timeseries for each data sample is also included in the data folder.
 
 <a name="section-5"></a>
 ## 5. References
