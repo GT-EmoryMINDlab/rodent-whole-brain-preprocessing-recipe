@@ -133,8 +133,8 @@ Options:
 
  --dc           Specifies if topup distortion correction (DC) will be performed
                 [Values]
-                1: perform DC. A reverse EPI scan EPI_reverse0.nii is required for this option (Default)
-                0: do not perform DC, especially when the user does not have the reverse EPI scan.
+                1: perform DC. A reverse EPI scan EPI_reverse0.nii is required (Default)
+                0: do not perform DC. E.g., if EPI_reverse0.nii is not available.
 
  --bet          Brain mask parameter in FSL bet
                 [Values]
