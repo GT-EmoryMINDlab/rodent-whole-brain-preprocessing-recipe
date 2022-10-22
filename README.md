@@ -339,7 +339,7 @@ Output: \_mc_c_norm_fil
     c. Extract the averaged timeseries based on atlas.
 Output: \_mc_c_norm_fil_reg_sm, \_mc_c_norm_fil_reg_sm_seed.txt
 
-In the data sample folder, the computed functional connectivity map (FC.tif) from the preprocessed timeseries for each data sample is also provided.
+In the data sample folder, the functional connectivity map (FC.tif) computed from the preprocessed timeseries using Matlab is also provided.
 
 <a name="section-5"></a>
 ## 5. References
