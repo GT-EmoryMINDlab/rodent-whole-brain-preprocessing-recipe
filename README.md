@@ -186,12 +186,11 @@ If “--dc 0”, then topup correction is not performed. Output: \_c (which is a
 
 <a name="section-4-1-4"></a>
 #### 4.1.4 Raw brain mask creation
-Three brain extraction options are provided: *FSL bet* function, *AFNI 3dskullstrip* function, and Matlab *PCNN3D* toolbox. In the script, all three functions are called, and one can pick the tightest mask for manual editing in the next step. You might need to play with the "--bet" parameter in the option of "preproc_script_1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tighter mask.
+Two brain extraction options are provided: *FSL bet* function and Matlab *PCNN3D* toolbox. In the script, both functions can be called, and one can pick the tightest mask for manual editing in the next step. You might need to play with the "--bet" parameter in the option of "preproc_script_1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tighter mask.
 
     FSL bet: better for some rat brains.
-    AFNI 3dskullstrip: similar to FSL bet. 
     PCNN3D: better for some mouse brains. 
-Output:  \_n4_bet_mask, \_n4_3dskull_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)    
+Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)    
 
 <a name="section-4-2"></a>
 ### 4.2 (Step 2) Precise Brain Extraction & EPI Template Generation
