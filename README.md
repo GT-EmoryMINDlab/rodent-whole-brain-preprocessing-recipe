@@ -200,7 +200,7 @@ Select the automated generated mask file generated from the last procedure. If y
     b. Consistently follow ONE direction slice-by-slice and edit the mask (20~30mins/rat mask, 15~20mins/mouse mask)
     c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
     d. (Only for mouse data) save the edited csf mask as "EPI_n4_csf_mask.nii.gz" 
-For *Step A*, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
+For *Step a*, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
 Output: \_n4_mask (\_n4_csf_mask)
 
 <a name="section-4-2-2"></a>
