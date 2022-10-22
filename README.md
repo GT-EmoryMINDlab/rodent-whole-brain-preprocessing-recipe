@@ -35,11 +35,9 @@ If you find this toolbox useful for your work, please credit it to: Nan Xu, Leo 
 2. [Matlab](https://www.mathworks.com/) (The Mathworks Inc., Natick, MA, USA, R2018a or a later version) and [NIfTI and ANALYZE toolbox](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) (Chen, 2022) are required for calling PCNN3D (Chou et al., 2011), which is superior for mouse brain mask creation (see Section 4.1.4 for more details). 
 The toolbox has been cloned to this repository in *NIfTI_toolbox* for convenience.
 
-*Supported Matlab Operating Systems:* Matlab software is supported in Windows (10, 11, and Server 2019) as well as MacOS and Linux (i.e., Ubuntu, Debian, RedHat, SUSE). For the full Linux system requirements, please
-refer to the [official documentation](https://www.mathworks.com/support/requirements/matlab-linux.html). If installing WSL using a Linux distribution other than Ubuntu or Debian as described in *SoftwareInstallation_fsl_afni_ants.txt*, replace all
-`apt` and `apt-get` commands with the equivalent command for your OS package manager (e.g., [zypper](https://en.opensuse.org/SDB:Zypper_usage) for SUSE).
+    *Supported Matlab Operating Systems:* Matlab software is supported in Windows (10, 11, and Server 2019) as well as MacOS and Linux (i.e., Ubuntu, Debian, RedHat, SUSE). For the full Linux system requirements, please refer to the [official documentation](https://www.mathworks.com/support/requirements/matlab-linux.html). If installing WSL using a Linux distribution other than Ubuntu or Debian as described in *SoftwareInstallation_fsl_afni_ants.txt*, replace all `apt` and `apt-get` commands with the equivalent command for your OS package manager (e.g., [zypper](https://en.opensuse.org/SDB:Zypper_usage) for SUSE).
 
-*Running Without Matlab Support:* By default, in *preproc_script_1.sh*, if WSL isn't detected, the default Matlab directory is set to `matlab`. Override this by passing a `--matlab_dir` argument in 
+    *Running Without Matlab Support:* By default, in *preproc_script_1.sh*, if WSL isn't detected, the default Matlab directory is set to `matlab`. Override this by passing a `--matlab_dir` argument in 
 the CLI. To run the first script without Matlab or PCNN3D, set the `--matlab_dir` argument to `NA`.
 
 <a name="section-2"></a>
