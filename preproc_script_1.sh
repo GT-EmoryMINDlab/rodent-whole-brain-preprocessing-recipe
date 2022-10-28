@@ -48,7 +48,7 @@ usage() {
   printf " --matlab_dir   Location of matlab on the system\n"
   printf "                [Values]\n"
   printf "                Any string value (Default: matlab)\n"
-  printf "                NA: if no matlab is installed in the system\n\n"
+  printf "                NA: if Matlab is not installed in the system\n\n"
 }
 
 # === Command Line Argument Parsing
@@ -105,13 +105,19 @@ do
 	then
 		echo "Long TR, need STC"
 		slicetimer -i ./"$workingdir"/EPI0  -o ./"$workingdir"/EPI.nii.gz  -r 2 -v
-		slicetimer -i ./"$workingdir"/EPI_reverse0  -o ./"$workingdir"/EPI_reverse.nii.gz  -r 2 -v
-		slicetimer -i ./"$workingdir"/EPI_forward0  -o ./"$workingdir"/EPI_forward.nii.gz  -r 2 -v
+		if [[ $NeedDC -eq 1 ]]
+		then
+			slicetimer -i ./"$workingdir"/EPI_reverse0  -o ./"$workingdir"/EPI_reverse.nii.gz  -r 2 -v
+			slicetimer -i ./"$workingdir"/EPI_forward0  -o ./"$workingdir"/EPI_forward.nii.gz  -r 2 -v
+		fi
 	else
 		echo "Short TR, do not need STC"
 		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI0 ./"$workingdir"/EPI.nii.gz
-		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_reverse0 ./"$workingdir"/EPI_reverse.nii.gz
-		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_forward0 ./"$workingdir"/EPI_forward.nii.gz
+		if [[ $NeedSTC -eq 1 ]]
+		then
+			fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_reverse0 ./"$workingdir"/EPI_reverse.nii.gz
+			fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_forward0 ./"$workingdir"/EPI_forward.nii.gz
+		fi
 	fi
 
 	# ##-------------Motion correction--------
@@ -178,9 +184,9 @@ do
 	bet ./"$workingdir"/EPI_n4.nii.gz ./"$workingdir"/EPI_n4_bet.nii.gz -f $bet_f -g 0 -R
 	fslmaths ./"$workingdir"/EPI_n4_bet.nii.gz -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
 
-	echo "--------------------$workingdir: brain mask AFNI --------------------"	
-	3dSkullStrip -input ./"$workingdir"/EPI_n4.nii.gz -prefix./"$workingdir"/EPI_n4_3dskull.nii.gz -rat 
-	3dmask_tool -input EPI_n4_3dskull.nii.gz -prefix EPI_n4_3dskull_mask.nii.gz -dilate_input 5 -5
+#	echo "--------------------$workingdir: brain mask AFNI --------------------"	
+#	3dSkullStrip -input ./"$workingdir"/EPI_n4.nii.gz -prefix ./"$workingdir"/EPI_n4_3dskull.nii.gz -overwrite -rat
+#	3dmask_tool -input ./"$workingdir"/EPI_n4_3dskull.nii.gz -prefix ./"$workingdir"/EPI_n4_3dskull_mask.nii.gz -dilate_input 5 -5
 
 	if [[ $matlab_dir = "NA" ]]; then
 		echo "Skipping MATLAB/PCNN3D"

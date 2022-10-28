@@ -35,11 +35,9 @@ If you find this toolbox useful for your work, please credit it to: Nan Xu, Leo 
 2. [Matlab](https://www.mathworks.com/) (The Mathworks Inc., Natick, MA, USA, R2018a or a later version) and [NIfTI and ANALYZE toolbox](https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image) (Chen, 2022) are required for calling PCNN3D (Chou et al., 2011), which is superior for mouse brain mask creation (see Section 4.1.4 for more details). 
 The toolbox has been cloned to this repository in *NIfTI_toolbox* for convenience.
 
-*Supported Matlab Operating Systems:* Matlab software is supported in Windows (10, 11, and Server 2019) as well as MacOS and Linux (i.e., Ubuntu, Debian, RedHat, SUSE). For the full Linux system requirements, please
-refer to the [official documentation](https://www.mathworks.com/support/requirements/matlab-linux.html). If installing WSL using a Linux distribution other than Ubuntu or Debian as described in *SoftwareInstallation_fsl_afni_ants.txt*, replace all
-`apt` and `apt-get` commands with the equivalent command for your OS package manager (e.g., [zypper](https://en.opensuse.org/SDB:Zypper_usage) for SUSE).
+    *Supported Matlab Operating Systems:* Matlab software is supported in Windows (10, 11, and Server 2019) as well as MacOS and Linux (i.e., Ubuntu, Debian, RedHat, SUSE). For the full Linux system requirements, please refer to the [official documentation](https://www.mathworks.com/support/requirements/matlab-linux.html). If installing WSL using a Linux distribution other than Ubuntu or Debian as described in *SoftwareInstallation_fsl_afni_ants.txt*, replace all `apt` and `apt-get` commands with the equivalent command for your OS package manager (e.g., [zypper](https://en.opensuse.org/SDB:Zypper_usage) for SUSE).
 
-*Running Without Matlab Support:* By default, in *preproc_script_1.sh*, if WSL isn't detected, the default Matlab directory is set to `matlab`. Override this by passing a `--matlab_dir` argument in 
+    *Running Without Matlab Support:* By default, in *preproc_script_1.sh*, if WSL isn't detected, the default Matlab directory is set to `matlab`. Override this by passing a `--matlab_dir` argument in 
 the CLI. To run the first script without Matlab or PCNN3D, set the `--matlab_dir` argument to `NA`.
 
 <a name="section-2"></a>
@@ -135,8 +133,8 @@ Options:
 
  --dc           Specifies if topup distortion correction (DC) will be performed
                 [Values]
-                1: perform DC. A reverse EPI scan EPI_reverse0.nii is required for this option (Default)
-                0: do not perform DC, especially when the user does not have the reverse EPI scan.
+                1: perform DC. A reverse EPI scan EPI_reverse0.nii is required (Default)
+                0: do not perform DC. E.g., if EPI_reverse0.nii is not available.
 
  --bet          Brain mask parameter in FSL bet
                 [Values]
@@ -185,23 +183,28 @@ If “--dc 0”, then topup correction is not performed. Output: \_c (which is a
 
 
 <a name="section-4-1-4"></a>
-#### 4.1.4 Raw brain mask creation
-Three brain extraction options are provided: *FSL bet* function, *AFNI 3dskullstrip* function, and Matlab *PCNN3D* toolbox. In the script, all three functions are called, and one can pick the tightest mask for manual editing in the next step. You might need to play with the "--bet" parameter in the option of "preproc_script_1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tighter mask.
+
+#### 4.1.4 Initial brain mask creation
+Two brain extraction options are provided: *FSL bet* function and Matlab *PCNN3D* toolbox. In the script, both functions can be called, and one can pick the tightest mask for manual editing in the next step. You might need to play with the "--bet" parameter in the option of "preproc_script_1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tighter mask.
+
 
     FSL bet: better for some rat brains.
-    AFNI 3dskullstrip: similar to FSL bet. 
     PCNN3D: better for some mouse brains. 
-Output:  \_n4_bet_mask, \_n4_3dskull_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)    
+Output:  \_n4_bet_mask, \_n4_pcnn3d_mask (\_n4_csf_mask0 for mouse)    
 
 <a name="section-4-2"></a>
 ### 4.2 (Step 2) Precise Brain Extraction & EPI Template Generation
 <a name="section-4-2-1"></a>
 #### 4.2.1  Manual brain mask edits (fsleyes editing tool)
+Select the automated generated mask file generated from the last procedure. If you have both \_n4_bet_mask, \_n4_pcnn3d_mask, you can pick the one which better fits your data. 
+
     a. Overlay the mask file _mask.nii.gz or _mask0.nii.gz on top of the _n4.nii.gz file    
     b. Consistently follow ONE direction slice-by-slice and edit the mask (20~30mins/rat mask, 15~20mins/mouse mask)
     c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
     d. (Only for mouse data) save the edited csf mask as "EPI_n4_csf_mask.nii.gz" 
-For *Step A*, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
+
+For *Step a*, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
+
 Output: \_n4_mask (\_n4_csf_mask)
 
 <a name="section-4-2-2"></a>
@@ -340,7 +343,7 @@ Output: \_mc_c_norm_fil
     c. Extract the averaged timeseries based on atlas.
 Output: \_mc_c_norm_fil_reg_sm, \_mc_c_norm_fil_reg_sm_seed.txt
 
-The computed functional connectivity map (FC.tif) from the preprocessed timeseries for each data sample is also included in the data folder.
+In the data sample folder, the functional connectivity map (FC.tif) generated by Matlab in our post analysis using the preprocessed timeseries is also provided.
 
 <a name="section-5"></a>
 ## 5. References
