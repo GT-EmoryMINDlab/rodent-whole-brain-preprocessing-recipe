@@ -183,8 +183,10 @@ If “--dc 0”, then topup correction is not performed. Output: \_c (which is a
 
 
 <a name="section-4-1-4"></a>
+
 #### 4.1.4 Initial brain mask creation
 Two brain extraction options are provided: *FSL bet* function and Matlab *PCNN3D* toolbox. In the script, both functions can be called, and one can pick the tightest mask for manual editing in the next step. You might need to play with the "--bet" parameter in the option of "preproc_script_1.sh" as well as the parameters at the head of "PCNN3D_run_v1_3.m" to get a tighter mask.
+
 
     FSL bet: better for some rat brains.
     PCNN3D: better for some mouse brains. 
@@ -200,7 +202,9 @@ Select the automated generated mask file generated from the last procedure. If y
     b. Consistently follow ONE direction slice-by-slice and edit the mask (20~30mins/rat mask, 15~20mins/mouse mask)
     c. Save the edited brain mask as "EPI_n4_mask.nii.gz".
     d. (Only for mouse data) save the edited csf mask as "EPI_n4_csf_mask.nii.gz" 
+
 For *Step a*, you can change the Opacity of the mask to visualize its boundary location on brain. The edited brain (and csf) masks for these two sample data are included in the data folder.
+
 Output: \_n4_mask (\_n4_csf_mask)
 
 <a name="section-4-2-2"></a>
