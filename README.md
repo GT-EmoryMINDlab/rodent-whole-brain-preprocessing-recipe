@@ -1,12 +1,11 @@
 # Rodent Whole-Brain fMRI Data Processing Toolbox
 This is a generally applicable and user-friendly fMRI preprocessing toolbox for the whole brain of mice and rats. It provides the standard preprocessing procedures for preprocessing rodent brains as described in (Chuang et al., 2018; Lee et al., 2019). This toolbox was generalized for both mice and rat group data. It normalizes the group datasets to a standard template of the mouse or the rat brain, and then extracts timeseries based on an atlas. This software toolbox allows a variety of combinations of preprocessing procedures and parameters that are specified by users depending on the applications. Moreover, a user-specified regressors file can be added for task pattern regressions in addition to the classical detrending, motion parameters, brain tissue or noise regressions. This toolbox has been tested on 5 different fMRI group datasets of rodent whole brains with different imaging and experimental settings (3 rat groups and 2 mouse groups). Decent functional connectivity maps and quasiperiodic dynamic patterns (Thompson et al., 2014) were obtained. A video tutorial for using this toolbox is available [here](https://youtube.com/playlist?list=PLzl6lxEF9yCb3i0Coc5noXWzINKqWXTOd). A comprehensive user manual is enclosed below.
 
-If you find this toolbox useful for your work, please credit it to: Nan Xu, Leo Zhang+, Sam Larson+, Zengmin Li, Nmachi Anumba, Lauren Daley, Wen-Ju Pan, Kai-Hsiang Chuang, Shella Keilholz, 2021. Rodent whole-brain fMRI data preprocessing toolbox. https://github.com/GT-EmoryMINDlab/rodent-whole-brain-preprocessing-recipe (+ equal contributions)
-
+If you find this toolbox useful for your work, please cite: Nan Xu, Leo Zhang+, Sam Larson+, Zengmin Li, Nmachi Anumba, Lauren Daley, Wen-Ju Pan, Kai-Hsiang Chuang, Shella Keilholz. Rodent Whole-Brain fMRI Data Preprocessing Toolbox. Aperture Neuro. 2023;3:1-3. doi:10.52294/001c.85075Rodent (+ equal contributions)
 # Table of Contents
 * 1 - [Dependencies](#section-1)
 * 2 - [Data Files](#section-2)
-* 3 - [Library Files](#section-3)
+* 3 - [Library Files](#section-3
     * 3.1 [Template Preparation (./lib/tmp/)](#section-3-1)
     * 3.2 [Topup Parameters (./lib/topup/)](#section-3-2)
         * 3.2.1 [Imaging acquisition parameter file (datain_topup_\*.txt)](#section-3-2-1)
