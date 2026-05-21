@@ -108,7 +108,7 @@ eval_nuis() {
     echo ./"$workingdir"/quad_regressionEPI.txt
   fi
   if [[ $param = "gs" ]]; then
-    fslmeants -i ./"$workingdir"/EPI_c.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_mask.nii.gz
+    fslmeants -i ./"$workingdir"/EPI_c.nii.gz -o ./"$workingdir"/gsEPI.txt -m ./"$workingdir"/EPI_n4_bet_mask.nii.gz
     echo ./"$workingdir"/gsEPI.txt
   fi
   if [[ $param = "mot" ]]; then
@@ -214,8 +214,8 @@ do
 
 	# ##-------------EPI registration estimation--------
 	echo "====================$workingdir: EPI registration estimation===================="
-	# fslmaths ./"$workingdir"/EPI_n4_brain.nii.gz -thrp 20 -bin ./"$workingdir"/EPI_n4_mask.nii.gz
-	fslmaths ./"$workingdir"/EPI_n4.nii.gz -mas ./"$workingdir"/EPI_n4_mask.nii ./"$workingdir"/EPI_n4_brain
+	# fslmaths ./"$workingdir"/EPI_n4_brain.nii.gz -thrp 20 -bin ./"$workingdir"/EPI_n4_bet_mask.nii.gz
+	fslmaths ./"$workingdir"/EPI_n4.nii.gz -mas ./"$workingdir"/EPI_n4_bet_mask.nii ./"$workingdir"/EPI_n4_brain
 
 	antsRegistrationSyNQuick.sh -d 3 -f ./lib/tmp/"$model"EPItmp.nii -m ./"$workingdir"/EPI_n4_brain.nii.gz -o ./"$workingdir"/EPI_n4_brain_reg -t s -n 8
 
@@ -232,14 +232,14 @@ do
 
 	#-------------PCA denoising-------------------
   echo "====================$workingdir: PCA noise selection===================="
-	fslmaths ./"$workingdir"/EPI_n4.nii.gz -thrp 10 -bin -sub ./"$workingdir"/EPI_n4_mask.nii.gz ./"$workingdir"/bg_mask_EPI.nii.gz
+	fslmaths ./"$workingdir"/EPI_n4.nii.gz -thrp 10 -bin -sub ./"$workingdir"/EPI_n4_bet_mask.nii.gz ./"$workingdir"/bg_mask_EPI.nii.gz
 	3dpc -overwrite -mask ./"$workingdir"/bg_mask_EPI.nii.gz -pcsave 10 -prefix ./"$workingdir"/EPI_nonbrain_PCA ./"$workingdir"/EPI_c.nii.gz
 	fsl_tsplot -i ./"$workingdir"/EPI_nonbrain_PCA_vec.1D -o ./"$workingdir"/EPI_nonbrain_PCA_vec -t 'Top PCA vectors' -x 'scan number' -y 'intensity (au)'
 
 	### Begin----------PCA selection QC----------------------------
 	fsl_glm -i ./"$workingdir"/EPI_c.nii.gz -d ./"$workingdir"/EPI_nonbrain_PCA_vec.1D -o ./"$workingdir"/EPI_nuisance --des_norm --out_p=./"$workingdir"/EPI_nuisance_p
-	fslmaths ./"$workingdir"/EPI_nuisance_p -mas ./"$workingdir"/EPI_n4_mask -uthr 0.001 -bin ./"$workingdir"/EPI_nuisance_brain
-	3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nobriklab -quiet ./"$workingdir"/EPI_nuisance_brain.nii.gz > ./"$workingdir"/EPI_nuisance_pixel.txt
+	fslmaths ./"$workingdir"/EPI_nuisance_p -mas ./"$workingdir"/EPI_n4_bet_mask -uthr 0.001 -bin ./"$workingdir"/EPI_nuisance_brain
+	3dROIstats -mask ./"$workingdir"/EPI_n4_bet_mask.nii.gz -nobriklab -quiet ./"$workingdir"/EPI_nuisance_brain.nii.gz > ./"$workingdir"/EPI_nuisance_pixel.txt
 	# Get PCA that affect more than 1% pixels in brain
 	# select the PCA that affects the brain the most
 	PCAcount=0;
@@ -274,12 +274,12 @@ do
 
     fsl_glm -i ./"$workingdir"/EPI_c.nii.gz -d ./"$workingdir"/nuisance_design.txt -o ./"$workingdir"/EPI_nuisance --out_res=./"$workingdir"/EPI_c_res --out_p=./"$workingdir"/EPI_nuisance_p --out_z=./"$workingdir"/EPI_nuisance_z
     fslmaths ./"$workingdir"/EPI_nuisance_z -abs ./"$workingdir"/EPI_nuisance_z_abs
-    3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/EPI_nuisance_z_abs.nii.gz > ./"$workingdir"/EPI_nuisance_brain_z.txt
+    3dROIstats -mask ./"$workingdir"/EPI_n4_bet_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/EPI_nuisance_z_abs.nii.gz > ./"$workingdir"/EPI_nuisance_brain_z.txt
 
     # default option: only detrending but no signal regression
     fsl_glm -i ./"$workingdir"/EPI_c.nii.gz -d ./"$workingdir"/quad_regressionEPI.txt -o ./"$workingdir"/0EPI_nuisance --out_res=./"$workingdir"/0EPI_c_res --out_p=./"$workingdir"/0EPI_nuisance_p --out_z=./"$workingdir"/0EPI_nuisance_z
     fslmaths ./"$workingdir"/EPI_nuisance_z -abs ./"$workingdir"/0EPI_nuisance_z_abs
-    3dROIstats -mask ./"$workingdir"/EPI_n4_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/0EPI_nuisance_z_abs.nii.gz > ./"$workingdir"/0EPI_nuisance_brain_z.txt
+    3dROIstats -mask ./"$workingdir"/EPI_n4_bet_mask.nii.gz -nomeanout -nobriklab -nzmean -quiet ./"$workingdir"/0EPI_nuisance_z_abs.nii.gz > ./"$workingdir"/0EPI_nuisance_brain_z.txt
 
 
     ### END of nuisance #######################################

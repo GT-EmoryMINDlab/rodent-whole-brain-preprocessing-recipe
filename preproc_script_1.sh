@@ -7,6 +7,7 @@ bet_f=0.55 # You might need to play with this parameter for creating the tightes
 NeedSTC=1;
 NeedDC=1;
 user_fldir=false
+tr=1; 
 
 # If kernel version references Microsoft, identify WSL and set an explicit path for Matlab, otherwise call directly
 wsl_kernel_version=$(cat /proc/version | grep -i 'microsoft\|cygwin')
@@ -22,7 +23,7 @@ usage() {
   printf "[Example]\n"
   printf "    ./preproc_script_1.sh --model rat\ \n"
   printf "    > --fldir data_rat1,data_rat2\ \n"
-  printf "    > --stc 1 --dc 1 --bet 0.55\ \n"
+  printf "    > --tr 2 --stc 1 --dc 1 --bet 0.55\ \n"
   printf "    > --matlab_dir matlab\n\n"
   printf "Options:\n"
   printf " --help         Help (displays these usage details)\n\n"
@@ -34,6 +35,7 @@ usage() {
   printf "                [Values]\n"
   printf "                Any string value or list of comma-delimited string values\n"
   printf "                (Default: data_<model>1)\n\n"
+  printf " --tr           TR in seconds (Default: 1)\n"
   printf " --stc          Specifies if slice time correction (STC) is needed (long TR vs. short TR)\n"
   printf "                [Values]\n"
   printf "                1: STC is required, long TR (Default)\n"
@@ -63,18 +65,20 @@ for arg in "$@"; do
     "--dc") set -- "$@" "-c" ;;
     "--fldir") set -- "$@" "-f" ;;
     "--matlab_dir") set -- "$@" "-d" ;;
+    "--tr")        set -- "$@" "-t" ;;
     *)        set -- "$@" "$arg"
   esac
 done
 
 # Evaluating set options
 OPTIND=1
-while getopts "hm:b:s:c:f:d:" opt
+while getopts "hm:b:t:s:c:f:d:" opt
 do
   case "$opt" in
     "h") usage; exit 0 ;;
     "m") model="${OPTARG}" ;;
     "b") bet_f="${OPTARG}" ;;
+    "t") tr="${OPTARG}" ;;
     "s") NeedSTC="${OPTARG}" ;;
     "c") NeedDC="${OPTARG}" ;;
     "f") user_fldir=true
@@ -99,24 +103,22 @@ for (( i=0; i<${#Foldername[@]}; i++ ))
 do
 	workingdir="${Foldername[i]}"
 
-	# ##-------------Slice time correction--------
-	echo "====================$workingdir: Slice time correction===================="
-	if [[ $NeedSTC -eq 1 ]]
-	then
-		echo "Long TR, need STC"
-		slicetimer -i ./"$workingdir"/EPI0  -o ./"$workingdir"/EPI.nii.gz  -r 2 -v
-		if [[ $NeedDC -eq 1 ]]
-		then
-			slicetimer -i ./"$workingdir"/EPI_reverse0  -o ./"$workingdir"/EPI_reverse.nii.gz  -r 2 -v
-			slicetimer -i ./"$workingdir"/EPI_forward0  -o ./"$workingdir"/EPI_forward.nii.gz  -r 2 -v
+	 # ##-------------Slice time correction--------
+	echo "====================${workingdir}: Slice time correction===================="
+	if [[ "${NeedSTC}" -eq 1 ]]; then
+		echo "STC ON (slicetimer -r ${tr})"
+		slicetimer -i "./${workingdir}/EPI0" -o "./${workingdir}/EPI.nii.gz" -r "${tr}" -v
+
+		if [[ "${NeedDC}" -eq 1 ]]; then
+			slicetimer -i "./${workingdir}/EPI_reverse0" -o "./${workingdir}/EPI_reverse.nii.gz" -r "${tr}" -v
+			slicetimer -i "./${workingdir}/EPI_forward0" -o "./${workingdir}/EPI_forward.nii.gz" -r "${tr}" -v
 		fi
 	else
-		echo "Short TR, do not need STC"
-		fslchfiletype NIFTI_GZ ./"$workingdir"/EPI0 ./"$workingdir"/EPI.nii.gz
-		if [[ $NeedSTC -eq 1 ]]
-		then
-			fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_reverse0 ./"$workingdir"/EPI_reverse.nii.gz
-			fslchfiletype NIFTI_GZ ./"$workingdir"/EPI_forward0 ./"$workingdir"/EPI_forward.nii.gz
+		echo "STC OFF (convert only)"
+		fslchfiletype NIFTI_GZ "./${workingdir}/EPI0" "./${workingdir}/EPI.nii.gz"
+		if [[ "${NeedDC}" -eq 1 ]]; then  # <-- FIXED (this was wrong in your original)
+			fslchfiletype NIFTI_GZ "./${workingdir}/EPI_reverse0" "./${workingdir}/EPI_reverse.nii.gz"
+			fslchfiletype NIFTI_GZ "./${workingdir}/EPI_forward0" "./${workingdir}/EPI_forward.nii.gz"
 		fi
 	fi
 

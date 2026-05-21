@@ -70,13 +70,23 @@ The template folder includes the following 4 files for either rat or mouse.
 	T2tmp.nii: a T2 template (If you already have EPItmp.nii, this file is optional.)
 	brainMask.nii: a whole brain mask
 	wmMask.nii, *csfMask.nii or *wmEPI.nii, *csfEPI.nii: WM and/or CSF mask or masked EPI
-All these files need to be in the same orientation and similar resolution as your EPI images, i.e., EPI0.nii(.gz). 
-Check this in fsleyes! If they are not, you need to reorient and rescale the template files to align with your EPI images. One simple reorientation approach includes the following 3 steps:
 
-	1. Delete orientation labels: fslorient -deleteorient T2tmp.nii
-	2. Reorient & rescale voxel size of the template: SPM does a good job!
-	3. Re-assign the labels: fslorient -setsformcode 1 T2tmp.nii
-Do the same for all files in your template folder (see the 1st 2 mins of the [SPM reorientation tutorial](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s)).
+All these files need to be in the same orientation and similar resolution as your EPI images, i.e., `EPI0.nii(.gz)`. Check this in `fsleyes`. If they are not aligned, you may need to reorient and/or rescale the template files to match your EPI images. One simple reorientation approach includes the following steps:
+
+1. **Delete existing orientation labels:**
+
+   ```bash
+   fslorient -deleteorient T2tmp.nii
+   ```
+2. **Reorient and rescale the voxel size of the template:**
+   SPM does a good job for manual reorientation/rescaling. See the first 2 minutes of the [SPM reorientation tutorial](https://www.youtube.com/watch?v=J_aXCBKRc1k&t=371s).
+3. **Re-assign valid orientation information:**
+   After SPM reorientation, check the `qform`/`sform` information against a reference image with the correct orientation labels, then re-assign the valid form code if needed. For example:
+	```bash
+	fslhd T2tmp.nii | grep -E "qform|sform|qto_|sto_"
+	fslhd EPI0.nii.gz | grep -E "qform|sform|qto_|sto_"
+	fslorient -setsformcode 1 T2tmp.nii
+	```
 You might also need to crop the template files to better fit the field of view (FOV) of your EPI scans. The matlab function nii_clip.m in the NIfTI toolbox does a good job on this. Two templates are provided, the SIGMA_Wistar rat brain template (Barrière et al., 2019), and a modified Allen Brain Institute Mouse template. The Allen mouse template (Lein et al., 2006) was modified to better fit the mouse data sample provided. The voxel size for the provided template is 2mm for mouse and 3mm for rat. If you have a different FOV in your scan, please create your own study-specific template.
 
 <a name="section-3-2"></a>
@@ -109,7 +119,7 @@ Usage: ./preproc_script_1.sh [OPTIONS]
 [Example]
     ./preproc_script_1.sh --model rat\
     > --fldir data_rat1,data_rat2\
-    > --stc 1 --dc 1 --bet 0.55\
+    > --tr 2 --stc 1 --dc 1 --bet 0.55\
     > --matlab_dir matlab
 
 Options:
@@ -124,6 +134,7 @@ Options:
                 [Values]
                 Any string value or list of comma-delimited string values
                 (Default: data_<model>1)
+ --tr			TR in seconds (Default: 1)
 
  --stc          Specifies if slice time correction (STC) is needed (long TR vs. short TR)
                 [Values]
@@ -371,3 +382,4 @@ Thompson, G. J., Pan, W. J., Magnuson, M. E., Jaeger, D., & Keilholz, S. D. (201
 Chen, J. (2022). Tools for NIfTI and ANALYZE image. MATLAB Central File Exchange. https://www.mathworks.com/matlabcentral/fileexchange/8797-tools-for-nifti-and-analyze-image
 
 Xu, N., LaGrow, T. J., Anumba, N., Lee, A., Zhang, X., Yousefi, B., Bassil, Y., Clavijo, G. P., Khalilzad Sharghi, V., Maltbie, E., Meyer-Baese, L., Nezafati, M., Pan, W.-J., & Keilholz, S. (2022). Functional Connectivity of the Brain Across Rodents and Humans. Frontiers in Neuroscience, 0, 272. https://doi.org/10.3389/FNINS.2022.816331
+
